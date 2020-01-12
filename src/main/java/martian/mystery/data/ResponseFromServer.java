@@ -1,4 +1,4 @@
-package martian.mystery;
+package martian.mystery.data;
 
 public class ResponseFromServer { // ответ от сервера заворачивается в этот класс-обертку
 

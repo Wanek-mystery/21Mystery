@@ -1,4 +1,4 @@
-package martian.mystery;
+package martian.mystery.view;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -34,6 +34,17 @@ import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import martian.mystery.data.DataOfUser;
+import martian.mystery.controller.GetContextClass;
+import martian.mystery.controller.Progress;
+import martian.mystery.controller.QuestionAnswerController;
+import martian.mystery.R;
+import martian.mystery.controller.RequestController;
+import martian.mystery.data.ResponseFromServer;
+import martian.mystery.controller.SecurityController;
+import martian.mystery.controller.StatisticsController;
+import martian.mystery.controller.StoredData;
+import martian.mystery.controller.UpdateDataController;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -199,7 +210,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
             etAnswer.setText(StoredData.getDataString(StoredData.DATA_LAST_ANSWER,""));
         }
         SecurityController security = new SecurityController();
-        adFailed = security.getQuestion(21);
+        adFailed = security.getQuestion(21); // проверка на взлом
     }
     @Override
     public void onPause() {
@@ -328,7 +339,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
                     break;
                 }
                 case R.id.btnCheckAnswer: {
-                    if(adFailed) {
+                    if(adFailed) { // если взлома ответов нет(adFailed == true), то предоставляем функции
                         if(StoredData.getCountAttempts() == 0) {
                             getAttemptByAd();
                         } else {

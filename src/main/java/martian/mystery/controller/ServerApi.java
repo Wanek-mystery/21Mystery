@@ -1,5 +1,7 @@
-package martian.mystery;
+package martian.mystery.controller;
 
+import martian.mystery.data.DataOfUser;
+import martian.mystery.data.ResponseFromServer;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

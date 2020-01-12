@@ -1,4 +1,4 @@
-package martian.mystery;
+package martian.mystery.controller;
 
 public class UpdateDataController {
     private static final UpdateDataController ourInstance = new UpdateDataController();

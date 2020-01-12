@@ -1,4 +1,4 @@
-package martian.mystery;
+package martian.mystery.controller;
 
 public class Progress { // класс синглтон для управления уровнем(прогрессом)
     private int level = 1;

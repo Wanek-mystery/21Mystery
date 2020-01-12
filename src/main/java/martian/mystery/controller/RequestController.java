@@ -1,4 +1,4 @@
-package martian.mystery;
+package martian.mystery.controller;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

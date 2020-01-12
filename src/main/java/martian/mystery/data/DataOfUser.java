@@ -1,8 +1,8 @@
-package martian.mystery;
+package martian.mystery.data;
 
 public class DataOfUser {
 
-    private String name;
+    private String name; // имя победителя
     private int longlevel;
     private int newlevel;
 

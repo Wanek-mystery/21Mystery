@@ -1,8 +1,10 @@
-package martian.mystery;
+package martian.mystery.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+
+import martian.mystery.R;
 
 public class SecurityController {
 

@@ -1,4 +1,4 @@
-package martian.mystery;
+package martian.mystery.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

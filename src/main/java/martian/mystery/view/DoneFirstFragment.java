@@ -1,4 +1,4 @@
-package martian.mystery;
+package martian.mystery.view;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -24,6 +24,11 @@ import androidx.fragment.app.Fragment;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import martian.mystery.data.DataOfUser;
+import martian.mystery.R;
+import martian.mystery.controller.RequestController;
+import martian.mystery.data.ResponseFromServer;
+import martian.mystery.controller.UpdateDataController;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

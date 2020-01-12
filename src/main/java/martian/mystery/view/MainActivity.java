@@ -1,4 +1,4 @@
-package martian.mystery;
+package martian.mystery.view;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +32,13 @@ import com.google.android.play.core.tasks.OnSuccessListener;
 
 import java.io.IOException;
 
+import martian.mystery.BuildConfig;
+import martian.mystery.controller.GetContextClass;
+import martian.mystery.controller.Progress;
+import martian.mystery.R;
+import martian.mystery.controller.RequestController;
+import martian.mystery.data.ResponseFromServer;
+import martian.mystery.controller.StoredData;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -250,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btnNext: {
-                    Intent questionIntent = new Intent(MainActivity.this,QuestionActivity.class);
+                    Intent questionIntent = new Intent(MainActivity.this, QuestionActivity.class);
                     startActivityForResult(questionIntent, 1);
                     break;
                 }
