@@ -123,6 +123,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // comment for change
         MobileAds.initialize(getActivity(), "ca-app-pub-3637770884242866~3613287665");
         // Use an activity context to get the rewarded video instance.
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getActivity());
