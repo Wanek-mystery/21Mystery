@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imgLvl2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:alpha="0.5"
+        app:layout_constraintBottom_toBottomOf="@+id/imgLvl3"
+        app:layout_constraintEnd_toStartOf="@+id/imgLvl3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imgFirstCircleLvl"
+        app:layout_constraintTop_toTopOf="@+id/imgLvl3"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_circlelvl7" />
+
+    <ImageView
+        android:id="@+id/imgLvl3"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:alpha="0.5"
+        app:layout_constraintBottom_toBottomOf="@+id/imgLastCircleLvl"
+        app:layout_constraintEnd_toStartOf="@+id/imgLvl4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imgLvl2"
+        app:layout_constraintTop_toTopOf="@+id/imgLastCircleLvl"
+        app:srcCompat="@drawable/ic_circlelvl11" />
+
+    <ImageView
+        android:id="@+id/imgLvl4"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:alpha="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/imgLastCircleLvl"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imgLvl3"
+        app:layout_constraintTop_toTopOf="@+id/imgLvl3"
+        app:srcCompat="@drawable/ic_circlelvl15" />
+
+
+    <ImageView
+        android:id="@+id/imgLvlBack1"
+        android:layout_width="0dp"
+        android:layout_height="9dp"
+        android:alpha="0.8"
+        app:layout_constraintBottom_toBottomOf="@+id/imgFirstCircleLvl"
+        app:layout_constraintEnd_toStartOf="@+id/imgLvl2"
+        app:layout_constraintStart_toEndOf="@+id/imgFirstCircleLvl"
+        app:layout_constraintTop_toTopOf="@+id/imgFirstCircleLvl"
+        app:srcCompat="@color/strokeReview" />
+
+    <ImageView
+        android:id="@+id/imgLvlTop1"
+        android:layout_width="10dp"
+        android:layout_height="9dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgFirstCircleLvl"
+        app:layout_constraintEnd_toStartOf="@+id/imgLvl2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgFirstCircleLvl"
+        app:layout_constraintTop_toTopOf="@+id/imgFirstCircleLvl"
+        app:srcCompat="@color/colorAccent" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clProgressPick1"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/glineTop"
+        app:layout_constraintEnd_toEndOf="@+id/imgLvlTop1"
+        app:layout_constraintStart_toEndOf="@+id/imgLvlTop1"
+        app:layout_constraintTop_toBottomOf="@+id/imgLvlBack1">
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="33dp"
+            android:scaleType="fitXY"
+            android:translationZ="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvProgressPick1"
+            app:layout_constraintDimensionRatio="1:7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_lvl_pick" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvProgressPick1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="33dp"
+            android:text="3"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:translationZ="20dp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView1" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/imgLvlBack2"
+        android:layout_width="0dp"
+        android:layout_height="9dp"
+        android:alpha="0.8"
+        app:layout_constraintBottom_toBottomOf="@+id/imgFirstCircleLvl"
+        app:layout_constraintEnd_toStartOf="@+id/imgLvl3"
+        app:layout_constraintStart_toEndOf="@+id/imgLvl2"
+        app:layout_constraintTop_toTopOf="@+id/imgFirstCircleLvl"
+        app:srcCompat="@color/strokeReview" />
+
+    <ImageView
+        android:id="@+id/imgLvlTop2"
+        android:layout_width="wrap_content"
+        android:layout_height="9dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/imgFirstCircleLvl"
+        app:layout_constraintEnd_toStartOf="@+id/imgLvl3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgLvl2"
+        app:layout_constraintTop_toTopOf="@+id/imgFirstCircleLvl"
+        app:srcCompat="@color/colorAccent" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clProgressPick2"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/glineTop"
+        app:layout_constraintEnd_toEndOf="@+id/imgLvlTop2"
+        app:layout_constraintStart_toEndOf="@+id/imgLvlTop2"
+        app:layout_constraintTop_toBottomOf="@+id/imgLvlBack2">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="33dp"
+            android:scaleType="fitXY"
+            android:translationZ="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvProgressPick2"
+            app:layout_constraintDimensionRatio="1:7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_lvl_pick" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvProgressPick2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="33dp"
+            android:text="3"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:translationZ="20dp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/imgLvlBack3"
+        android:layout_width="0dp"
+        android:layout_height="9dp"
+        android:alpha="0.8"
+        app:layout_constraintBottom_toBottomOf="@+id/imgFirstCircleLvl"
+        app:layout_constraintEnd_toStartOf="@+id/imgLvl4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgLvl3"
+        app:layout_constraintTop_toTopOf="@+id/imgFirstCircleLvl"
+        app:srcCompat="@color/strokeReview" />
+
+    <ImageView
+        android:id="@+id/imgLvlTop3"
+        android:layout_width="1px"
+        android:layout_height="9dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/imgFirstCircleLvl"
+        app:layout_constraintEnd_toStartOf="@+id/imgLvl4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgLvl3"
+        app:layout_constraintTop_toTopOf="@+id/imgFirstCircleLvl"
+        app:srcCompat="@color/colorAccent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clProgressPick3"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/glineTop"
+        app:layout_constraintEnd_toEndOf="@+id/imgLvlTop3"
+        app:layout_constraintStart_toEndOf="@+id/imgLvlTop3"
+        app:layout_constraintTop_toBottomOf="@+id/imgLvlBack3">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="33dp"
+            android:scaleType="fitXY"
+            android:translationZ="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvProgressPick3"
+            app:layout_constraintDimensionRatio="1:7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_lvl_pick" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvProgressPick3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="33dp"
+            android:text="3"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:translationZ="20dp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ImageView
+        android:id="@+id/imgLvlBack4"
+        android:layout_width="0dp"
+        android:layout_height="9dp"
+        android:alpha="0.8"
+        app:layout_constraintBottom_toBottomOf="@+id/imgFirstCircleLvl"
+        app:layout_constraintEnd_toStartOf="@+id/glineRight"
+        app:layout_constraintStart_toEndOf="@+id/imgLvl4"
+        app:layout_constraintTop_toTopOf="@+id/imgFirstCircleLvl"
+        app:srcCompat="@color/strokeReview" />
+
+    <ImageView
+        android:id="@+id/imgLvlTop4"
+        android:layout_width="1px"
+        android:layout_height="9dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/imgFirstCircleLvl"
+        app:layout_constraintEnd_toStartOf="@+id/glineRight"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgLvl4"
+        app:layout_constraintTop_toTopOf="@+id/imgFirstCircleLvl"
+        app:srcCompat="@color/colorAccent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clProgressPick4"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/glineTop"
+        app:layout_constraintEnd_toEndOf="@+id/imgLvlTop4"
+        app:layout_constraintStart_toEndOf="@+id/imgLvlTop4"
+        app:layout_constraintTop_toBottomOf="@+id/imgLvlBack4">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="33dp"
+            android:scaleType="fitXY"
+            android:translationZ="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvProgressPick4"
+            app:layout_constraintDimensionRatio="1:7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_lvl_pick" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvProgressPick4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="33dp"
+            android:text="3"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:translationZ="20dp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <ImageView
+        android:id="@+id/imgFirstCircleLvl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="32dp"
+        android:alpha="1.0"
+        android:elevation="33dp"
+        android:translationZ="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/glineLeft"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_first_circle" />
+
+    <ImageView
+        android:id="@+id/imgLastCircleLvl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="32dp"
+        android:alpha="0.5"
+        android:elevation="33dp"
+        android:translationZ="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/glineRight"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_last_circle" />
+
+    <!--android:background="@color/strokeReview"-->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glineLeft"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glineRight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.66" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/glineBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/glineTop">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNext"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="58dp"
+            android:layout_marginEnd="8dp"
+            android:stateListAnimator="@drawable/click_btn_continue"
+            android:background="@drawable/back_btn_continue"
+            android:elevation="20dp"
+            android:padding="9dp"
+            android:text="@string/continue_game"
+            android:textColor="#fff"
+            android:translationZ="15dp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/firstPerson" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvFirst"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/winner_is"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.07999998" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/firstPerson"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:elevation="10dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="@string/no_winner_text"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvFirst" />
+
+        <ImageView
+            android:id="@+id/btnHelp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:elevation="13dp"
+            android:translationZ="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_help_back" />
+
+        <ImageView
+            android:id="@+id/btnReview"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="13dp"
+            android:translationZ="18dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/btnHelp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_review" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clBottom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/glineBottom">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPrizeText"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:padding="14dp"
+            android:text="@string/prize_text"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/tvPrize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--<androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPrize"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:autoSizeTextType="uniform"
+            android:text="@string/prize"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            app:layout_constraintBottom_toTopOf="@+id/tvSeason"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSeason"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/season"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPrize" />
+
+        <yanzhikai.textpath.AsyncTextPathView
+            android:id="@+id/tvPrize"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/back_prize"
+            android:text="@string/prize"
+            android:textAlignment="center"
+            app:autoSizeTextType="uniform"
+            app:autoStart="true"
+            app:duration="5000"
+            app:layout_constraintBottom_toTopOf="@+id/tvSeason"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPrizeText"
+            app:pathStrokeColor="@color/colorAccent"
+            app:showInStart="true"
+            app:showPainter="true"
+            app:textInCenter="true" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/back_dialog">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/headRules"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rules"
+                android:textSize="34sp"
+                android:textAlignment="center"
+                android:textColor="#363636"
+                android:padding="8dp"
+                android:layout_weight="15"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:textSize="21sp"
+                android:text="@string/rules_text"
+                android:textAlignment="center"
+                android:textColor="#7C7C7C" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ACACAC"/>
+
+            <TextView
+                android:id="@+id/headAdd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rules_optionally"
+                android:textSize="27sp"
+                android:textAlignment="center"
+                android:textColor="#363636"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_weight="15"/>
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:textSize="17sp"
+                android:text="@string/rules_2"
+                android:textAlignment="center"
+                android:textColor="#7C7C7C"
+                android:layout_weight="30"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,176 @@
+<resources>
+    <string name="app_name">21 Mystery</string>
+    <string name="ad_block">ca-app-pub-3637770884242866/6954195474</string>
+    <string name="season">Сезон 3</string>
+    <string name="prize">1000 рублей</string>
+    <string name="prize_text">Приз:</string>
+    <string name="winner_is">Победитель:</string>
+    <string name="no_winner_text"><u>Победителя еще нет, будь первым!</u></string>
+    <string name="continue_game">Продолжить</string>
+    <string name="read_rules">Советую почитать правила</string>
+    <string name="rules_text">Погнали.
+        Первый отгадываешь 21 загадку - получаешь приз.
+        На каждую загадку дается 3 попытки. Если они закончатся, всегда можно получить еще одну, посмотрев рекламу.
+        Если вдруг не стал первым, после 21-ой загадки можешь узнать свое место.
+        Также чем дольше нет победителя, тем больше приз.</string>
+    <string name="rules_2">Ваши отзывы очень важны.
+        Пишите, что не понравилось, что нужно добавить, что изменить, какие загадки вышли неудачными.
+        Будьте готовы к тому, что загадки в этом сезоне будут неидельны, но после ваших резенций в следующем сезоне ситуация изменится в лучшую сторону.
+        Люблю, обнимаю&#128536;
+        Вместе сделаем игру лучше!</string>
+    <string name="read_rules_ok_btn">Принял</string>
+    <string name="rules">Правила</string>
+    <string name="rules_optionally">Дополнительно</string>
+    <string name="start_game">Начать</string>
+    <string name="next_question">Дальше</string>
+    <string name="email_copy">Email скопирован</string>
+    <string name="check_answer">проверить</string>
+    <string name="look_ad">получить попытку</string>
+    <string name="write_review">оставить отзыв</string>
+    <string name="your_place">Твое место:</string>
+    <string name="attempts">попыток: </string>
+    <string name="zero_attempts">посмотрите рекламу, чтобы добавить попытку</string>
+    <string name="no_internet">Отсутсвует подключение к интернету</string>
+    <string name="force_update_season">Хорошие новости, вышел новый сезон, скорей обновляйся:) (Предыдущий сезон теперь неактивный)</string>
+    <string name="force_update_tech">Жутко извиняюсь, но нужно обновиться&#128527;</string>
+    <string name="update_btn">Обновить</string>
+    <string name="no_server">При подключении к серверу произошла ошибка</string>
+    <string name="alert_last_lvl_title">Перед финишем</string>
+    <string name="dialog_review_mes">Оставишь отзыв за себя и за сашку?</string>
+    <string name="dialog_review_yes">Написать отзыв</string>
+    <string name="dialog_review_no">Позже</string>
+    <string name="error_download_ad">Ошибка при загрузке рекламы</string>
+    <string name="internet_error">Что-то с интернетом</string>
+    <string name="time_mystery">Произошла ошибка, попробуйте снова через 3 минуты</string>
+    <string name="error_name">Недопустимое имя</string>
+    <string name="attempt_is_added">Попытка добавлена</string>
+    <string name="alert_last_lvl">Если ты правильно ответишь на последнюю загадку, тебе понадобится подключение к интернету</string>
+    <string name="finish_phrase_lose">Огромное спасибо за игру, очень надеюсь, что тебе понравилось:)
+        Мне будет очень приятно, если ты оставишь отзыв(расскажи какие загадки интересные, а какие нет, к примеру).</string>
+    <string name="finish_phrase_win_sendname">Мои поздравления! Отправь свое имя или ник (который будет отображаться на главном экране),
+                                              чтобы все знали, кто здесь самый умный:)</string>
+    <string name="finish_phrase_win">Новый сезон уже скоро&#8230;</string>
+    <string name="write_email">Напиши на этот email, чтобы связаться со мной по поводу приза: </string>
+    <string name="winner_didnt_name">Победитель есть, но он не написал свое имя</string>
+
+    <!--Заключительные слова для 2+ мест-->
+    <!--Для тестов-->
+    <string name="place2_congratulations"></string>
+    <string name="place3_congratulations"></string>
+    <string name="place4_congratulations"></string>
+    <string name="place5_congratulations"></string>
+    <string name="place6_congratulations"></string>
+    <string name="place7_congratulations"></string>
+    <string name="place8_congratulations"></string>
+    <string name="place9_congratulations"></string>
+    <string name="place10_congratulations"></string>
+    <string name="place11_congratulations"></string>
+    <string name="place12_congratulations"></string>
+    <string name="place13_congratulations"></string>
+    <string name="place14_congratulations"></string>
+
+    <!--Реальные-->
+    <!--<string name="place2_congratulations">Второе место это как первое, только на 1 меньше. </string>
+    <string name="place3_congratulations">Главное участие, а не победа! - говорят неудачники. Ты же не из таких?)</string>
+    <string name="place4_congratulations">Четвертое место конечно не первое, зато 4 больше, чем 1 и 2 вместе взятые</string>
+    <string name="place5_congratulations">Не победил, зато получил пятерку</string>
+    <string name="place6_congratulations">Хочешь прикол? Того, у кого будет 9 место, буду успокивать тем, что девятка это перевернутая шестерка</string>
+    <string name="place7_congratulations">Если твоя любимая цифра семь, тогда тебе повезло</string>
+    <string name="place8_congratulations">Ты конечно крут, но не настолько, как некоторые 7 людей</string>
+    <string name="place9_congratulations">Если тебя спросят какое у тебя место, говори шестое, не говори, что шестерка перевернутая</string>
+    <string name="place10_congratulations">Если твоя любимая цифра десять, тогда тебе повезло</string>
+    <string name="place11_congratulations">Поздравляю, ты выиграл(а) палочки для еды</string>
+    <string name="place12_congratulations">Когда мне было 12 лет, мне было 12 лет</string>
+    <string name="place13_congratulations">Только не говори, что сегодня пятница</string>
+    <string name="place14_congratulations">14 минут придумывал шутку к 14 месту, так и не придумал</string>-->
+    <string name="place_congratulations_default"></string>
+
+    <!-- загадки(вопросы) -->
+    <!--<string name="qst1">Загадка 1</string>
+    <string name="qst2">Загадка 2</string>
+    <string name="qst3">Загадка 3</string>
+    <string name="qst4">Загадка 4</string>
+    <string name="qst5">Загадка 5</string>
+    <string name="qst6">Загадка 6</string>
+    <string name="qst7">Загадка 7</string>
+    <string name="qst8">Загадка 8</string>
+    <string name="qst9">Загадка 9</string>
+    <string name="qst10">Загадка 10</string>
+    <string name="qst11">Загадка 11</string>
+    <string name="qst12">Загадка 12</string>
+    <string name="qst13">Загадка 13</string>
+    <string name="qst14">Загадка 14</string>
+    <string name="qst15">Загадка 15</string>
+    <string name="qst16">Загадка 16</string>
+    <string name="qst17">Загадка 17</string>
+    <string name="qst18">Загадка 18</string>
+    <string name="qst19">Загадка 19</string>
+    <string name="qst20">Загадка 20</string>
+    <string name="qst21">Загадка 21</string>-->
+    <string name="qst1">Кружится над нами, иногда хрустит под ногами</string>
+    <string name="qst2">Тот, чьё имя нельзя произносить</string>
+    <string name="qst3">Кто в 2018 году отправил свою машину в космос?</string>
+    <string name="qst4">В каком городе был самый крутой мальчишник?</string>
+    <string name="qst5">Таблица дней</string>
+    <string name="qst6">Пролитое молоко на небе</string>
+    <string name="qst7">Зелёный и независимый</string>
+    <string name="qst8">Не взорвёшь, не поешь</string>
+    <string name="qst9">Объектив в молоке</string>
+    <string name="qst10">Где скачут по волнам кроме моря?</string>
+    <string name="qst11">Обычно днем мы делаем это на 1%, ночью на 100%</string>
+    <string name="qst12">Когда они наполнены, тебе хочется их опустошить, когда они опустошены, тебе хочется их наполнить</string>
+    <string name="qst13">Его звали Брюс. Как зовут её?</string>
+    <string name="qst14">Место, где можно встретить себя под маской другого</string>
+    <string name="qst15">Что находится на втором кольце четвёртого кольца?</string>
+    <string name="qst16">Ударишь сюда - высоко, ударишь туда - низко</string>
+    <string name="qst17">Она так близко, но мы ищем её так далеко</string>
+    <string name="qst18">Каждый день эта штука ходит по кругу. И кругов таких на Земле миллиарды</string>
+    <string name="qst19">Её присутствие это отсутствие</string>
+    <string name="qst20">Самый широкошагающий человек</string>
+    <string name="qst21">Кровь, нефть, подкова</string>
+
+    <!-- ответы на загадки -->
+    <string name="awr1">тмзг!тмзжлм</string>
+    <string name="awr2">гннак ед ннтт!гннак!оЯдаиюоэи</string>
+    <string name="awr3">йкрн!нЯук!йкрн нЯук</string>
+    <string name="awr4">мЯу гдеао!гдеао!мЯу-Яздвр!г гдеаоз!г мЯу гдеаоз!</string>
+    <string name="awr5">лЯнекжбты</string>
+    <string name="awr6">нкзчкэк ртфь!дЯназфймЯ</string>
+    <string name="awr7">еннлЭт</string>
+    <string name="awr8">рнсклто</string>
+    <string name="awr9">дквз!ипвчлм!дквзЭ!ипвчзк</string>
+    <string name="awr10">г ймфенпжфд!ймфенпжф!сЯжил!оЯ сЯжил!</string>
+    <string name="awr11">иЯмршдбзл дквзЭ!ннтгЭзн!ннтгЭфэ!иЯмршдбфы дквзЭ</string>
+    <string name="awr12">мдекез!мѐекез</string>
+    <string name="awr13">лдлтико</string>
+    <string name="awr14">тнп</string>
+    <string name="awr15">едлмлу!edkmlu</string>
+    <string name="awr16">рзвнепп!снёлщ!хнттвсйвмп</string>
+    <string name="awr17">гнжа</string>
+    <string name="awr18">лпрвщ</string>
+    <string name="awr19">удпь</string>
+    <string name="awr20">озн пкжек бпосптппв!озн бпосптппв!бпосптппв</string>
+    <string name="awr21">стнепмб</string>
+
+    <!--<string name="awr1">2</string>
+    <string name="awr2">3</string>
+    <string name="awr3">4</string>
+    <string name="awr4">5</string>
+    <string name="awr5">6</string>
+    <string name="awr6">7</string>
+    <string name="awr7">8</string>
+    <string name="awr8">9</string>
+    <string name="awr9">:</string>
+    <string name="awr10">2/</string>
+    <string name="awr11">20</string>
+    <string name="awr12">21</string>
+    <string name="awr13">22</string>
+    <string name="awr14">23</string>
+    <string name="awr15">24</string>
+    <string name="awr16">25</string>
+    <string name="awr17">26</string>
+    <string name="awr18">27</string>
+    <string name="awr19">28</string>
+    <string name="awr20">3/</string>
+    <string name="awr21">30</string>-->
+</resources>
