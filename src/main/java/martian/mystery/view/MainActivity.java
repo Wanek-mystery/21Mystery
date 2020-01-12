@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imgFirst;
     private ImageView imgLast;
     private ImageView btnHelp;
-    private ImageView btnReview;
     private ConstraintLayout clProgressPick1;
     private ConstraintLayout clProgressPick2;
     private ConstraintLayout clProgressPick3;
@@ -75,13 +74,15 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout.LayoutParams imgTop3Params;
     ConstraintLayout.LayoutParams imgTop4Params;
 
-
-    private CheckWinsThread checkWinsThread;
+    private UpdateDataThread updateDataThread;
+    private CheckForceUpdateTask checkForceUpdateTask;
     private ProgressViewController progressViewController;
+    private AnimationController animController;
     private Handler handler;
     private ObjectAnimator animBtnHelp;
-    AppUpdateManager appUpdateManager;
-    AssistentDialog assistentDialogRules;
+    private AppUpdateManager appUpdateManager;
+    private AssistentDialog assistentDialogRules;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,13 +90,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        StoredData.incrementCountLaunches();
+        StoredData.incrementCountLaunches(); // увеличиваем кол-во звапусков игры на один
         appUpdateManager = AppUpdateManagerFactory.create(GetContextClass.getContext());
 
         btnNext = findViewById(R.id.btnNext);
         btnHelp = findViewById(R.id.btnHelp);
-        btnReview = findViewById(R.id.btnReview);
         imgLast = findViewById(R.id.imgLastCircleLvl);
         imgFirst = findViewById(R.id.imgFirstCircleLvl);
 
@@ -121,19 +120,16 @@ public class MainActivity extends AppCompatActivity {
         clProgressPick2 = findViewById(R.id.clProgressPick2);
         clProgressPick3 = findViewById(R.id.clProgressPick3);
         clProgressPick4 = findViewById(R.id.clProgressPick4);
-
         imgTop1Params = (ConstraintLayout.LayoutParams) imgLvlTop1.getLayoutParams();
         imgTop2Params = (ConstraintLayout.LayoutParams) imgLvlTop2.getLayoutParams();
         imgTop3Params = (ConstraintLayout.LayoutParams) imgLvlTop3.getLayoutParams();
         imgTop4Params = (ConstraintLayout.LayoutParams) imgLvlTop4.getLayoutParams();
-        progressViewController = new ProgressViewController();
 
         tvWinner = findViewById(R.id.firstPerson);
         tvWinner.setText(
                 String.valueOf(
                 StoredData.getDataString(StoredData.DATA_WINS,
                         getResources().getString(R.string.no_winner_text))));
-        tvWinnerAnimation();
         tvPrize = findViewById(R.id.tvPrize);
         tvPrize.setText(
                 String.valueOf(
@@ -148,8 +144,11 @@ public class MainActivity extends AppCompatActivity {
 
         btnNext.setOnClickListener(onClickListener);
         btnHelp.setOnClickListener(onClickListener);
-        btnReview.setOnClickListener(onClickListener);
-        if(StoredData.getCountLaunch() == 1) {
+
+        progressViewController = new ProgressViewController(); // контроллер для анимации прогресса
+        animController = new AnimationController(); // контроллер для остальных анимаций в данной активити
+
+        if(StoredData.getCountLaunch() == 1) { // доп. анимации и подсказки, если запуск первый
             ViewTooltip
                     .on(this, btnHelp)
                     .autoHide(true, 5000)
@@ -158,13 +157,8 @@ public class MainActivity extends AppCompatActivity {
                     .withShadow(false)
                     .text(getResources().getString(R.string.read_rules))
                     .show();
-            animBtnHelp = ObjectAnimator.ofFloat(btnHelp, "rotationY", 0.0f, 360f);
-            animBtnHelp.setDuration(2400);
-            animBtnHelp.setRepeatCount(ObjectAnimator.INFINITE);
-            animBtnHelp.setInterpolator(new AccelerateDecelerateInterpolator());
-            animBtnHelp.start();
+            animController.helpBtnAnimation();
         }
-        assistentDialogRules = new AssistentDialog(AssistentDialog.DIALOG_RULES);
     }
 
     @Override
@@ -172,7 +166,10 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         progressViewController.increaseProgressAnimation(0);
-        appUpdateManager
+        animController.tvWinnerAnimationStart();
+        animController.setTextForMainButton();
+
+        appUpdateManager // проверка обновлений игры
                 .getAppUpdateInfo()
                 .addOnSuccessListener(
                         new OnSuccessListener<AppUpdateInfo>() {
@@ -203,26 +200,23 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-        if(Progress.getInstance().getLevel() == 1) btnNext.setText(this.getResources().getString(R.string.start_game));
-        else if(Progress.getInstance().getLevel() < 22) btnNext.setText(this.getResources().getString(R.string.continue_game));
-
-
-        checkWinsThread = new CheckWinsThread();
-        checkWinsThread.start();
-        CheckForceUpdateTask checkForceUpdateTask = new CheckForceUpdateTask();
+        // запускаем потоки для обновления данных и проверки принудительных обновлений
+        updateDataThread = new UpdateDataThread();
+        updateDataThread.start();
+        checkForceUpdateTask = new CheckForceUpdateTask();
         checkForceUpdateTask.execute();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        checkWinsThread.toStop();
+        updateDataThread.toStop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        checkWinsThread.toStop();
+        updateDataThread.toStop();
     }
 
     @Override
@@ -237,14 +231,6 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    private void tvWinnerAnimation() {
-        Animation anim = new AlphaAnimation(1.0f, 0.0f);
-        anim.setDuration(1200); //You can manage the time of the blink with this parameter
-        anim.setStartOffset(20);
-        anim.setRepeatMode(Animation.REVERSE);
-        anim.setRepeatCount(3);
-        tvWinner.startAnimation(anim);
-    }
     public static float dpToPx(float dp){
         return dp * ((float) GetContextClass.getContext().getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
@@ -263,23 +249,40 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.btnHelp: {
                     assistentDialogRules.show(getSupportFragmentManager(),"HELP");
-                    // анимация кнопки
-                    AnimationController animationController = new AnimationController();
-                    animationController.clickRules();
+                    animController.clickRules();
                     break;
-                }
-                case R.id.btnReview: {
-                    AssistentDialog reviewDialog = new AssistentDialog(AssistentDialog.DIALOG_REVIEW);
-                    reviewDialog.show(getSupportFragmentManager(),"DIALOG_REVIEW");
                 }
             }
         }
     };
 
-    // внутренние контроллеры и модели -----------------------------------------------------------------------------
+    // внутренние контроллеры и потоки -----------------------------------------------------------------------------
     private class AnimationController {
 
-        public void clickRules() {
+        public AnimationController() {
+            assistentDialogRules = new AssistentDialog(AssistentDialog.DIALOG_RULES);
+        }
+
+        public void helpBtnAnimation() {
+            animBtnHelp = ObjectAnimator.ofFloat(btnHelp, "rotationY", 0.0f, 360f);
+            animBtnHelp.setDuration(2400);
+            animBtnHelp.setRepeatCount(ObjectAnimator.INFINITE);
+            animBtnHelp.setInterpolator(new AccelerateDecelerateInterpolator());
+            animBtnHelp.start();
+        }
+        public void setTextForMainButton() {
+            if(Progress.getInstance().getLevel() == 1) btnNext.setText(MainActivity.this.getResources().getString(R.string.start_game));
+            else if(Progress.getInstance().getLevel() < 22) btnNext.setText(MainActivity.this.getResources().getString(R.string.continue_game));
+        }
+        public void tvWinnerAnimationStart() { // анимация имени победителя
+            Animation anim = new AlphaAnimation(1.0f, 0.0f);
+            anim.setDuration(1200);
+            anim.setStartOffset(20);
+            anim.setRepeatMode(Animation.REVERSE);
+            anim.setRepeatCount(3);
+            tvWinner.startAnimation(anim);
+        }
+        public void clickRules() { // анимация нажатия кнопки с правилами
             ObjectAnimator animBtnHelpClickX = ObjectAnimator.ofFloat(btnHelp, "scaleX", 1.0f,0.8f,1.0f);
             ObjectAnimator animBtnHelpClickY = ObjectAnimator.ofFloat(btnHelp, "scaleY", 1.0f,0.8f,1.0f);
             animBtnHelpClickX.setRepeatCount(0);
@@ -300,10 +303,11 @@ public class MainActivity extends AppCompatActivity {
     }
     private class ProgressViewController { // класс для управления состоянием (вида) прогресса
 
-        private float widthBetweenLvl;
-        private float widthOneBlockLvl;
-        private float ONE_LVL_WIDTH_LEFTRIGHT;
-        private float ONE_LVL_WIDTH_CENTER;
+        private float widthBetweenLvl; // ширина между первым и последним уровнем
+        private float widthOneBlockLvl; // ширина одной оранжевой полоски
+        private float ONE_LVL_WIDTH_LEFTRIGHT; // шаг перемещения указателя уровня для крайних полосок
+        private float ONE_LVL_WIDTH_CENTER; // шаг перемещения указателя уровня для средних полосок
+
         public ProgressViewController() {
             int widthScreen = getWidthSreeen();
             widthBetweenLvl = widthScreen - widthScreen*0.2f - widthScreen*0.2f;
@@ -468,7 +472,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private class CheckForceUpdateTask extends AsyncTask<Void,Void,Boolean> { // проверяет принудительные обновления
 
-        int typeUpdate;
+        int typeUpdate; // тип обновления
 
         @Override
         protected void onPreExecute() {
@@ -511,7 +515,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    private class CheckWinsThread extends Thread { // поток, проверяющий основыне данные на главной активити
+    private class UpdateDataThread extends Thread { // поток, обновляющий основыне данные на главной активити
         private boolean isStop = false;
         @Override
         public void run() {
