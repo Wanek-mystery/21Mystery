@@ -552,7 +552,7 @@
             android:background="@drawable/back_prize"
             app:autoStart="true"
             app:duration="5000"
-            app:textSize="24sp"
+            app:textSize="26sp"
             app:layout_constraintBottom_toTopOf="@+id/tvSeason"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

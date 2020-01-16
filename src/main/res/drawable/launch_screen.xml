@@ -6,11 +6,7 @@
     <item android:drawable="@color/colorPrimaryDark"/>
 
     <!-- Лого приложения - 144dp версия иконки приложения -->
-    <item>
-        <!--<bitmap
-            android:src="@drawable/logo"
-            android:gravity="center">
-        </bitmap>-->
-    </item>
+    <item android:drawable="@drawable/logo_splash"
+        android:gravity="center"/>
 
 </layer-list>

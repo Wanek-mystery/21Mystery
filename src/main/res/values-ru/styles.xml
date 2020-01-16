@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="AppTheme.Launcher">
-        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+        <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
     <style name="ButtonTheme" parent="Widget.MaterialComponents.Button">
         <item name="android:lines">1</item>
