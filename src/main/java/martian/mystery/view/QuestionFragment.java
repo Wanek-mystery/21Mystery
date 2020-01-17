@@ -71,6 +71,8 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
     private StatisticsController statisticsController;
     private Handler handler;
     private ShowAdThread showAdThread;
+    private AnimationController animationController;
+    private AttemptsController attemptsController;
 
     private final int ALPHA_DOWN = 1;
     private final int ALPHA_UP = 2;
@@ -87,7 +89,6 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
     private int countErrorLoadAd = 0;
 
     private boolean adLoaded = false;
-    private boolean adShow = false;
     private boolean adFailed = false;
 
     @Override
@@ -113,11 +114,11 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus) {
-                    editTextAnimation();
+                    animationController.editTextAnimation();
                 }
             }
         });
-        animationBtnNext(false);
+        animationController.animationBtnNext(false);
 
         // если юзер разгадал все, но не проверил является ли он победителем
         if(!StoredData.getDataBool(StoredData.DATA_WINNER_IS_CHECKED) && (Progress.getInstance().getLevel() < 22)) {
@@ -191,23 +192,15 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
         };
 
         statisticsController = new StatisticsController();
-
+        animationController = new AnimationController();
+        attemptsController = new AttemptsController();
     }
     @Override
     public void onResume() {
         super.onResume();
         //mRewardedVideoAd.resume(getActivity());
         if(!mRewardedVideoAd.isLoaded()) loadRewardedVideoAd();
-        int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
-        if(countAttempts == 0) {
-            btnCheckAnswer.setMaxLines(2);
-            btnCheckAnswer.setText(R.string.look_ad);
-        }
-        else if(countAttempts <= 3) {
-            btnCheckAnswer.setMaxLines(1);
-            btnCheckAnswer.setText(R.string.check_answer);
-        }
-        etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
+        attemptsController.setAttemptsOnScreen();
         if(Progress.getInstance().getLevel() == 22) {
             etAnswer.setText(StoredData.getDataString(StoredData.DATA_LAST_ANSWER,""));
         }
@@ -241,139 +234,12 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
         }).start();
 
         etAnswer.setText("");
-        changeLevelTop();
+        animationController.changeLevelTop();
         if(Progress.getInstance().getLevel() == 21) {
             AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_ALERT_LAST_LVL);
             assistentDialog.show(getActivity().getSupportFragmentManager(),"ALERT_LAST_LVL");
         }
     }
-    private void changeLevelTop() {
-        mlLevel.setTransitionListener(new MotionLayout.TransitionListener() {
-            @Override
-            public void onTransitionStarted(MotionLayout motionLayout, int i, int i1) {
-
-            }
-
-            @Override
-            public void onTransitionChange(MotionLayout motionLayout, int i, int i1, float v) {
-
-            }
-
-            @Override
-            public void onTransitionCompleted(MotionLayout motionLayout, int i) {
-                if(i == R.id.end) {
-                    tvBottomLvl.setText(String.valueOf(Progress.getInstance().getLevel()));
-                    motionLayout.setProgress(0f);
-                    motionLayout.setTransition(R.id.start, R.id.end);
-                }
-            }
-
-            @Override
-            public void onTransitionTrigger(MotionLayout motionLayout, int i, boolean b, float v) {
-
-            }
-
-        });
-        tvTopLvl.setText(String.valueOf(Progress.getInstance().getLevel()));
-        mlLevel.transitionToEnd();
-    }
-    private void animationBtnNext(boolean appear) { // анимация появлеия кнопки "дальше"
-        ObjectAnimator animatorBtnNextX;
-        ObjectAnimator animatorBtnNextY;
-        if(appear) {
-            btnNext.setVisibility(View.VISIBLE);
-            btnNext.setClickable(true);
-            btnNext.setAlpha(1.0f);
-            animatorBtnNextX = ObjectAnimator.ofFloat(btnNext,"scaleX",1.0f,1.1f,1.0f);
-            animatorBtnNextY = ObjectAnimator.ofFloat(btnNext,"scaleY",1.0f,1.1f,1.0f);
-            animatorBtnNextX.setDuration(300);
-            animatorBtnNextY.setDuration(300);
-            animatorBtnNextX.start();
-        } else {
-            btnNext.setClickable(false);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    handler.sendEmptyMessage(ALPHA_DOWN_BTNNEXT);
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(400);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    handler.sendEmptyMessage(SET_INVISIBLE_BTNNEXT);
-                }
-            }).start();
-        }
-    }
-    private float getWidth() {
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        return size.x; // ширина экрана
-    }
-    private float dpToPx(float dp){
-        return dp * ((float) GetContextClass.getContext().getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-    }
-
-    private void editTextAnimation() {
-        imgRight.animate().translationX((getWidth()-dpToPx(48))/2).setDuration(3000);
-        imgLeft.animate().translationX(-(getWidth()-dpToPx(48))/2).setDuration(3000);
-    }
-    private void getAttemptByAd() { // показать рекламу, чтобы добавить попытку
-        if(mRewardedVideoAd.isLoaded()) {
-            mRewardedVideoAd.show();
-        } else {
-            if(showAdThread == null || !showAdThread.isAlive()) {
-                showAdThread = new ShowAdThread();
-                showAdThread.start();
-            }
-        }
-    }
-    private void decrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет
-        int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
-        if(countAttempts > 0) StoredData.saveData(DATA_COUNT_ATTEMPTS,countAttempts - 1);
-    }
-    private void incrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет
-        int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
-        if(countAttempts < 9) StoredData.saveData(DATA_COUNT_ATTEMPTS,countAttempts + 1);
-    }
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.btnNextQuestion: {
-                    if(!(Progress.getInstance().getLevel() >= 22)) {
-                        animationBtnNext(false);
-                        changeQuestion();
-                    }
-                    break;
-                }
-                case R.id.btnCheckAnswer: {
-                    if(adFailed) { // если взлома ответов нет(adFailed == true), то предоставляем функции
-                        if(StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3) == 0) {
-                            getAttemptByAd();
-                        } else {
-                            CheckTask checkTask = new CheckTask();
-                            checkTask.execute();
-                        }
-                    }
-                    break;
-                }
-                case R.id.imgBackToMain:
-                    // при возвращении на главную активити отправляем разницу между уровнем, когда юзер был на главном экране, и уровнем на данный момент
-                    // это нужно для анимации изменения уровня на главной активити
-                    int pastLevel = 1;//getActivity().getIntent().getIntExtra("level",1);
-                    Intent intentMain = new Intent();
-                    //intentMain.putExtra("difflevel",Progress.getInstance().getLevel() - pastLevel);
-                    try {
-                        getActivity().setResult(Activity.RESULT_OK,intentMain);
-                        getActivity().finish();
-                    } catch (NullPointerException ex) {
-                    }
-                    break;
-            }
-        }
-    };
 
     private void loadRewardedVideoAd() {
         mRewardedVideoAd.loadAd(getResources().getString(R.string.ad_block),
@@ -382,7 +248,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
     @Override
     public void onRewarded(RewardItem reward) {
         Toast.makeText(getActivity(), R.string.attempt_is_added, Toast.LENGTH_SHORT).show();
-        incrementCountAtempts();
+        attemptsController.incrementCountAtempts();
     }
 
     @Override
@@ -424,9 +290,160 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
     }
 
     @Override
-    public void onRewardedVideoCompleted() {
-        adShow = false;
+    public void onRewardedVideoCompleted() { }
+
+
+    // внутренние контроллеры и потоки -----------------------------------------------------------------------------
+    private class AttemptsController {
+
+        public void getAttemptByAd() { // показать рекламу, чтобы добавить попытку
+            if(mRewardedVideoAd.isLoaded()) {
+                mRewardedVideoAd.show();
+            } else {
+                if(showAdThread == null || !showAdThread.isAlive()) {
+                    showAdThread = new ShowAdThread();
+                    showAdThread.start();
+                }
+            }
+        }
+        public void decrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет
+            int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
+            if(countAttempts > 0) StoredData.saveData(DATA_COUNT_ATTEMPTS,countAttempts - 1);
+        }
+        public void incrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет
+            int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
+            if(countAttempts < 9) StoredData.saveData(DATA_COUNT_ATTEMPTS,countAttempts + 1);
+        }
+
+        public void setAttemptsOnScreen() {
+            int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
+            if(countAttempts == 0) {
+                btnCheckAnswer.setMaxLines(2);
+                btnCheckAnswer.setText(R.string.look_ad);
+            }
+            else if(countAttempts <= 3) {
+                btnCheckAnswer.setMaxLines(1);
+                btnCheckAnswer.setText(R.string.check_answer);
+            }
+            etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
+        }
     }
+
+    private class AnimationController {
+
+        private float getWidth() {
+            Display display = getActivity().getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            return size.x; // ширина экрана
+        }
+
+        private float dpToPx(float dp){
+            return dp * ((float) GetContextClass.getContext().getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        }
+
+        public void editTextAnimation() {
+            imgRight.animate().translationX((getWidth()-dpToPx(48))/2).setDuration(3000);
+            imgLeft.animate().translationX(-(getWidth()-dpToPx(48))/2).setDuration(3000);
+        }
+
+        private void changeLevelTop() {
+            mlLevel.setTransitionListener(new MotionLayout.TransitionListener() {
+                @Override
+                public void onTransitionStarted(MotionLayout motionLayout, int i, int i1) {
+
+                }
+
+                @Override
+                public void onTransitionChange(MotionLayout motionLayout, int i, int i1, float v) {
+
+                }
+
+                @Override
+                public void onTransitionCompleted(MotionLayout motionLayout, int i) {
+                    if(i == R.id.end) {
+                        tvBottomLvl.setText(String.valueOf(Progress.getInstance().getLevel()));
+                        motionLayout.setProgress(0f);
+                        motionLayout.setTransition(R.id.start, R.id.end);
+                    }
+                }
+
+                @Override
+                public void onTransitionTrigger(MotionLayout motionLayout, int i, boolean b, float v) {
+
+                }
+
+            });
+            tvTopLvl.setText(String.valueOf(Progress.getInstance().getLevel()));
+            mlLevel.transitionToEnd();
+        }
+        private void animationBtnNext(boolean appear) { // анимация появлеия кнопки "дальше"
+            ObjectAnimator animatorBtnNextX;
+            ObjectAnimator animatorBtnNextY;
+            if(appear) {
+                btnNext.setVisibility(View.VISIBLE);
+                btnNext.setClickable(true);
+                btnNext.setAlpha(1.0f);
+                animatorBtnNextX = ObjectAnimator.ofFloat(btnNext,"scaleX",1.0f,1.1f,1.0f);
+                animatorBtnNextY = ObjectAnimator.ofFloat(btnNext,"scaleY",1.0f,1.1f,1.0f);
+                animatorBtnNextX.setDuration(300);
+                animatorBtnNextY.setDuration(300);
+                animatorBtnNextX.start();
+            } else {
+                btnNext.setClickable(false);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        handler.sendEmptyMessage(ALPHA_DOWN_BTNNEXT);
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(400);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        handler.sendEmptyMessage(SET_INVISIBLE_BTNNEXT);
+                    }
+                }).start();
+            }
+        }
+    }
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btnNextQuestion: {
+                    if(!(Progress.getInstance().getLevel() >= 22)) {
+                        animationController.animationBtnNext(false);
+                        changeQuestion();
+                    }
+                    break;
+                }
+                case R.id.btnCheckAnswer: {
+                    if(adFailed) { // если взлома ответов нет(adFailed == true), то предоставляем функции
+                        if(StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3) == 0) {
+                            attemptsController.getAttemptByAd();
+                        } else {
+                            CheckTask checkTask = new CheckTask();
+                            checkTask.execute();
+                        }
+                    }
+                    break;
+                }
+                case R.id.imgBackToMain:
+                    // при возвращении на главную активити отправляем разницу между уровнем, когда юзер был на главном экране, и уровнем на данный момент
+                    // это нужно для анимации изменения уровня на главной активити
+                    int pastLevel = 1;//getActivity().getIntent().getIntExtra("level",1);
+                    Intent intentMain = new Intent();
+                    //intentMain.putExtra("difflevel",Progress.getInstance().getLevel() - pastLevel);
+                    try {
+                        getActivity().setResult(Activity.RESULT_OK,intentMain);
+                        getActivity().finish();
+                    } catch (NullPointerException ex) {
+                    }
+                    break;
+            }
+        }
+    };
 
     private class LoadAdAfterFail extends AsyncTask<Void,Void,Void> { // Task для загрузки рекламы в случае ошибки
 
@@ -495,12 +512,12 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
                     }).start();
                     answerIsRight = true;
                     if(Progress.getInstance().getLevel() <= 20) {
-                        animationBtnNext(true);
+                        animationController.animationBtnNext(true);
                         if(Progress.getInstance().getLevel() == 20) nextLvlIsLast = true;
                         Progress.getInstance().levelUp(); // повышвем уровень
                         statisticsController.setStartTimeLevel();
                     } else if(Progress.getInstance().getLevel() == 21) {
-                        animationBtnNext(false);
+                        animationController.animationBtnNext(false);
                     }
                     statisticsController.sendStatistics(); // отправляем стат на сервер
                     StoredData.saveData(StoredData.DATA_LAST_ANSWER,answerOfUser);
@@ -522,7 +539,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
                     }).start();
                     int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
                     if(countAttempts > 0) {
-                        decrementCountAtempts();
+                        attemptsController.decrementCountAtempts();
                     } else if(countAttempts > 3) {
                         StoredData.saveData(DATA_COUNT_ATTEMPTS,0);
                     }
