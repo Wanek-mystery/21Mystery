@@ -34,7 +34,6 @@ import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import martian.mystery.data.DataOfUser;
 import martian.mystery.controller.GetContextClass;
 import martian.mystery.controller.Progress;
 import martian.mystery.controller.QuestionAnswerController;
@@ -45,9 +44,6 @@ import martian.mystery.controller.SecurityController;
 import martian.mystery.controller.StatisticsController;
 import martian.mystery.controller.StoredData;
 import martian.mystery.controller.UpdateDataController;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static martian.mystery.controller.StoredData.DATA_COUNT_ATTEMPTS;
 
@@ -242,7 +238,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
     }
 
     private void loadRewardedVideoAd() {
-        mRewardedVideoAd.loadAd(getResources().getString(R.string.ad_block),
+        mRewardedVideoAd.loadAd(GetContextClass.getContext().getResources().getString(R.string.ad_block),
                 new AdRequest.Builder().build());
     }
     @Override
@@ -555,7 +551,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
                     try {
                         ResponseFromServer response = RequestController.getInstance()
                                 .getJsonApi()
-                                .getMainData("true3")
+                                .getMainData("money")
                                 .execute().body();
                         if(response.getExistWinner() == 0) {
                             StoredData.saveData(StoredData.DATA_IS_WINNER,true);
@@ -564,7 +560,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
                         }
                         response = RequestController.getInstance()
                                 .getJsonApi()
-                                .sendWinner("isa3") // отпрвляем данные о том, что победитель есть
+                                .sendWinner("acdc") // отпрвляем данные о том, что победитель есть
                                 .execute().body();
                         if(response.getResult() == 1) {
                             UpdateDataController.getInstance().setWinnerChecked(true);

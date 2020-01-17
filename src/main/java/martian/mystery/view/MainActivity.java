@@ -525,7 +525,7 @@ public class MainActivity extends AppCompatActivity {
                 if(!isStop) {
                     RequestController.getInstance() // загрузка данных с сервера
                             .getJsonApi()
-                            .getMainData("true3")
+                            .getMainData("money")
                             .enqueue(new Callback<ResponseFromServer>() {
                                 @Override
                                 public void onResponse(Call<ResponseFromServer> call, Response<ResponseFromServer> response) {

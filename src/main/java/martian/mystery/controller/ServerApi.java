@@ -10,22 +10,22 @@ import retrofit2.http.Query;
 
 public interface ServerApi {
 
-    @GET("/")
+    @GET("/update/")
     Call<ResponseFromServer> checkUpdate(@Query("update") int versionCode);
 
-    @GET("/")
-    Call<ResponseFromServer> getMainData(@Query("maindata") String queryTrue);
+    @GET("/pubdata/")
+    Call<ResponseFromServer> getMainData(@Query("green") String queryTrue);
 
-    @GET("/")
-    Call<ResponseFromServer> sendWinner(@Query("notbad") String winner);
+    @GET("/winner/")
+    Call<ResponseFromServer> sendWinner(@Query("black") String winner);
 
-    @GET("/")
-    Call<ResponseFromServer> getEmail(@Query("way") String way);
+    @GET("/winner/")
+    Call<ResponseFromServer> getEmail(@Query("mouse") String way);
 
-    @GET("/")
-    Call<Void> sendStatistics(@Query("newlevel") String level);
+    @GET("/statistics/")
+    Call<Void> sendStatistics(@Query("newlevel") int level, @Query("time") int time);
 
-    @POST("/")
+    @POST("/winner/")
     Call<Void> sendNameWinner(@Body DataOfUser data);
 
 }

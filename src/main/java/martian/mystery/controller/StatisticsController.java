@@ -26,7 +26,8 @@ public class StatisticsController {
             Date oldDate = format.parse(lastDate);
             Date newDate = format.parse(nowDateString);
             int diffInDays = (int)( (newDate.getTime() - oldDate.getTime())
-                    / (1000 * 60 * 60));
+                    / (1000 * 60 * 60 * 24));
+            Log.d(TAG, "getLongOfLevel: " + diffInDays);
             return diffInDays;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -40,12 +41,9 @@ public class StatisticsController {
         StoredData.saveData(StoredData.DATA_LASTDATE,nowDateString);
     }
     public void sendStatistics() {
-        DataOfUser dataOfUser = new DataOfUser();
-        dataOfUser.setLevel(Progress.getInstance().getLevel());
-        dataOfUser.setTimeOfLevel(getLongOfLevel());
         RequestController.getInstance()
                 .getJsonApi()
-                .sendStatistics(String.valueOf(Progress.getInstance().getLevel()))
+                .sendStatistics(Progress.getInstance().getLevel(),getLongOfLevel())
                 .enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {

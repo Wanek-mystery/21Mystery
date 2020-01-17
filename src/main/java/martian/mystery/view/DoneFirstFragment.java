@@ -151,7 +151,7 @@ public class DoneFirstFragment extends Fragment {
                     ResponseFromServer response = RequestController
                             .getInstance()
                             .getJsonApi()
-                            .getEmail("true3")
+                            .getEmail("keyb")
                             .execute().body();
                     return response.getEmail();
 
