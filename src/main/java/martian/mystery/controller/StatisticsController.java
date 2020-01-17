@@ -1,15 +1,23 @@
 package martian.mystery.controller;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import martian.mystery.data.DataOfUser;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class StatisticsController {
 
-    public StatisticsController() {
-    }
+    String TAG = "my";
 
-    public int getDifference() {
+    public StatisticsController() { }
+
+    public int getLongOfLevel() { // получить время прохождения уровня
         SimpleDateFormat format = new SimpleDateFormat("hh dd MM yyyy");
         Date nowDate = new Date();
         String nowDateString = format.format(nowDate);
@@ -25,10 +33,29 @@ public class StatisticsController {
             return 0;
         }
     }
-    public void setStartTime() {
+    public void setStartTimeLevel() { // установить время начала прохождения уровня
         SimpleDateFormat format = new SimpleDateFormat("hh dd MM yyyy");
         Date nowDate = new Date();
         String nowDateString = format.format(nowDate);
         StoredData.saveData(StoredData.DATA_LASTDATE,nowDateString);
+    }
+    public void sendStatistics() {
+        DataOfUser dataOfUser = new DataOfUser();
+        dataOfUser.setLevel(Progress.getInstance().getLevel());
+        dataOfUser.setTimeOfLevel(getLongOfLevel());
+        RequestController.getInstance()
+                .getJsonApi()
+                .sendStatistics(String.valueOf(Progress.getInstance().getLevel()))
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Log.d(TAG, "onResponse: стаститка успешно отправилась");
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.d(TAG, "onFailure: ошибка при отправке статистики " + t.toString());
+                    }
+                });
     }
 }

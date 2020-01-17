@@ -44,6 +44,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import yanzhikai.textpath.AsyncTextPathView;
 
+import static martian.mystery.controller.StoredData.DATA_COUNT_LAUNCH_APP;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        StoredData.incrementCountLaunches(); // увеличиваем кол-во звапусков игры на один
+        StoredData.saveData(DATA_COUNT_LAUNCH_APP,StoredData.getDataInt(DATA_COUNT_LAUNCH_APP,0)+1); // увеличиваем кол-во звапусков игры на один
         appUpdateManager = AppUpdateManagerFactory.create(GetContextClass.getContext());
 
         btnNext = findViewById(R.id.btnNext);
@@ -148,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         progressViewController = new ProgressViewController(); // контроллер для анимации прогресса
         animController = new AnimationController(); // контроллер для остальных анимаций в данной активити
 
-        if(StoredData.getCountLaunch() == 1) { // доп. анимации и подсказки, если запуск первый
+        if(StoredData.getDataInt(DATA_COUNT_LAUNCH_APP,0) == 1) { // доп. анимации и подсказки, если запуск первый
             ViewTooltip
                     .on(this, btnHelp)
                     .autoHide(true, 5000)

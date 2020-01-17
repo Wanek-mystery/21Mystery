@@ -113,7 +113,7 @@ public class DoneFirstFragment extends Fragment {
                 public void onClick(View v) {
                     String name = etNameWin.getText().toString().trim();
                     DataOfUser dataOfUser = new DataOfUser();
-                    dataOfUser.setName(name);
+                    dataOfUser.setNameOfUser(name);
                     if(!name.equals("") && !name.equals("none")) {
                         RequestController.getInstance()
                                 .getJsonApi()

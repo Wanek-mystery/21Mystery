@@ -49,6 +49,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static martian.mystery.controller.StoredData.DATA_COUNT_ATTEMPTS;
+
 public class QuestionFragment extends Fragment implements RewardedVideoAdListener {
 
     public RewardedVideoAd mRewardedVideoAd;
@@ -196,7 +198,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
         super.onResume();
         //mRewardedVideoAd.resume(getActivity());
         if(!mRewardedVideoAd.isLoaded()) loadRewardedVideoAd();
-        int countAttempts = StoredData.getCountAttempts();
+        int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
         if(countAttempts == 0) {
             btnCheckAnswer.setMaxLines(2);
             btnCheckAnswer.setText(R.string.look_ad);
@@ -327,6 +329,14 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
             }
         }
     }
+    private void decrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет
+        int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
+        if(countAttempts > 0) StoredData.saveData(DATA_COUNT_ATTEMPTS,countAttempts - 1);
+    }
+    private void incrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет
+        int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
+        if(countAttempts < 9) StoredData.saveData(DATA_COUNT_ATTEMPTS,countAttempts + 1);
+    }
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -340,7 +350,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
                 }
                 case R.id.btnCheckAnswer: {
                     if(adFailed) { // если взлома ответов нет(adFailed == true), то предоставляем функции
-                        if(StoredData.getCountAttempts() == 0) {
+                        if(StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3) == 0) {
                             getAttemptByAd();
                         } else {
                             CheckTask checkTask = new CheckTask();
@@ -372,7 +382,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
     @Override
     public void onRewarded(RewardItem reward) {
         Toast.makeText(getActivity(), R.string.attempt_is_added, Toast.LENGTH_SHORT).show();
-        StoredData.incrementCountAtempts();
+        incrementCountAtempts();
     }
 
     @Override
@@ -488,13 +498,13 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
                         animationBtnNext(true);
                         if(Progress.getInstance().getLevel() == 20) nextLvlIsLast = true;
                         Progress.getInstance().levelUp(); // повышвем уровень
-                        statisticsController.setStartTime();
+                        statisticsController.setStartTimeLevel();
                     } else if(Progress.getInstance().getLevel() == 21) {
                         animationBtnNext(false);
                     }
-                    sendStatistic();
+                    statisticsController.sendStatistics(); // отправляем стат на сервер
                     StoredData.saveData(StoredData.DATA_LAST_ANSWER,answerOfUser);
-                    StoredData.saveData(StoredData.DATA_COUNT_ATTEMPTS,3);
+                    StoredData.saveData(DATA_COUNT_ATTEMPTS,3);
 
                 } else { // если ответ неверный, увеличваем попытки
                     answerIsRight = false;
@@ -510,11 +520,11 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
                             handler.sendEmptyMessage(SET_NORMAL);
                         }
                     }).start();
-                    int countAttempts = StoredData.getCountAttempts();
+                    int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
                     if(countAttempts > 0) {
-                        StoredData.decrementCountAtempts();
+                        decrementCountAtempts();
                     } else if(countAttempts > 3) {
-                        StoredData.saveData(StoredData.DATA_COUNT_ATTEMPTS,0);
+                        StoredData.saveData(DATA_COUNT_ATTEMPTS,0);
                     }
                 }
             }
@@ -562,7 +572,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
 
         @Override
         protected void onPostExecute(Boolean isChecked) {
-            int countAttempts = StoredData.getCountAttempts();
+            int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
             if(countAttempts > 0 && countAttempts <= 3) {
                 etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
                 btnCheckAnswer.setMaxLines(1);
@@ -581,24 +591,6 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
             } else if(!UpdateDataController.getInstance().winnerIsChecked()){
                 // выводим сообщение подключиться к интернету и попробовать снова
             }
-        }
-
-        private void sendStatistic() {
-            DataOfUser dataOfUser = new DataOfUser();
-            dataOfUser.setLevel(Progress.getInstance().getLevel());
-            dataOfUser.setLonglevel(statisticsController.getDifference());
-            RequestController.getInstance()
-                    .getJsonApi()
-                    .sendStatistics(String.valueOf(Progress.getInstance().getLevel()))
-                    .enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                        }
-                    });
         }
     }
 }
