@@ -17,7 +17,7 @@ public class StatisticsController {
 
     public StatisticsController() { }
 
-    public int getLongOfLevel() { // получить время прохождения уровня
+    private int getLongOfLevel() { // получить время прохождения уровня
         SimpleDateFormat format = new SimpleDateFormat("hh dd MM yyyy");
         Date nowDate = new Date();
         String nowDateString = format.format(nowDate);
@@ -43,9 +43,15 @@ public class StatisticsController {
         StoredData.saveData(StoredData.DATA_LASTDATE,nowDateString);
     }
     public void sendStatistics() {
+        int level = 2;
+        if(Progress.getInstance().getLevel() <= 21) {
+            level = Progress.getInstance().getLevel();
+        } else if(Progress.getInstance().isDone()) {
+            level = 22;
+        }
         RequestController.getInstance()
                 .getJsonApi()
-                .sendStatistics(Progress.getInstance().getLevel(),getLongOfLevel())
+                .sendStatistics(level,getLongOfLevel())
                 .enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {

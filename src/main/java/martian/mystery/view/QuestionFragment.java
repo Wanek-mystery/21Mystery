@@ -110,7 +110,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus) {
-                    animationController.editTextAnimation();
+                    animationController.focusEditText();
                 }
             }
         });
@@ -338,7 +338,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
             return dp * ((float) GetContextClass.getContext().getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         }
 
-        public void editTextAnimation() {
+        public void focusEditText() {
             imgRight.animate().translationX((getWidth()-dpToPx(48))/2).setDuration(3000);
             imgLeft.animate().translationX(-(getWidth()-dpToPx(48))/2).setDuration(3000);
         }
@@ -400,6 +400,35 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
                     }
                 }).start();
             }
+        }
+
+        private void editTextRightAnswer() {
+            new Thread(new Runnable() {
+                @Override
+                public void run() { // поток для изменения цвета обводки ответа на неправильный
+                    handler.sendEmptyMessage(SET_GREEN_ET);
+                    try {
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    handler.sendEmptyMessage(SET_NORMAL);
+                }
+            }).start();
+        }
+        private void editTextWrongAnswer() {
+            new Thread(new Runnable() {
+                @Override
+                public void run() { // поток для изменения цвета обводки ответа на неправильный
+                    handler.sendEmptyMessage(SET_RED_ET);
+                    try {
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    handler.sendEmptyMessage(SET_NORMAL);
+                }
+            }).start();
         }
     }
 
@@ -485,7 +514,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
             }
         }
     }
-    private class CheckTask extends AsyncTask<Void, Void, Boolean> {
+    private class CheckTask extends AsyncTask<Void, Void, Boolean> { // проверка ответа
 
         boolean nextLvlIsLast = false;
         boolean answerIsRight = false;
@@ -493,19 +522,8 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
         protected void onPreExecute() {
             String answerOfUser = etAnswer.getText().toString();
             if(!(answerOfUser.equals(""))) {
-                if(questionAnswerController.checkAnswer(answerOfUser)) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() { // поток для изменения цвета обводки ответа на неправильный
-                            handler.sendEmptyMessage(SET_GREEN_ET);
-                            try {
-                                TimeUnit.SECONDS.sleep(3);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            handler.sendEmptyMessage(SET_NORMAL);
-                        }
-                    }).start();
+                if(questionAnswerController.checkAnswer(answerOfUser)) { // если ответ правильный
+                    animationController.editTextRightAnswer();
                     answerIsRight = true;
                     if(Progress.getInstance().getLevel() <= 20) {
                         animationController.animationBtnNext(true);
@@ -515,24 +533,14 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
                         statisticsController.setStartTimeLevel(); // устанавливаем время начала прохождения нового уровня
                     } else if(Progress.getInstance().getLevel() == 21) {
                         animationController.animationBtnNext(false);
+                        Progress.getInstance().done(true);
                     }
                     StoredData.saveData(StoredData.DATA_LAST_ANSWER,answerOfUser);
                     StoredData.saveData(DATA_COUNT_ATTEMPTS,3);
 
                 } else { // если ответ неверный, уменьшаем попытки
                     answerIsRight = false;
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() { // поток для изменения цвета обводки ответа на неправильный
-                            handler.sendEmptyMessage(SET_RED_ET);
-                            try {
-                                TimeUnit.SECONDS.sleep(3);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            handler.sendEmptyMessage(SET_NORMAL);
-                        }
-                    }).start();
+                    animationController.editTextWrongAnswer();
                     int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
                     if(countAttempts > 0) {
                         attemptsController.decrementCountAtempts();
@@ -565,7 +573,6 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
                         if(response.getResult() == 1) {
                             UpdateDataController.getInstance().setWinnerChecked(true);
                             Progress.getInstance().levelUp();
-                            Progress.getInstance().done(true);
                             StoredData.saveData(StoredData.DATA_PLACE,response.getPlace());
                             return true;
                         } else throw new IOException();
@@ -601,8 +608,6 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
                 } else {
                     ((QuestionActivity) getActivity()).replaceFragment(DoneFragment.class); // замена текущего фрагмента на фрагмент с концом игры
                 }
-            } else if(!UpdateDataController.getInstance().winnerIsChecked()){
-                // выводим сообщение подключиться к интернету и попробовать снова
             }
         }
     }
