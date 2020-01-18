@@ -1,15 +1,16 @@
-package martian.mystery;
+package martian.mystery.data;
 
 public class ResponseFromServer { // ответ от сервера заворачивается в этот класс-обертку
 
-    private String winner;
-    private String prize;
-    private String season;
-    private String email;
-    private int result;
-    private int existwinner;
-    private int updateapp;
-    private int updateforce;
+    private String winner; // имя победителя
+    private String prize; // приз
+    private String season; // сезон
+    private String email; // контакт для связи
+    private int result; // результат запроса
+    private int existwinner; // наличие победителя
+    private int updateapp; // обновление приложения
+    private int updateforce; // принудительное обновление приложения
+    private int place; // место в игре
 
     public int getUpdate() {
         return updateapp;
@@ -42,8 +43,6 @@ public class ResponseFromServer { // ответ от сервера завора
     public void setEmail(String email) {
         this.email = email;
     }
-
-    private int place;
 
     public int getPlace() {
         return place;

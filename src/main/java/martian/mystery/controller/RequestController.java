@@ -1,4 +1,4 @@
-package martian.mystery;
+package martian.mystery.controller;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RequestController { // класс-синглтон для управления запросами к серверу
 
     private final static RequestController instanceController = new RequestController();
-    private final static String URL = "https://wroadbot.000webhostapp.com/";//"http://192.168.0.105:80";
+    private final static String URL = "http://192.168.0.105:80"; //"https://wroadbot.000webhostapp.com/"
     private Retrofit retrofit;
 
     public static RequestController getInstance() {

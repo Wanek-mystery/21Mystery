@@ -1,4 +1,4 @@
-package martian.mystery;
+package martian.mystery.view;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+
+import martian.mystery.R;
 
 public class AssistentDialog extends DialogFragment {
 
@@ -40,7 +42,7 @@ public class AssistentDialog extends DialogFragment {
 
         switch (typeDialog) {
             case DIALOG_RULES: {
-                builder = new AlertDialog.Builder(getActivity(),R.style.CustomAlertDialog);
+                builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialog);
                 builder.setView(inflater.inflate(R.layout.dialog_rules,null))
                         .setPositiveButton(R.string.dialog_review_yes, new DialogInterface.OnClickListener() {
                             @Override

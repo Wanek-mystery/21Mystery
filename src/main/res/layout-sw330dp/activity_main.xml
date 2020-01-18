@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
     <ImageView
         android:id="@+id/imgLvl2"
@@ -458,18 +458,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_help_back" />
 
-        <ImageView
-            android:id="@+id/btnReview"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:elevation="13dp"
-            android:translationZ="18dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/btnHelp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_review" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

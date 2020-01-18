@@ -1,4 +1,6 @@
-package martian.mystery;
+package martian.mystery.controller;
+
+import martian.mystery.R;
 
 public class QuestionAnswerController {
 

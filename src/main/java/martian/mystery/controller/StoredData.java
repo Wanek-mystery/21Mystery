@@ -1,4 +1,4 @@
-package martian.mystery;
+package martian.mystery.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -22,52 +22,8 @@ public class StoredData { // класс, реализующий доступ к 
     public static final String DATA_LASTDATE = "last_date3";
 
     public StoredData() { }
-    public static int getLevel() {
-        SharedPreferences sharedPreferences = GetContextClass.getContext().getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE);
-        return sharedPreferences.getInt(DATA_LEVEL,1);
-    }
-    public static boolean incrementSaveLevel() { // увеличивает уровень на 1 и сохраняет
-        SharedPreferences sharedPreferences = GetContextClass.getContext().getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(DATA_LEVEL,sharedPreferences.getInt(DATA_LEVEL,1) + 1);
-        return editor.commit();
-    }
-    // доступ к кол-ву запусков приложения
-    public static int getCountLaunch() {
-        SharedPreferences sharedPreferences = GetContextClass.getContext().getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE);
-        return sharedPreferences.getInt(DATA_COUNT_LAUNCH_APP,0);
-    }
-    public static boolean incrementCountLaunches() { // увеличивает уровень на 1 и сохраняет
-        SharedPreferences sharedPreferences = GetContextClass.getContext().getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(DATA_COUNT_LAUNCH_APP,sharedPreferences.getInt(DATA_COUNT_LAUNCH_APP,0) + 1);
-        editor.apply();
-        return true;
-    }
 
-    // лоступ к кол-ву попыток
-    public static int getCountAttempts() {
-        SharedPreferences sharedPreferences = GetContextClass.getContext().getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE);
-        return sharedPreferences.getInt(DATA_COUNT_ATTEMPTS,3);
-    }
-    public static boolean decrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет
-        SharedPreferences sharedPreferences = GetContextClass.getContext().getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        int countAttempts = sharedPreferences.getInt(DATA_COUNT_ATTEMPTS,3);
-        if(countAttempts > 0) editor.putInt(DATA_COUNT_ATTEMPTS,countAttempts - 1);
-        editor.commit();
-        return true;
-    }
-    public static boolean incrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет
-        SharedPreferences sharedPreferences = GetContextClass.getContext().getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        int countAttempts = sharedPreferences.getInt(DATA_COUNT_ATTEMPTS,3);
-        if(countAttempts < 9) editor.putInt(DATA_COUNT_ATTEMPTS,countAttempts + 1);
-        editor.commit();
-        return true;
-    }
-
-
+    // сохранение данных на устройстве
     public static void saveData(String typeData, int data) {
         SharedPreferences sharedPreferences = GetContextClass.getContext().getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -87,6 +43,7 @@ public class StoredData { // класс, реализующий доступ к 
         editor.commit();
     }
 
+    // получение данных с устройства
     public static int getDataInt(String typeData, int defValue) {
         SharedPreferences sharedPreferences = GetContextClass.getContext().getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE);
         return sharedPreferences.getInt(typeData,defValue);

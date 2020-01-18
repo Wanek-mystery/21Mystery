@@ -1,4 +1,4 @@
-package martian.mystery;
+package martian.mystery.view;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import martian.mystery.R;
+import martian.mystery.controller.StoredData;
 
 public class DoneFragment extends Fragment {
 

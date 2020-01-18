@@ -1,4 +1,4 @@
-package martian.mystery;
+package martian.mystery.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import martian.mystery.controller.GetContextClass;
+import martian.mystery.controller.Progress;
+import martian.mystery.R;
+import martian.mystery.controller.StoredData;
+import martian.mystery.controller.UpdateDataController;
 
 
 public class QuestionActivity extends AppCompatActivity { // активити, где отображаются загадки

@@ -6,7 +6,7 @@
 
     <!-- android:name - костыль для получения context из любого места в приолжении -->
     <application
-        android:name="martian.mystery.GetContextClass"
+        android:name="martian.mystery.controller.GetContextClass"
         android:allowBackup="true"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,7 +20,7 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3637770884242866~3613287665"/>
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".view.MainActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.Launcher">
@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".QuestionActivity"
+        <activity android:name=".view.QuestionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             > <!--android:windowSoftInputMode="stateHidden|adjustResize"-->
