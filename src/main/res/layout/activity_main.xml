@@ -382,6 +382,7 @@
         app:layout_constraintGuide_percent="0.66" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -393,12 +394,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/glineTop">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clWinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvFirst"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:text="@string/winner_is"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/firstPerson"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="8dp"
+                android:elevation="10dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="@string/no_winner_text"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvFirst" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnNext"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="21dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/back_btn_continue"
             android:elevation="20dp"
@@ -410,42 +451,7 @@
             app:autoSizeTextType="uniform"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/firstPerson" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvFirst"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:text="@string/winner_is"
-            android:textAlignment="center"
-            android:textColor="#fff"
-            app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.07999998" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/firstPerson"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:elevation="10dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="@string/no_winner_text"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            app:autoSizeTextType="uniform"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvFirst" />
+            tools:layout_editor_absoluteY="118dp" />
 
         <ImageView
             android:id="@+id/btnHelp"
