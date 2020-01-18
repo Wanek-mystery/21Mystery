@@ -541,6 +541,7 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
                 } else { // если ответ неверный, уменьшаем попытки
                     answerIsRight = false;
                     animationController.editTextWrongAnswer();
+                    etAnswer.setText("");
                     int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
                     if(countAttempts > 0) {
                         attemptsController.decrementCountAtempts();
