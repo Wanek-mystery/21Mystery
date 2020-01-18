@@ -511,15 +511,15 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
                         animationController.animationBtnNext(true);
                         if(Progress.getInstance().getLevel() == 20) nextLvlIsLast = true;
                         Progress.getInstance().levelUp(); // повышвем уровень
-                        statisticsController.setStartTimeLevel();
+                        statisticsController.sendStatistics(); // отправляем стат на сервер
+                        statisticsController.setStartTimeLevel(); // устанавливаем время начала прохождения нового уровня
                     } else if(Progress.getInstance().getLevel() == 21) {
                         animationController.animationBtnNext(false);
                     }
-                    statisticsController.sendStatistics(); // отправляем стат на сервер
                     StoredData.saveData(StoredData.DATA_LAST_ANSWER,answerOfUser);
                     StoredData.saveData(DATA_COUNT_ATTEMPTS,3);
 
-                } else { // если ответ неверный, увеличваем попытки
+                } else { // если ответ неверный, уменьшаем попытки
                     answerIsRight = false;
                     new Thread(new Runnable() {
                         @Override

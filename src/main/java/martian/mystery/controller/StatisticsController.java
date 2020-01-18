@@ -22,11 +22,12 @@ public class StatisticsController {
         Date nowDate = new Date();
         String nowDateString = format.format(nowDate);
         String lastDate = StoredData.getDataString(StoredData.DATA_LASTDATE,"1");
+        Log.d(TAG, "lastData: " + lastDate);
         try {
             Date oldDate = format.parse(lastDate);
             Date newDate = format.parse(nowDateString);
             int diffInDays = (int)( (newDate.getTime() - oldDate.getTime())
-                    / (1000 * 60 * 60 * 24));
+                    / (1000 * 60 * 60));
             Log.d(TAG, "getLongOfLevel: " + diffInDays);
             return diffInDays;
         } catch (ParseException e) {
@@ -38,6 +39,7 @@ public class StatisticsController {
         SimpleDateFormat format = new SimpleDateFormat("hh dd MM yyyy");
         Date nowDate = new Date();
         String nowDateString = format.format(nowDate);
+        Log.d(TAG, "setStartTimeLevel: " + nowDateString);
         StoredData.saveData(StoredData.DATA_LASTDATE,nowDateString);
     }
     public void sendStatistics() {
