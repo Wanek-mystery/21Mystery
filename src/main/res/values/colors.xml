@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#001830</color>
     <color name="colorAccent">#00D7DC</color>
     <color name="strokeEditText">#976926</color>
+    <color name="colorAdd">#FF99FF2A</color>
 
     <color name="strokeReview">#F4511E</color>
     <color name="strokeReviewPressed">#F44336</color>

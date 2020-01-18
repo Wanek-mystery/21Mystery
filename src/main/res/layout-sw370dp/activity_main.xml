@@ -400,7 +400,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="58dp"
             android:layout_marginEnd="8dp"
-            android:stateListAnimator="@drawable/click_btn_continue"
             android:background="@drawable/back_btn_continue"
             android:elevation="20dp"
             android:padding="9dp"

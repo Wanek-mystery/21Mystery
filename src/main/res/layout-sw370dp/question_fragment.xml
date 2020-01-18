@@ -62,6 +62,7 @@
         android:layout_marginEnd="16dp"
         android:text="Кто первый полетел в космос?"
         android:textAlignment="center"
+        android:gravity="bottom"
         android:textColor="#fff"
         app:autoSizeMaxTextSize="35sp"
         app:autoSizeTextType="uniform"
