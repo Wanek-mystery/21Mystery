@@ -3,10 +3,10 @@
     <string name="ad_block">ca-app-pub-3940256099942544/5224354917</string>
     <string name="season">Сезон 3</string>
     <string name="prize">1000 рублей</string>
-    <string name="prize_text">Приз:</string>
+    <string name="prize_text">Призовой фонд:</string>
     <string name="winner_is">Победитель:</string>
     <string name="no_winner_text"><u>Победителя еще нет, будь первым!</u></string>
-    <string name="continue_game">Продолжить</string>
+    <string name="continue_game">Продолжить игру</string>
     <string name="read_rules">Советую почитать правила</string>
     <string name="rules_text">Погнали.
         Первый отгадываешь 21 загадку - получаешь приз.

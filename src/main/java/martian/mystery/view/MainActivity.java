@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 StoredData.getDataString(StoredData.DATA_PRIZE,
                         getResources().getString(R.string.prize))));
         tvPrize.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        imgSeason = findViewById(R.id.tvSeason);
+        imgSeason = findViewById(R.id.imgSeason);
         /*tvSeason.setText(
                 String.valueOf(
                 StoredData.getDataString(StoredData.DATA_SEASON,

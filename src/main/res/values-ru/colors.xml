@@ -11,7 +11,7 @@
     <color name="strokeReview">#F4511E</color>
     <color name="strokeReviewPressed">#F44336</color>
 
-    <color name="btnContinueGame">#46408E</color>
+    <color name="btnContinueGame">#6300ef</color>
     <color name="btnContinueGamePressed">#7B34F8</color>
     <color name="mainEditText">#010305</color>
     <color name="wrongAnswer">#D81B47</color>

@@ -398,8 +398,11 @@
             android:id="@+id/clWinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -412,8 +415,9 @@
                 android:textAlignment="center"
                 android:textColor="#fff"
                 app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toTopOf="@+id/firstPerson"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -421,7 +425,6 @@
                 android:id="@+id/firstPerson"
                 android:layout_width="0dp"
                 android:layout_height="35dp"
-                android:layout_marginTop="8dp"
                 android:elevation="10dp"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
@@ -429,9 +432,23 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvFirst" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/line"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/firstPerson" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -440,6 +457,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/back_btn_continue"
             android:elevation="20dp"
@@ -451,12 +469,12 @@
             app:autoSizeTextType="uniform"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="118dp" />
+            app:layout_constraintTop_toBottomOf="@+id/clWinner" />
 
         <ImageView
             android:id="@+id/btnHelp"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginEnd="8dp"
             android:elevation="13dp"
             android:translationZ="18dp"
@@ -472,13 +490,18 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="18dp"
+        android:background="@drawable/back_prize"
+        android:elevation="12dp"
+        android:translationZ="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/imgSeason"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/glineBottom">
+        app:layout_constraintTop_toBottomOf="@+id/glineBottom"
+        app:layout_constraintVertical_weight="2">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvPrizeText"
@@ -487,52 +510,21 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
-            android:padding="5dp"
+            android:gravity="bottom"
+            android:paddingStart="4dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="4dp"
             android:text="@string/prize_text"
             android:textAlignment="center"
             android:textColor="#fff"
+            android:textStyle="bold"
             app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toTopOf="@+id/tvPrize"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!--<androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvPrize"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            app:autoSizeTextType="uniform"
-            android:text="@string/prize"
-            android:textAlignment="center"
-            android:textColor="#fff"
-            app:layout_constraintBottom_toTopOf="@+id/tvSeason"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />-->
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvSeason"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/season"
-            android:textAlignment="center"
-            android:textColor="#fff"
-            app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvPrize" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_weight="40" />
 
         <yanzhikai.textpath.AsyncTextPathView
             android:id="@+id/tvPrize"
@@ -541,23 +533,37 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/back_prize"
             android:text="@string/prize"
             android:textAlignment="center"
-            app:autoSizeTextType="uniform"
             app:autoStart="true"
             app:duration="5000"
-            app:layout_constraintBottom_toTopOf="@+id/tvSeason"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvPrizeText"
+            app:layout_constraintVertical_weight="60"
             app:pathStrokeColor="@color/colorAccent"
             app:showInStart="true"
             app:showPainter="true"
             app:textInCenter="true"
-            app:textSize="19sp" />
+            app:textSize="32sp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/imgSeason"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:padding="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clBottom"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintVertical_weight="1"
+        app:srcCompat="@drawable/season4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

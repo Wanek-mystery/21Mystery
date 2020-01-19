@@ -438,6 +438,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvFirst" />
 
+            <View
+                android:id="@+id/view"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/line"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/firstPerson" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -476,15 +488,17 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="24dp"
         android:background="@drawable/back_prize"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        android:elevation="12dp"
+        android:translationZ="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/imgSeason"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/glineBottom"
         app:layout_constraintVertical_weight="2">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -494,13 +508,14 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:paddingTop="11dp"
-            android:paddingStart="11dp"
-            android:paddingEnd="11dp"
+            android:gravity="bottom"
+            android:paddingStart="14dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="14dp"
             android:text="@string/prize_text"
             android:textAlignment="center"
             android:textColor="#fff"
-            android:gravity="bottom"
+            android:textStyle="bold"
             app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toTopOf="@+id/tvPrize"
             app:layout_constraintEnd_toEndOf="parent"
@@ -515,10 +530,9 @@
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="24dp"
             android:text="@string/prize"
             android:textAlignment="center"
-            app:textSize="50sp"
             app:autoStart="true"
             app:duration="5000"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -530,15 +544,18 @@
             app:pathStrokeColor="@color/colorAccent"
             app:showInStart="true"
             app:showPainter="true"
-            app:textInCenter="true" />
+            app:textInCenter="true"
+            app:textSize="49sp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imgSeason"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:padding="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
