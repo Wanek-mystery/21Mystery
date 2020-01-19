@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnNext;
     private TextView tvWinner;
     private AsyncTextPathView tvPrize;
-    private TextView tvSeason;
+    private ImageView imgSeason;
     private TextView tvProgressPick1;
     private TextView tvProgressPick2;
     private TextView tvProgressPick3;
@@ -138,11 +138,11 @@ public class MainActivity extends AppCompatActivity {
                 StoredData.getDataString(StoredData.DATA_PRIZE,
                         getResources().getString(R.string.prize))));
         tvPrize.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        tvSeason = findViewById(R.id.tvSeason);
-        tvSeason.setText(
+        imgSeason = findViewById(R.id.tvSeason);
+        /*tvSeason.setText(
                 String.valueOf(
                 StoredData.getDataString(StoredData.DATA_SEASON,
-                        getResources().getString(R.string.season))));
+                        getResources().getString(R.string.season))));*/
 
         btnNext.setOnClickListener(onClickListener);
         btnHelp.setOnClickListener(onClickListener);
@@ -553,7 +553,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                     if(!responseFromServer.getSeason().equals(StoredData.getDataString(StoredData.DATA_SEASON,GetContextClass.getContext().getResources().getString(R.string.season)))) {
                                         StoredData.saveData(StoredData.DATA_SEASON,responseFromServer.getSeason());
-                                        tvSeason.setText(responseFromServer.getSeason());
+                                        //tvSeason.setText(responseFromServer.getSeason());
                                     }
                                 }
 
