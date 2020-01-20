@@ -1,58 +1,74 @@
 <resources>
     <string name="app_name">21 Mystery</string>
     <string name="ad_block">ca-app-pub-3940256099942544/5224354917</string>
-    <string name="season">Сезон 3</string>
-    <string name="prize">1000 рублей</string>
-    <string name="prize_text">Призовой фонд:</string>
+
+    <!--ГЛАВНЫЙ ЭКРАН-->
     <string name="winner_is">Победитель:</string>
     <string name="no_winner_text"><u>Победителя еще нет, будь первым!</u></string>
+    <string name="winner_didnt_name">Победитель есть, но он не написал свое имя</string>
+    <string name="start_game">Начать</string>
     <string name="continue_game">Продолжить игру</string>
     <string name="read_rules">Советую почитать правила</string>
+    <string name="rules">Правила</string>
     <string name="rules_text">Погнали.
         Первый отгадываешь 21 загадку - получаешь приз.
         На каждую загадку дается 3 попытки. Если они закончатся, всегда можно получить еще одну, посмотрев рекламу.
         Если вдруг не стал первым, после 21-ой загадки можешь узнать свое место.
         Также чем дольше нет победителя, тем больше приз.</string>
+    <string name="rules_optionally">Дополнительно</string>
     <string name="rules_2">Ваши отзывы очень важны.
         Пишите, что не понравилось, что нужно добавить, что изменить, какие загадки вышли неудачными.
         Будьте готовы к тому, что загадки в этом сезоне будут неидельны, но после ваших резенций в следующем сезоне ситуация изменится в лучшую сторону.
         Люблю, обнимаю&#128536;
         Вместе сделаем игру лучше!</string>
     <string name="read_rules_ok_btn">Принял</string>
-    <string name="rules">Правила</string>
-    <string name="rules_optionally">Дополнительно</string>
-    <string name="start_game">Начать</string>
-    <string name="next_question">Дальше</string>
-    <string name="email_copy">Email скопирован</string>
-    <string name="check_answer">проверить</string>
-    <string name="look_ad">получить попытку</string>
-    <string name="write_review">оставить отзыв</string>
-    <string name="your_place">Твое место:</string>
-    <string name="attempts">попыток: </string>
-    <string name="zero_attempts">посмотрите рекламу, чтобы добавить попытку</string>
-    <string name="no_internet">Отсутсвует подключение к интернету</string>
+    <string name="prize_text">Призовой фонд:</string>
+    <string name="prize">1000 рублей</string>
+    <string name="season">Сезон 3</string>
     <string name="force_update_season">Хорошие новости, вышел новый сезон, скорей обновляйся:) (Предыдущий сезон теперь неактивный)</string>
     <string name="force_update_tech">Жутко извиняюсь, но нужно обновиться&#128527;</string>
     <string name="update_btn">Обновить</string>
+
+
+    <!--ЭКРАН С ЗАГАДКАМИ-->
+    <string name="next_question">Дальше</string>
+    <string name="check_answer">проверить</string>
+    <string name="look_ad">получить попытку</string>
+    <string name="attempts">попыток: </string>
+    <string name="zero_attempts">посмотрите рекламу, чтобы добавить попытку</string>
+    <string name="no_internet">Отсутсвует подключение к интернету</string>
     <string name="no_server">При подключении к серверу произошла ошибка</string>
     <string name="alert_last_lvl_title">Перед финишем</string>
+    <string name="error_download_ad">Ошибка при загрузке рекламы</string>
+    <string name="internet_error">Что-то с интернетом</string>
+    <string name="attempt_is_added">Попытка добавлена</string>
+    <string name="alert_last_lvl">Если ты правильно ответишь на последнюю загадку, тебе понадобится подключение к интернету</string>
+
+
+    <!--ЭКРАНЫ ДЛЯ 2+ МЕСТ-->
+    <string name="finish_phrase_lose">Огромное спасибо за игру, очень надеюсь, что тебе понравилось:)
+        Мне будет очень приятно, если ты оставишь отзыв(расскажи какие загадки интересные, а какие нет, к примеру).</string>
+    <string name="write_review">оставить отзыв</string>
+    <string name="your_place">Твое место:</string>
+
+
+    <!--ЭКРАНЫ ДЛЯ ПОБЕДИТЕЛЕЙ-->
+    <string name="finish_phrase_win_sendname">Мои поздравления! Отправь свое имя или ник (который будет отображаться на главном экране),
+                                              чтобы все знали, кто здесь самый умный:)</string>
+    <string name="error_name">Недопустимое имя</string>
+    <string name="finish_phrase_win">Новый сезон уже скоро&#8230;</string>
+    <string name="write_email">Напиши на этот email, чтобы связаться со мной по поводу приза: </string>
+    <string name="email_copy">Email скопирован</string>
+
+
+    <!--ХУЙ ПОЙМИ ГДЕ-->
     <string name="dialog_review_mes">Оставишь отзыв за себя и за сашку?</string>
     <string name="dialog_review_yes">Написать отзыв</string>
     <string name="dialog_review_no">Позже</string>
-    <string name="error_download_ad">Ошибка при загрузке рекламы</string>
-    <string name="internet_error">Что-то с интернетом</string>
-    <string name="time_mystery">Произошла ошибка, попробуйте снова через 3 минуты</string>
-    <string name="error_name">Недопустимое имя</string>
-    <string name="attempt_is_added">Попытка добавлена</string>
-    <string name="alert_last_lvl">Если ты правильно ответишь на последнюю загадку, тебе понадобится подключение к интернету</string>
-    <string name="finish_phrase_lose">Огромное спасибо за игру, очень надеюсь, что тебе понравилось:)
-        Мне будет очень приятно, если ты оставишь отзыв(расскажи какие загадки интересные, а какие нет, к примеру).</string>
-    <string name="finish_phrase_win_sendname">Мои поздравления! Отправь свое имя или ник (который будет отображаться на главном экране),
-                                              чтобы все знали, кто здесь самый умный:)</string>
-    <string name="finish_phrase_win">Новый сезон уже скоро&#8230;</string>
-    <string name="write_email">Напиши на этот email, чтобы связаться со мной по поводу приза: </string>
-    <string name="winner_didnt_name">Победитель есть, но он не написал свое имя</string>
 
+
+
+    <!--______________________________________________________________________________________-->
     <!--Заключительные слова для 2+ мест-->
     <!--Для тестов-->
     <string name="place2_congratulations"></string>

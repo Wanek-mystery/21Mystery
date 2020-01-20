@@ -1,53 +1,64 @@
 <resources>
     <string name="app_name">21 Mystery</string>
     <string name="ad_block">ca-app-pub-3637770884242866/6954195474</string>
-    <string name="season">Season 3</string>
-    <string name="prize">1000 рублей</string>
-    <string name="prize_text">Prize:</string>
+
+    <!--ГЛАВНЫЙ ЭКРАН-->
     <string name="winner_is">Winner:</string>
     <string name="no_winner_text"><u>There is no winner yet, be the first</u></string>
+    <string name="winner_didnt_name">There is a winner, but he did not write his name</string>
+    <string name="start_game">Start</string>
     <string name="continue_game">Continue</string>
     <string name="read_rules">Read the rules before you start</string>
+    <string name="rules">Rules</string>
     <string name="rules_text">The rules are very simple.
         The first to solve 21 puzzles will receive a prize (learn how to get it at the end of the game).
         Each puzzle is given 3 attempts. If they run out you can get 1 more if you watch the ads.</string>
+    <string name="rules_optionally">additionally</string>
     <string name="rules_2">Your feedback is very important.
         The game is designed for the russian audience, so there may be inaccuracies in the puzzles.
         There is no money for quality translation yet, sorry:)</string>
     <string name="read_rules_ok_btn">Whatever you say</string>
-    <string name="rules">Rules</string>
-    <string name="rules_optionally">Additionally</string>
-    <string name="start_game">Start</string>
+    <string name="prize_text">Prize:</string>
+    <string name="prize">1000 рублей</string>
+    <string name="season">Season 3</string>
+    <string name="update_btn">Update</string>
+    <string name="force_update_season">Good news! There is a new season, rather update:) (The previous season is now inactive)</string>
+    <string name="force_update_tech">Terribly sorry, but you need to update&#128527;</string>
+
+    <!--ЭКРАН С ЗАГАДКАМИ-->
     <string name="next_question">Next</string>
-    <string name="email_copy">Email copied</string>
     <string name="check_answer">check</string>
     <string name="look_ad">get a try</string>
-    <string name="write_review">leave a review</string>
-    <string name="your_place">Your place:</string>
     <string name="attempts">attempts: </string>
     <string name="zero_attempts">watch the ads to get a try</string>
     <string name="no_internet">There is no internet</string>
-    <string name="force_update_season">Good news! There is a new season, rather update:) (The previous season is now inactive)</string>
-    <string name="force_update_tech">Terribly sorry, but you need to update&#128527;</string>
-    <string name="update_btn">Update</string>
+    <string name="internet_error">There is no internet</string>
     <string name="no_server">An error occurred while connecting to the server</string>
     <string name="alert_last_lvl_title">Before the finish</string>
-    <string name="dialog_review_mes">Leave a review?</string>
-    <string name="dialog_review_yes">Write a review</string>
     <string name="dialog_review_no">Later</string>
     <string name="error_download_ad">Error loading ads</string>
-    <string name="internet_error">There is no internet</string>
-    <string name="time_mystery">An error occurred, try again after 3 minutes</string>
-    <string name="error_name">Invalid name</string>
     <string name="attempt_is_added">Attempt added</string>
     <string name="alert_last_lvl">If you answer correctly, you will need an Internet connection</string>
+
+    <!--ЭКРАН ДЛЯ 2+ МЕСТ-->
+    <string name="your_place">your place:</string>
     <string name="finish_phrase_lose">Thank you so much for the game, I really hope you enjoyed it)
         I would be very pleased if you leave a review.</string>
-    <string name="finish_phrase_win_sendname">Eee, Hello, first winner! Send your name or nickname (which will be displayed on the home screen),
-                                              so everyone knows who is the smartest here:)</string>
-    <string name="finish_phrase_win">The new season is coming soon&#8230;</string>
+
+    <!--ЭКРАНЫ ДЛЯ ПОБЕДИТЕЛЕЙ-->
     <string name="write_email">Write to this email to contact me about the prize: </string>
-    <string name="winner_didnt_name">There is a winner, but he did not write his name</string>
+    <string name="finish_phrase_win_sendname">Hi winner! Send your name or nickname (which will be displayed on the home screen),
+                                              so everyone will know who is the smartest here:)</string>
+    <string name="finish_phrase_win">The new season is coming soon&#8230;</string>
+    <string name="error_name">Invalid name</string>
+    <string name="email_copy">Email copied</string>
+    <string name="write_review">leave a review</string>
+
+    <!--ХУЙ ПОЙМИ ГДЕ-->
+    <string name="dialog_review_mes">Leave a review?</string>
+    <string name="dialog_review_yes">Write a review</string>
+
+
 
     <!--Заключительные слова для 2+ мест-->
     <!--Реальные-->
