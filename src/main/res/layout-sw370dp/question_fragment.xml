@@ -93,10 +93,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/bottom_img" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
             android:weightSum="100"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -109,6 +108,11 @@
                 android:layout_height="match_parent"
                 android:layout_weight="50"
                 android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imgRight"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/back_translate_left" />
 
             <ImageView
@@ -117,10 +121,15 @@
                 android:layout_height="match_parent"
                 android:layout_weight="50"
                 android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imgLeft"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/back_translate_right" />
 
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
             android:id="@+id/imgTopRight"
