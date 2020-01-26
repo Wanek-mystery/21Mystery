@@ -45,6 +45,7 @@ import martian.mystery.controller.GetContextClass;
 import martian.mystery.controller.Progress;
 import martian.mystery.R;
 import martian.mystery.controller.RequestController;
+import martian.mystery.controller.UpdateDataController;
 import martian.mystery.data.ResponseFromServer;
 import martian.mystery.controller.StoredData;
 import retrofit2.Call;
@@ -260,8 +261,19 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btnNext: {
-                    Intent questionIntent = new Intent(MainActivity.this, QuestionActivity.class);
-                    startActivityForResult(questionIntent, 1);
+                    Intent intent;
+                    if(Progress.getInstance().getLevel() < 22) {
+                        intent = new Intent(MainActivity.this,QuestionActivity.class);
+                    } else if(Progress.getInstance().getLevel() == 22) {
+                        if(!UpdateDataController.getInstance().winnerIsChecked()) {
+                            intent = new Intent(MainActivity.this,QuestionActivity.class);
+                        } else if(!StoredData.getDataBool(StoredData.DATA_IS_WINNER)) {
+                            intent = new Intent(MainActivity.this,DoneActivity.class);
+                        } else {
+                            intent = new Intent(MainActivity.this,DoneFirstActivity.class);
+                        }
+                    } else intent = null;
+                    startActivityForResult(intent, 1);
                     break;
                 }
                 case R.id.btnHelp: {
@@ -345,6 +357,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void increaseProgressAnimation(int differenceLvl) {
+            Log.d(TAG, "increaseProgressAnimation: level = " + Progress.getInstance().getLevel());
             int currentLevel = Progress.getInstance().getLevel() - 1;
             if(currentLevel == 0) {
                 imgFirst.setAlpha(0.5f);
