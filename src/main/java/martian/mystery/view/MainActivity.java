@@ -6,14 +6,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Path;
 import android.graphics.Point;
+import android.graphics.Shader;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Spanned;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -31,18 +38,21 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.OnSuccessListener;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import martian.mystery.BuildConfig;
 import martian.mystery.controller.GetContextClass;
 import martian.mystery.controller.Progress;
 import martian.mystery.R;
 import martian.mystery.controller.RequestController;
+import martian.mystery.controller.UpdateDataController;
 import martian.mystery.data.ResponseFromServer;
 import martian.mystery.controller.StoredData;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import yanzhikai.textpath.AsyncTextPathView;
+import yanzhikai.textpath.calculator.MidCalculator;
 
 import static martian.mystery.controller.StoredData.DATA_COUNT_LAUNCH_APP;
 
@@ -51,8 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnNext;
     private TextView tvWinner;
+    private ConstraintLayout clBottom;
     private AsyncTextPathView tvPrize;
-    private TextView tvSeason;
+    private ConstraintLayout.LayoutParams tvPrizeParams;
+    private ImageView imgSeason;
     private TextView tvProgressPick1;
     private TextView tvProgressPick2;
     private TextView tvProgressPick3;
@@ -84,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
     private ObjectAnimator animBtnHelp;
     private AppUpdateManager appUpdateManager;
     private AssistentDialog assistentDialogRules;
+
+    private String TAG = "my";
 
 
     @Override
@@ -132,17 +146,19 @@ public class MainActivity extends AppCompatActivity {
                 String.valueOf(
                 StoredData.getDataString(StoredData.DATA_WINS,
                         getResources().getString(R.string.no_winner_text))));
+        clBottom = findViewById(R.id.clBottom);
         tvPrize = findViewById(R.id.tvPrize);
         tvPrize.setText(
                 String.valueOf(
                 StoredData.getDataString(StoredData.DATA_PRIZE,
                         getResources().getString(R.string.prize))));
-        tvPrize.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        tvSeason = findViewById(R.id.tvSeason);
-        tvSeason.setText(
+        tvPrize.setOnClickListener(onClickListener);
+        tvPrize.setCalculator(new MidCalculator());
+        imgSeason = findViewById(R.id.imgSeason);
+        /*tvSeason.setText(
                 String.valueOf(
                 StoredData.getDataString(StoredData.DATA_SEASON,
-                        getResources().getString(R.string.season))));
+                        getResources().getString(R.string.season))));*/
 
         btnNext.setOnClickListener(onClickListener);
         btnHelp.setOnClickListener(onClickListener);
@@ -245,8 +261,19 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btnNext: {
-                    Intent questionIntent = new Intent(MainActivity.this, QuestionActivity.class);
-                    startActivityForResult(questionIntent, 1);
+                    Intent intent;
+                    if(Progress.getInstance().getLevel() < 22) {
+                        intent = new Intent(MainActivity.this,QuestionActivity.class);
+                    } else if(Progress.getInstance().getLevel() == 22) {
+                        if(!UpdateDataController.getInstance().winnerIsChecked()) {
+                            intent = new Intent(MainActivity.this,QuestionActivity.class);
+                        } else if(!StoredData.getDataBool(StoredData.DATA_IS_WINNER)) {
+                            intent = new Intent(MainActivity.this,DoneActivity.class);
+                        } else {
+                            intent = new Intent(MainActivity.this,DoneFirstActivity.class);
+                        }
+                    } else intent = null;
+                    startActivityForResult(intent, 1);
                     break;
                 }
                 case R.id.btnHelp: {
@@ -254,9 +281,14 @@ public class MainActivity extends AppCompatActivity {
                     animController.clickRules();
                     break;
                 }
+                case R.id.tvPrize: {
+                    tvPrize.startAnimation(0,1);
+                }
             }
         }
     };
+
+
 
     // внутренние контроллеры и потоки -----------------------------------------------------------------------------
     private class AnimationController {
@@ -325,6 +357,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void increaseProgressAnimation(int differenceLvl) {
+            Log.d(TAG, "increaseProgressAnimation: level = " + Progress.getInstance().getLevel());
             int currentLevel = Progress.getInstance().getLevel() - 1;
             if(currentLevel == 0) {
                 imgFirst.setAlpha(0.5f);
@@ -544,21 +577,24 @@ public class MainActivity extends AppCompatActivity {
                                             StoredData.saveData(StoredData.DATA_WINS,getResources().getString(R.string.no_winner_text));
                                         }
                                     }
-                                    if(!responseFromServer.getPrize().equals(StoredData.getDataString(StoredData.DATA_PRIZE,GetContextClass.getContext().getResources().getString(R.string.prize)))) {
-                                        StoredData.saveData(StoredData.DATA_PRIZE,responseFromServer.getPrize());
-                                        tvPrize = findViewById(R.id.tvPrize);
-                                        tvPrize.setText(responseFromServer.getPrize());
-                                        tvPrize.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                    String prize; // переменная хранит приз в зависимости от языка устройства
+                                    if(Locale.getDefault().getLanguage() == "ru") {
+                                        prize = responseFromServer.getPrize().split(",")[0];
+                                    } else prize = responseFromServer.getPrize().split(",")[1];
+                                    if(!prize.equals(StoredData.getDataString(StoredData.DATA_PRIZE,GetContextClass.getContext().getResources().getString(R.string.prize)))) {
+                                        StoredData.saveData(StoredData.DATA_PRIZE,prize);
+                                        tvPrize.setText(prize);
                                         tvPrize.startAnimation(0,1);
                                     }
                                     if(!responseFromServer.getSeason().equals(StoredData.getDataString(StoredData.DATA_SEASON,GetContextClass.getContext().getResources().getString(R.string.season)))) {
                                         StoredData.saveData(StoredData.DATA_SEASON,responseFromServer.getSeason());
-                                        tvSeason.setText(responseFromServer.getSeason());
+                                        //tvSeason.setText(responseFromServer.getSeason());
                                     }
                                 }
 
                                 @Override
                                 public void onFailure(Call<ResponseFromServer> call, Throwable t) {
+                                    Log.d(TAG, "onFailure: " + t.toString());
                                 }
                             });
 

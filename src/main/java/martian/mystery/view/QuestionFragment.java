@@ -327,11 +327,6 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
 
     private class AnimationController {
 
-        private float widthScreen;
-        public AnimationController() {
-            widthScreen = getWidth();
-        }
-
         private float getWidth() {
             Display display = getActivity().getWindowManager().getDefaultDisplay();
             Point size = new Point();
@@ -344,8 +339,8 @@ public class QuestionFragment extends Fragment implements RewardedVideoAdListene
         }
 
         public void focusEditText() {
-            imgRight.animate().translationX((widthScreen-dpToPx(48))/2).setDuration(3000);
-            imgLeft.animate().translationX(-(widthScreen-dpToPx(48))/2).setDuration(3000);
+            imgRight.animate().translationX((getWidth()-dpToPx(48))/2).setDuration(3000);
+            imgLeft.animate().translationX(-(getWidth()-dpToPx(48))/2).setDuration(3000);
         }
 
         private void changeLevelTop() {
