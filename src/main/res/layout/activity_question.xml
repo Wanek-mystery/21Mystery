@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.motion.widget.MotionLayout
+    android:id="@+id/mlMain"
+    app:layoutDescription="@xml/green_mark_anim"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -17,6 +19,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_arrow_back" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgGreenMark"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:maxHeight="50dp"
+        android:maxWidth="50dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvQuestion"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/green_mark_complete" />
 
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/mlLevel"
@@ -59,18 +76,18 @@
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
+        android:gravity="bottom"
         android:text="Кто первый полетел в космос?"
         android:textAlignment="center"
-        android:gravity="bottom"
         android:textColor="#fff"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.155" />
+        app:layout_constraintVertical_bias="0.25" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clInputAnswer"
@@ -259,4 +276,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

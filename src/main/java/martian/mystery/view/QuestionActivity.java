@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.AsyncTask;
@@ -68,7 +69,9 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private ImageView imgLeft;
     private ImageView imgRight;
     private ImageView imgBottom;
+    private ImageView imgGreenMark;
     private ImageView imgBackToMain;
+    private MotionLayout mlMain;
     private MotionLayout mlLevel;
 
     private QuestionAnswerController questionAnswerController = new QuestionAnswerController();
@@ -174,6 +177,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         tvQuestion = findViewById(R.id.tvQuestion);
         tvTopLvl = findViewById(R.id.tvTop);
         tvBottomLvl = findViewById(R.id.tvBottom);
+        imgGreenMark = findViewById(R.id.imgGreenMark);
         etAnswer = findViewById(R.id.etAnswer);
         btnNext = findViewById(R.id.btnNextQuestion);
         progressAdLoad = findViewById(R.id.progressLoadAd);
@@ -182,6 +186,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         imgRight = findViewById(R.id.imgRight);
         imgBottom = findViewById(R.id.imgWithLine);
         imgBackToMain = findViewById(R.id.imgBackToMain);
+        mlMain = findViewById(R.id.mlMain);
         mlLevel = findViewById(R.id.mlLevel);
 
         btnNext.setOnClickListener(onClickListener);
@@ -421,6 +426,14 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
         private void changeQuestion() {
             imgBottomDrawable.reverseTransition(500);
+            mlMain.transitionToStart();
+        }
+
+        private void markAnimate() {
+            Drawable drawable = imgGreenMark.getDrawable();
+            if(drawable instanceof Animatable) {
+                ((Animatable) drawable).start();
+            }
         }
 
         private void changeLevelTop() {
@@ -613,6 +626,8 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                 if(questionAnswerController.checkAnswer(answerOfUser)) { // если ответ правильный
                     animationController.editTextRightAnswer();
                     answerIsRight = true;
+                    mlMain.transitionToEnd();
+                    animationController.markAnimate();
                     if(Progress.getInstance().getLevel() <= 20) {
                         animationController.animationBtnNext(true);
                         if(Progress.getInstance().getLevel() == 20) nextLvlIsLast = true;
