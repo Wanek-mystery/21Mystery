@@ -399,7 +399,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
@@ -455,14 +455,13 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnNext"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/back_btn_continue"
             android:elevation="20dp"
             android:padding="9dp"
-            android:stateListAnimator="@drawable/click_btn_continue"
             android:text="@string/continue_game"
             android:textColor="#fff"
             android:translationZ="15dp"
@@ -530,9 +529,9 @@
             android:id="@+id/tvPrize"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="7dp"
             android:text="@string/prize"
             android:textAlignment="center"
             app:autoStart="true"
@@ -547,7 +546,8 @@
             app:showInStart="true"
             app:showPainter="true"
             app:textInCenter="true"
-            app:textSize="32sp" />
+            app:pathStrokeWidth="1.5dp"
+            app:textSize="39sp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

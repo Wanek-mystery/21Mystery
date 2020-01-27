@@ -456,12 +456,11 @@
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/back_btn_continue"
             android:elevation="20dp"
             android:padding="9dp"
-            android:stateListAnimator="@drawable/click_btn_continue"
             android:text="@string/continue_game"
             android:textColor="#fff"
             android:translationZ="15dp"
@@ -531,9 +530,9 @@
             android:id="@+id/tvPrize"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="13dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="7dp"
+            android:layout_marginBottom="12dp"
             android:text="@string/prize"
             android:textAlignment="center"
             app:autoStart="true"
@@ -548,7 +547,8 @@
             app:showInStart="true"
             app:showPainter="true"
             app:textInCenter="true"
-            app:textSize="39sp" />
+            app:pathStrokeWidth="1.5dp"
+            app:textSize="45sp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

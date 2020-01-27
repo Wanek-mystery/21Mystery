@@ -39,7 +39,7 @@
     <string name="no_internet">Отсутсвует подключение к интернету</string>
     <string name="no_server">При подключении к серверу произошла ошибка</string>
     <string name="alert_last_lvl_title">Перед финишем</string>
-    <string name="error_download_ad">Ошибка при загрузке рекламы</string>
+    <string name="error_download_ad">Реклама еще не готова</string>
     <string name="internet_error">Что-то с интернетом</string>
     <string name="attempt_is_added">Попытка добавлена</string>
     <string name="alert_last_lvl">Если ты правильно ответишь на последнюю загадку, тебе понадобится подключение к интернету</string>

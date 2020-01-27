@@ -5,4 +5,8 @@
     <!-- Цвет фона, предпочтительно как в главной теме -->
     <item android:drawable="@color/colorPrimaryDark"/>
 
+    <!-- Лого приложения - 144dp версия иконки приложения -->
+    <item android:drawable="@drawable/logo_splash"
+        android:gravity="center" />
+
 </layer-list>

@@ -13,7 +13,7 @@ import retrofit2.Response;
 
 public class StatisticsController {
 
-    String TAG = "my";
+    String TAG = "my1";
 
     public StatisticsController() { }
 

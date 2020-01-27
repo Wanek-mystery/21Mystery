@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,12 +64,12 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private EditText etAnswer;
     private Button btnNext;
     private Button btnCheckAnswer;
+    private ProgressBar progressAdLoad;
     private ImageView imgLeft;
     private ImageView imgRight;
     private ImageView imgBottom;
     private ImageView imgBackToMain;
     private MotionLayout mlLevel;
-    private MotionLayout mlInputAnswer;
 
     private QuestionAnswerController questionAnswerController = new QuestionAnswerController();
     private StatisticsController statisticsController;
@@ -76,6 +77,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private ShowAdThread showAdThread;
     private AnimationController animationController;
     private AttemptsController attemptsController;
+    private ProgressBarAdController progressBarAdController;
 
     private final int ALPHA_DOWN = 1;
     private final int ALPHA_UP = 2;
@@ -89,9 +91,12 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private final int CHECK_LOAD_AD = 11;
     private final int SHOW_AD = 12;
     private final int TRANSITION_RESET = 13;
+    private final int SHOW_PROGRESS = 14;
+    private final int HIDE_PROGRESS = 15;
 
     private int countErrorLoadAd = 0;
 
+    private String adBlock;
     private boolean adLoaded = false;
     private boolean adFailed = false;
 
@@ -106,6 +111,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         // Use an activity context to get the rewarded video instance.
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         mRewardedVideoAd.setRewardedVideoAdListener(this);
+        adBlock = this.getResources().getString(R.string.ad_block);
 
         handler = new Handler() {
             @Override
@@ -153,6 +159,14 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                         btnNext.setVisibility(View.INVISIBLE);
                         break;
                     }
+                    case SHOW_PROGRESS: {
+                        progressBarAdController.showProgress();
+                        break;
+                    }
+                    case HIDE_PROGRESS: {
+                        progressBarAdController.hideProgress();
+                        break;
+                    }
                 }
             }
         };
@@ -162,6 +176,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         tvBottomLvl = findViewById(R.id.tvBottom);
         etAnswer = findViewById(R.id.etAnswer);
         btnNext = findViewById(R.id.btnNextQuestion);
+        progressAdLoad = findViewById(R.id.progressLoadAd);
         btnCheckAnswer = findViewById(R.id.btnCheckAnswer);
         imgLeft = findViewById(R.id.imgLeft);
         imgRight = findViewById(R.id.imgRight);
@@ -181,6 +196,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             }
         });
 
+        progressBarAdController = new ProgressBarAdController();
         statisticsController = new StatisticsController();
         animationController = new AnimationController();
         attemptsController = new AttemptsController();
@@ -263,8 +279,9 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     }
 
     private void loadRewardedVideoAd() {
-        mRewardedVideoAd.loadAd(GetContextClass.getContext().getResources().getString(R.string.ad_block),
+        mRewardedVideoAd.loadAd(adBlock,
                 new AdRequest.Builder().build());
+        progressBarAdController.setCurrentState(1);
     }
     @Override
     public void onRewarded(RewardItem reward) {
@@ -283,21 +300,24 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
     @Override
     public void onRewardedVideoAdFailedToLoad(int errorCode) {
-        if(errorCode == 2 && (countErrorLoadAd %8 == 0)) {
+        Log.d(TAG, "onRewardedVideoAdFailedToLoad: " + errorCode);
+        if(errorCode == 2 /*&& (countErrorLoadAd %8 == 0)*/) {
             Toast.makeText(GetContextClass.getContext(), R.string.internet_error, Toast.LENGTH_SHORT).show();
-        } else if(countErrorLoadAd %8 == 0) {
+        } else if(/*countErrorLoadAd %8 == 0*/ errorCode == 0) {
             Toast.makeText(GetContextClass.getContext(), R.string.error_download_ad, Toast.LENGTH_SHORT).show();
         }
         countErrorLoadAd++;
+        progressBarAdController.setCurrentState(2);
         LoadAdAfterFail loadAdAfterFail = new LoadAdAfterFail();
-        loadAdAfterFail.execute();
+        //loadAdAfterFail.execute();
     }
 
     @Override
     public void onRewardedVideoAdLoaded() {
         adLoaded = true;
         countErrorLoadAd = 0;
-        //Toast.makeText(GetContextClass.getContext(), "Реклама загружена", Toast.LENGTH_SHORT).show();
+        progressBarAdController.setCurrentState(0);
+        Toast.makeText(GetContextClass.getContext(), "Реклама загружена", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -313,6 +333,24 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
 
     // внутренние контроллеры и потоки -----------------------------------------------------------------------------
+    private class ProgressBarAdController {
+
+        public int getCurrentState() {
+            return currentState;
+        }
+
+        public void setCurrentState(int currentState) {
+            this.currentState = currentState;
+        }
+
+        public int currentState;
+        public void showProgress() {
+            progressAdLoad.setVisibility(View.VISIBLE);
+        }
+        public void hideProgress() {
+            progressAdLoad.setVisibility(View.INVISIBLE);
+        }
+    }
     private class AttemptsController {
 
         public void getAttemptByAd() { // показать рекламу, чтобы добавить попытку
@@ -517,7 +555,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         protected Void doInBackground(Void... voids) {
             try {
                 TimeUnit.SECONDS.sleep(2);
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -534,7 +571,13 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
         @Override
         public void run() {
-            for(int i = 0; i < 29; i++) {
+            handler.sendEmptyMessage(SHOW_PROGRESS);
+            if(progressBarAdController.getCurrentState() != 1) {
+                handler.sendEmptyMessage(LOAD_AD);
+            }
+            Log.d(TAG, "run: зашли в поток");
+            while(progressBarAdController.getCurrentState() != 2) {
+                Log.d(TAG, "run: зашли в цикл");
                 handler.sendEmptyMessage(CHECK_LOAD_AD);
                 try {
                     TimeUnit.MILLISECONDS.sleep(78);
@@ -542,6 +585,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     e.printStackTrace();
                 }
                 if(adLoaded) {
+                    handler.sendEmptyMessage(HIDE_PROGRESS);
                     handler.sendEmptyMessage(SHOW_AD);
                     break;
                 }
@@ -553,6 +597,9 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     }
                 }
             }
+            Log.d(TAG, "run: вышли из цикла");
+            progressBarAdController.setCurrentState(0);
+            handler.sendEmptyMessage(HIDE_PROGRESS);
         }
     }
     private class CheckTask extends AsyncTask<Void, Void, Boolean> { // проверка ответа
@@ -672,18 +719,5 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             finish();
         } catch (NullPointerException ex) {
         }
-    }*/
-
-    /*public void replaceFragment(Class fragmentClass) {
-        Fragment fragment = null;
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.clQuestion, fragment)
-                .commit();
     }*/
 }

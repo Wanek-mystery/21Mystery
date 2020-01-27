@@ -106,7 +106,7 @@
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.1.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.arch.core:core-common:2.1.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.annotation:annotation:1.1.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout-solver:2.0.0-beta3@jar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout-solver:2.0.0-beta4@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.auto.value:auto-value-annotations:1.6.5@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.dagger:dagger:2.24@jar" level="project" />
     <orderEntry type="library" name="Gradle: javax.inject:javax.inject:1@jar" level="project" />
@@ -135,7 +135,7 @@
     <orderEntry type="library" name="Gradle: io.reactivex.rxjava2:rxjava:2.1.14@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.reactivestreams:reactive-streams:1.0.2@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-inappmessaging-display:19.0.2@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout:2.0.0-beta3@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout:2.0.0-beta4@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.material:material:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat:1.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-ads:18.3.0@aar" level="project" />
@@ -205,14 +205,6 @@
     <orderEntry type="library" name="Gradle: io.reactivex.rxjava2:rxandroid:2.0.2@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-ads-base:18.3.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.yanzhikai:TextPathView:0.2.1@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.hanks:htextview-base:0.1.6@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.hanks:htextview-fade:0.1.6@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.hanks:htextview-line:0.1.6@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.hanks:htextview-rainbow:0.1.6@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.hanks:htextview-typer:0.1.6@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.hanks:htextview-scale:0.1.6@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.hanks:htextview-evaporate:0.1.6@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.hanks:htextview-fall:0.1.6@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.florent37:viewtooltip:1.2.0@aar" level="project" />
   </component>
 </module>

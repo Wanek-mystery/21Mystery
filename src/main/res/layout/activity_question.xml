@@ -244,6 +244,19 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
+        <ProgressBar
+            android:id="@+id/progressLoadAd"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@+id/btnNextQuestion"
+            app:layout_constraintStart_toEndOf="@+id/btnCheckAnswer"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -578,7 +578,7 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     }
                                     String prize; // переменная хранит приз в зависимости от языка устройства
-                                    if(Locale.getDefault().getLanguage() == "ru") {
+                                    if(Locale.getDefault().getLanguage().equals("ru")) {
                                         prize = responseFromServer.getPrize().split(",")[0];
                                     } else prize = responseFromServer.getPrize().split(",")[1];
                                     if(!prize.equals(StoredData.getDataString(StoredData.DATA_PRIZE,GetContextClass.getContext().getResources().getString(R.string.prize)))) {

@@ -36,7 +36,7 @@
     <string name="no_server">An error occurred while connecting to the server</string>
     <string name="alert_last_lvl_title">Before the finish</string>
     <string name="dialog_review_no">Later</string>
-    <string name="error_download_ad">Error loading ads</string>
+    <string name="error_download_ad">The ad is not ready yet</string>
     <string name="attempt_is_added">Attempt added</string>
     <string name="alert_last_lvl">If you answer correctly, you will need an Internet connection</string>
 
