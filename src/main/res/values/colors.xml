@@ -4,7 +4,7 @@
     <color name="colorPrimaryLight">#022F55</color>
     <color name="colorPrimaryDark">#000D1B</color>
     <color name="colorAccent">#00D7DC</color>
-    <color name="colorPrize">#1B8621</color>
+    <color name="colorPrize">#00D7DC</color>
     <color name="strokeEditText">#A86F10</color>
     <color name="colorAdd">#FF99FF2A</color>
     <color name="back">#46408E</color>

@@ -586,10 +586,10 @@ public class MainActivity extends AppCompatActivity {
                                         tvPrize.setText(prize);
                                         tvPrize.startAnimation(0,1);
                                     }
-                                    if(!responseFromServer.getSeason().equals(StoredData.getDataString(StoredData.DATA_SEASON,GetContextClass.getContext().getResources().getString(R.string.season)))) {
+                                    /*if(!responseFromServer.getSeason().equals(StoredData.getDataString(StoredData.DATA_SEASON,GetContextClass.getContext().getResources().getString(R.string.season)))) {
                                         StoredData.saveData(StoredData.DATA_SEASON,responseFromServer.getSeason());
                                         //tvSeason.setText(responseFromServer.getSeason());
-                                    }
+                                    }*/
                                 }
 
                                 @Override

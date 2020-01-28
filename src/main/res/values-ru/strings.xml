@@ -15,18 +15,11 @@
         На каждую загадку дается 3 попытки. Если они закончатся, всегда можно получить еще одну, посмотрев рекламу.
         Если вдруг не стал первым, после 21-ой загадки можешь узнать свое место.
         Также чем дольше нет победителя, тем больше приз.</string>
-    <string name="rules_optionally">Дополнительно</string>
-    <string name="rules_2">Ваши отзывы очень важны.
-        Пишите, что не понравилось, что нужно добавить, что изменить, какие загадки вышли неудачными.
-        Будьте готовы к тому, что загадки в этом сезоне будут неидельны, но после ваших резенций в следующем сезоне ситуация изменится в лучшую сторону.
-        Люблю, обнимаю&#128536;
-        Вместе сделаем игру лучше!</string>
-    <string name="read_rules_ok_btn">Принял</string>
+    <string name="read_rules_ok_btn">Ок</string>
     <string name="prize_text">Приз:</string>
-    <string name="prize">1000 рублей</string>
-    <string name="season">Сезон 3</string>
+    <string name="prize">500 рублей</string>
     <string name="force_update_season">Хорошие новости, вышел новый сезон, скорей обновляйся:) (Предыдущий сезон теперь неактивный)</string>
-    <string name="force_update_tech">Жутко извиняюсь, но нужно обновиться&#128527;</string>
+    <string name="force_update_tech">Жутко извиняюсь, но нужно обновиться&#128528;</string>
     <string name="update_btn">Обновить</string>
 
 
@@ -46,14 +39,15 @@
 
 
     <!--ЭКРАНЫ ДЛЯ 2+ МЕСТ-->
-    <string name="finish_phrase_lose">Огромное спасибо за игру, очень надеюсь, что тебе понравилось:)
-        Мне будет очень приятно, если ты оставишь отзыв(расскажи какие загадки интересные, а какие нет, к примеру).</string>
+    <string name="finish_phrase_lose">Огромное спасибо за игру, очень надеюсь, что тебе понравилось&#128527;\n
+        Мне будет очень приятно, если ты оставишь отзыв.</string>
     <string name="write_review">оставить отзыв</string>
     <string name="your_place">Твое место:</string>
 
 
     <!--ЭКРАНЫ ДЛЯ ПОБЕДИТЕЛЕЙ-->
-    <string name="finish_phrase_win_sendname">Мои поздравления! Отправь свое имя или ник (который будет отображаться на главном экране),
+    <string name="finish_phrase_win_sendname">Мои поздравления!
+        Отправь свое имя или ник (который будет отображаться на главном экране),
                                               чтобы все знали, кто здесь самый умный:)</string>
     <string name="error_name">Недопустимое имя</string>
     <string name="finish_phrase_win">Новый сезон уже скоро&#8230;</string>
@@ -71,7 +65,7 @@
     <!--______________________________________________________________________________________-->
     <!--Заключительные слова для 2+ мест-->
     <!--Для тестов-->
-    <string name="place2_congratulations"></string>
+    <!--<string name="place2_congratulations"></string>
     <string name="place3_congratulations"></string>
     <string name="place4_congratulations"></string>
     <string name="place5_congratulations"></string>
@@ -83,10 +77,10 @@
     <string name="place11_congratulations"></string>
     <string name="place12_congratulations"></string>
     <string name="place13_congratulations"></string>
-    <string name="place14_congratulations"></string>
+    <string name="place14_congratulations"></string>-->
 
     <!--Реальные-->
-    <!--<string name="place2_congratulations">Второе место это как первое, только на 1 меньше. </string>
+    <string name="place2_congratulations">Второе место это как первое, только на 1 меньше. </string>
     <string name="place3_congratulations">Главное участие, а не победа! - говорят неудачники. Ты же не из таких?)</string>
     <string name="place4_congratulations">Четвертое место конечно не первое, зато 4 больше, чем 1 и 2 вместе взятые</string>
     <string name="place5_congratulations">Не победил, зато получил пятерку</string>
@@ -98,7 +92,7 @@
     <string name="place11_congratulations">Поздравляю, ты выиграл(а) палочки для еды</string>
     <string name="place12_congratulations">Когда мне было 12 лет, мне было 12 лет</string>
     <string name="place13_congratulations">Только не говори, что сегодня пятница</string>
-    <string name="place14_congratulations">14 минут придумывал шутку к 14 месту, так и не придумал</string>-->
+    <string name="place14_congratulations">14 минут придумывал шутку к 14 месту, так и не придумал</string>
     <string name="place_congratulations_default"></string>
 
     <!-- загадки(вопросы) -->
