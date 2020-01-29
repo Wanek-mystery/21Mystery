@@ -1,26 +1,17 @@
 package martian.mystery.view;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.animation.ObjectAnimator;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Path;
 import android.graphics.Point;
-import android.graphics.Shader;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.Spanned;
-import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -52,7 +43,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import yanzhikai.textpath.AsyncTextPathView;
-import yanzhikai.textpath.calculator.MidCalculator;
+import yanzhikai.textpath.calculator.AroundCalculator;
 
 import static martian.mystery.controller.StoredData.DATA_COUNT_LAUNCH_APP;
 
@@ -61,10 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnNext;
     private TextView tvWinner;
-    private ConstraintLayout clBottom;
     private AsyncTextPathView tvPrize;
-    private ConstraintLayout.LayoutParams tvPrizeParams;
-    private ImageView imgSeason;
     private TextView tvProgressPick1;
     private TextView tvProgressPick2;
     private TextView tvProgressPick3;
@@ -92,12 +80,12 @@ public class MainActivity extends AppCompatActivity {
     private CheckForceUpdateTask checkForceUpdateTask;
     private ProgressViewController progressViewController;
     private AnimationController animController;
-    private Handler handler;
     private ObjectAnimator animBtnHelp;
     private AppUpdateManager appUpdateManager;
     private AssistentDialog assistentDialogRules;
 
-    private String TAG = "my";
+    private boolean existWinner = false; // наличие победителя
+    private String linkToWinner = "none"; // ссылка на профиль победителя в соц сети
 
 
     @Override
@@ -113,12 +101,6 @@ public class MainActivity extends AppCompatActivity {
         btnHelp = findViewById(R.id.btnHelp);
         imgLast = findViewById(R.id.imgLastCircleLvl);
         imgFirst = findViewById(R.id.imgFirstCircleLvl);
-
-        handler = new Handler() {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-            }
-        };
 
         // все что между первым и последним уровнем
         imgLvl2 = findViewById(R.id.imgLvl2);
@@ -146,19 +128,14 @@ public class MainActivity extends AppCompatActivity {
                 String.valueOf(
                 StoredData.getDataString(StoredData.DATA_WINS,
                         getResources().getString(R.string.no_winner_text))));
-        clBottom = findViewById(R.id.clBottom);
+        tvWinner.setOnClickListener(onClickListenerWinner);
         tvPrize = findViewById(R.id.tvPrize);
         tvPrize.setText(
                 String.valueOf(
                 StoredData.getDataString(StoredData.DATA_PRIZE,
                         getResources().getString(R.string.prize))));
         tvPrize.setOnClickListener(onClickListener);
-        tvPrize.setCalculator(new MidCalculator());
-        imgSeason = findViewById(R.id.imgSeason);
-        /*tvSeason.setText(
-                String.valueOf(
-                StoredData.getDataString(StoredData.DATA_SEASON,
-                        getResources().getString(R.string.season))));*/
+        tvPrize.setCalculator(new AroundCalculator());
 
         btnNext.setOnClickListener(onClickListener);
         btnHelp.setOnClickListener(onClickListener);
@@ -249,13 +226,36 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    public static float dpToPx(float dp){
-        return dp * ((float) GetContextClass.getContext().getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-    }
-    private Spanned textToSpannedWithUnderline(String text) {
-        return android.text.Html.fromHtml("<u>" + text + "</u>");
-    }
+    View.OnClickListener onClickListenerWinner = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {  //обработчик касаний для имени победителя (tvPrize)
+            if(existWinner) {
+                if(!linkToWinner.equals("none")) {
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("", linkToWinner);
+                    clipboard.setPrimaryClip(clip);
 
+                    ViewTooltip
+                            .on(MainActivity.this, tvWinner)
+                            .autoHide(true, 1500)
+                            .corner(30)
+                            .position(ViewTooltip.Position.BOTTOM)
+                            .withShadow(false)
+                            .text(getResources().getString(R.string.link_towinner_copied))
+                            .show();
+                }
+            } else {
+                ViewTooltip
+                        .on(MainActivity.this, tvWinner)
+                        .autoHide(true, 4000)
+                        .corner(30)
+                        .position(ViewTooltip.Position.BOTTOM)
+                        .withShadow(false)
+                        .text(getResources().getString(R.string.winner_update_info))
+                        .show();
+            }
+        }
+    };
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -287,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
 
 
 
@@ -357,7 +358,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void increaseProgressAnimation(int differenceLvl) {
-            Log.d(TAG, "increaseProgressAnimation: level = " + Progress.getInstance().getLevel());
             int currentLevel = Progress.getInstance().getLevel() - 1;
             if(currentLevel == 0) {
                 imgFirst.setAlpha(0.5f);
@@ -563,8 +563,9 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(Call<ResponseFromServer> call, Response<ResponseFromServer> response) {
                                     ResponseFromServer responseFromServer = response.body();
+                                    existWinner = (responseFromServer.getExistWinner() == 1);
                                     if(!responseFromServer.getWinner().equals(StoredData.getDataString(StoredData.DATA_WINS,GetContextClass.getContext().getResources().getString(R.string.no_winner_text)))) {
-                                        if(responseFromServer.getExistWinner() == 1) {
+                                        if(existWinner) {
                                             if(responseFromServer.getWinner().equals("none")) {
                                                 StoredData.saveData(StoredData.DATA_WINS,getResources().getString(R.string.winner_didnt_name));
                                                 tvWinner.setText(getResources().getString(R.string.winner_didnt_name));
@@ -586,16 +587,17 @@ public class MainActivity extends AppCompatActivity {
                                         tvPrize.setText(prize);
                                         tvPrize.startAnimation(0,1);
                                     }
-                                    /*if(!responseFromServer.getSeason().equals(StoredData.getDataString(StoredData.DATA_SEASON,GetContextClass.getContext().getResources().getString(R.string.season)))) {
-                                        StoredData.saveData(StoredData.DATA_SEASON,responseFromServer.getSeason());
-                                        //tvSeason.setText(responseFromServer.getSeason());
-                                    }*/
+
+                                    // проверяем есть ли ссылка на ооцсеть победителя
+                                    if(existWinner) {
+                                        if(!responseFromServer.getLinktowinner().equals("none")) {
+                                            linkToWinner = responseFromServer.getLinktowinner();
+                                        } else linkToWinner = "none";
+                                    }
                                 }
 
                                 @Override
-                                public void onFailure(Call<ResponseFromServer> call, Throwable t) {
-                                    Log.d(TAG, "onFailure: " + t.toString());
-                                }
+                                public void onFailure(Call<ResponseFromServer> call, Throwable t) { }
                             });
 
                     try {

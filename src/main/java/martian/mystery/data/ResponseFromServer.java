@@ -6,11 +6,20 @@ public class ResponseFromServer { // ответ от сервера завора
     private String prize; // приз
     private String season; // сезон
     private String email; // контакт для связи
+    private String linkwinner; // ссылка на соц сеть победителя
     private int result; // результат запроса
     private int existwinner; // наличие победителя
     private int updateapp; // обновление приложения
     private int updateforce; // принудительное обновление приложения
     private int place; // место в игре
+
+    public String getLinktowinner() {
+        return linkwinner;
+    }
+
+    public void setLinktowinner(String linktowinner) {
+        this.linkwinner = linktowinner;
+    }
 
     public int getUpdate() {
         return updateapp;

@@ -9,7 +9,7 @@ import martian.mystery.R;
 public class SecurityController {
 
     int[] arrOffset = {-1,1,-2,0,3,-2,-1,-2,1,-1,2,-2,2,-1,-3,2,2,-1,-1};
-    public boolean getQuestion(int number) {
+    public boolean getQuestion(int number) { // метод против взлома (проверка ответов на одинаковость)
         ArrayList<String> arrQuestions = new ArrayList<>();
         if(number == 21) {
             arrQuestions.addAll(Arrays.asList(GetContextClass.getContext().getResources().getString(R.string.awr1).split("!")));
@@ -64,16 +64,17 @@ public class SecurityController {
         }
 
         String[] answers = new String[cipherAnswers.length];
-        for(int i = 0; i < cipherAnswers.length; i++) {
-            String[] words = cipherAnswers[i].split(" ");
+        for(int i = 0; i < cipherAnswers.length; i++) { // уровень ответа
+            String[] words = cipherAnswers[i].split(" "); // разделяем на слова
             String[] charAnswer = new String[cipherAnswers.length];
-            for(int j = 0; j < words.length; j++) {
+            for(int j = 0; j < words.length; j++) { // уровень слова
                 char[] charOneWord = words[j].toCharArray();
-                for (int x = 0; x < charOneWord.length; x++) {
+                for (int x = 0; x < charOneWord.length; x++) { // уровень символа
                     charOneWord[x] += arrOffset[x];
                 }
                 words[j] = String.valueOf(charOneWord).concat(" ");
-                charAnswer[i] += words[j];
+                charAnswer[i] += words[j]; // здесь можно обрезать
+
             }
             answers[i] = charAnswer[i].trim().replaceAll("null","");
         }

@@ -3,7 +3,6 @@ package martian.mystery.controller;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.io.File;
 
 public class StoredData { // класс, реализующий доступ к сохраненным на устройстве данным
 
@@ -11,7 +10,6 @@ public class StoredData { // класс, реализующий доступ к 
     public static final String DATA_LEVEL = "game_level3";
     public static final String DATA_WINS = "wins3";
     public static final String DATA_PRIZE = "prize3";
-    public static final String DATA_SEASON = "season3";
     public static final String DATA_COUNT_ATTEMPTS = "count_attempts3";
     public static final String DATA_COUNT_LAUNCH_APP = "count_launch_app2"; // счетчик запусков лучше не менять
     public static final String DATA_WINNER_IS_SENDED = "winner_is_sended3";
@@ -57,25 +55,8 @@ public class StoredData { // класс, реализующий доступ к 
         return sharedPreferences.getBoolean(typeData,false);
     }
 
-    // стирание данных для нового сезона
-    /*public static boolean deleteDataSeason() {
-        // стираем уровень
-        SharedPreferences sharedPreferences = GetContextClass.getContext().getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(DATA_LEVEL,1);
 
-        // стираем попытки
-        editor.putInt(DATA_COUNT_ATTEMPTS,3);
-
-        // стираем победителя
-        editor.putString(DATA_WINS,GetContextClass.getContext().getResources().getString(R.string.no_winner_text));
-        editor.putBoolean(DATA_IS_WINNER,false);
-        editor.putBoolean(DATA_WINNER_IS_CHECKED,false);
-        editor.putBoolean(DATA_WINNER_IS_SENDED,false);
-
-        return editor.commit();
-    }*/
-    private static void clearSharedPreferences(Context ctx){
+    /*private static void clearSharedPreferences(Context ctx){
         File dir = new File(ctx.getFilesDir().getParent() + "/shared_prefs/");
         String[] children = dir.list();
         for (int i = 0; i < children.length; i++) {
@@ -88,5 +69,5 @@ public class StoredData { // класс, реализующий доступ к 
             // delete the files
             new File(dir, children[i]).delete();
         }
-    }
+    }*/
 }

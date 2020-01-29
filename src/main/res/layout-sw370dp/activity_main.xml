@@ -525,28 +525,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_weight="40" />
 
-        <!--<com.hanks.htextview.fade.FadeTextView
-            android:id="@+id/tvPrize"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="12dp"
-            android:textAlignment="center"
-            android:textSize="49sp"
-            android:letterSpacing="0.08"
-            android:lineSpacingMultiplier="1.3"
-            app:animationDuration="1500"
-            android:text="@string/prize"
-            android:fontFamily="@font/advent_pro_light"
-            android:textColor="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvPrizeText"
-            app:layout_constraintVertical_weight="60" />-->
-
 
         <yanzhikai.textpath.AsyncTextPathView
             android:id="@+id/tvPrize"
@@ -557,7 +535,7 @@
             android:layout_marginBottom="24dp"
             android:textAlignment="center"
             app:autoStart="true"
-            app:duration="5000"
+            app:duration="6000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

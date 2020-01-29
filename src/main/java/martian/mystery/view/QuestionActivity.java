@@ -26,16 +26,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.motion.widget.MotionLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -86,7 +82,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private final int ALPHA_UP = 2;
     private final int LOAD_AD = 3;
     private final int SET_RED_ET = 4;
-    private final int SET_GREEN_ET = 5;
     private final int SET_NORMAL = 6;
     private final int ALPHA_DOWN_BTNNEXT = 7;
     private final int SET_INVISIBLE_BTNNEXT = 8;
@@ -97,19 +92,16 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private final int SHOW_PROGRESS = 14;
     private final int HIDE_PROGRESS = 15;
 
-    private int countErrorLoadAd = 0;
 
     private String adBlock;
     private boolean adLoaded = false;
     private boolean adFailed = false;
 
-    String TAG = "my";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
 
-        // comment for change
         MobileAds.initialize(this, "ca-app-pub-3637770884242866~3613287665");
         // Use an activity context to get the rewarded video instance.
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
@@ -239,7 +231,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     @Override
     public void onResume() {
         super.onResume();
-        //mRewardedVideoAd.resume(getActivity());
         if(!mRewardedVideoAd.isLoaded()) loadRewardedVideoAd();
         attemptsController.setAttemptsOnScreen();
         if(Progress.getInstance().getLevel() == 22) {
@@ -305,24 +296,19 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
     @Override
     public void onRewardedVideoAdFailedToLoad(int errorCode) {
-        Log.d(TAG, "onRewardedVideoAdFailedToLoad: " + errorCode);
-        if(errorCode == 2 /*&& (countErrorLoadAd %8 == 0)*/) {
+        if(errorCode == 2) {
             Toast.makeText(GetContextClass.getContext(), R.string.internet_error, Toast.LENGTH_SHORT).show();
-        } else if(/*countErrorLoadAd %8 == 0*/ errorCode == 0) {
+        } else if(errorCode == 0) {
             Toast.makeText(GetContextClass.getContext(), R.string.error_download_ad, Toast.LENGTH_SHORT).show();
         }
-        countErrorLoadAd++;
         progressBarAdController.setCurrentState(2);
-        LoadAdAfterFail loadAdAfterFail = new LoadAdAfterFail();
-        //loadAdAfterFail.execute();
     }
 
     @Override
     public void onRewardedVideoAdLoaded() {
         adLoaded = true;
-        countErrorLoadAd = 0;
         progressBarAdController.setCurrentState(0);
-        Toast.makeText(GetContextClass.getContext(), "Реклама загружена", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(GetContextClass.getContext(), "Реклама загружена", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -340,15 +326,14 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     // внутренние контроллеры и потоки -----------------------------------------------------------------------------
     private class ProgressBarAdController {
 
+        public int currentState;
+
         public int getCurrentState() {
             return currentState;
         }
-
         public void setCurrentState(int currentState) {
             this.currentState = currentState;
         }
-
-        public int currentState;
         public void showProgress() {
             progressAdLoad.setVisibility(View.VISIBLE);
         }
@@ -439,14 +424,10 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         private void changeLevelTop() {
             mlLevel.setTransitionListener(new MotionLayout.TransitionListener() {
                 @Override
-                public void onTransitionStarted(MotionLayout motionLayout, int i, int i1) {
-
-                }
+                public void onTransitionStarted(MotionLayout motionLayout, int i, int i1) { }
 
                 @Override
-                public void onTransitionChange(MotionLayout motionLayout, int i, int i1, float v) {
-
-                }
+                public void onTransitionChange(MotionLayout motionLayout, int i, int i1, float v) { }
 
                 @Override
                 public void onTransitionCompleted(MotionLayout motionLayout, int i) {
@@ -458,9 +439,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                 }
 
                 @Override
-                public void onTransitionTrigger(MotionLayout motionLayout, int i, boolean b, float v) {
-
-                }
+                public void onTransitionTrigger(MotionLayout motionLayout, int i, boolean b, float v) { }
 
             });
             tvTopLvl.setText(String.valueOf(Progress.getInstance().getLevel()));
@@ -562,24 +541,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         }
     };
 
-    private class LoadAdAfterFail extends AsyncTask<Void,Void,Void> { // Task для загрузки рекламы в случае ошибки
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            loadRewardedVideoAd();
-        }
-    }
     private class ShowAdThread extends Thread {
 
         @Override
@@ -588,9 +549,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             if(progressBarAdController.getCurrentState() != 1) {
                 handler.sendEmptyMessage(LOAD_AD);
             }
-            Log.d(TAG, "run: зашли в поток");
             while(progressBarAdController.getCurrentState() != 2) {
-                Log.d(TAG, "run: зашли в цикл");
                 handler.sendEmptyMessage(CHECK_LOAD_AD);
                 try {
                     TimeUnit.MILLISECONDS.sleep(78);
@@ -610,7 +569,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     }
                 }
             }
-            Log.d(TAG, "run: вышли из цикла");
             progressBarAdController.setCurrentState(0);
             handler.sendEmptyMessage(HIDE_PROGRESS);
         }
@@ -652,6 +610,17 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     } else if(countAttempts > 3) {
                         StoredData.saveData(DATA_COUNT_ATTEMPTS,0);
                     }
+                }
+
+                int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
+                if(countAttempts > 0 && countAttempts <= 3) {
+                    etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
+                    btnCheckAnswer.setMaxLines(1);
+                    btnCheckAnswer.setText(R.string.check_answer);
+                } else if(countAttempts == 0) {
+                    etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
+                    btnCheckAnswer.setMaxLines(2);
+                    btnCheckAnswer.setText(R.string.look_ad);
                 }
             }
         }
@@ -697,16 +666,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
         @Override
         protected void onPostExecute(Boolean isChecked) {
-            int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
-            if(countAttempts > 0 && countAttempts <= 3) {
-                etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
-                btnCheckAnswer.setMaxLines(1);
-                btnCheckAnswer.setText(R.string.check_answer);
-            } else if(countAttempts == 0) {
-                etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
-                btnCheckAnswer.setMaxLines(2);
-                btnCheckAnswer.setText(R.string.look_ad);
-            }
             if(isChecked) { // если наличие победителя проверно
                 if(StoredData.getDataBool(StoredData.DATA_IS_WINNER)) {
                     finish();

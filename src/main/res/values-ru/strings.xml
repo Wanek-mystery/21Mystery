@@ -6,6 +6,8 @@
     <string name="winner_is">Победитель:</string>
     <string name="no_winner_text"><u>Победителя еще нет, будь первым!</u></string>
     <string name="winner_didnt_name">Победитель есть, но он не написал свое имя</string>
+    <string name="winner_update_info">Информация обновляется каждую секунду</string>
+    <string name="link_towinner_copied">Ссылка на победителя скопирована</string>
     <string name="start_game">Начать</string>
     <string name="continue_game">Продолжить игру</string>
     <string name="read_rules">Советую почитать правила</string>
