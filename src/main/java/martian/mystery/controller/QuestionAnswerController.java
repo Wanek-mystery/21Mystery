@@ -1,10 +1,12 @@
 package martian.mystery.controller;
 
 import martian.mystery.R;
+import martian.mystery.exceptions.ErrorOnServerException;
+import martian.mystery.exceptions.NoInternetException;
 
 public class QuestionAnswerController {
 
-    public boolean checkAnswer(String answer) {
+    public boolean checkAnswer(String answer) throws NoInternetException, ErrorOnServerException {
         answer = answer.trim().toLowerCase();
         String[] keysAnswers = getAnswers();
         for(int i = 0; i < keysAnswers.length; i++) {

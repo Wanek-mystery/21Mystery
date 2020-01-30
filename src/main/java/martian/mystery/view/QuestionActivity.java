@@ -46,6 +46,8 @@ import martian.mystery.controller.StatisticsController;
 import martian.mystery.controller.StoredData;
 import martian.mystery.controller.UpdateDataController;
 import martian.mystery.data.ResponseFromServer;
+import martian.mystery.exceptions.ErrorOnServerException;
+import martian.mystery.exceptions.NoInternetException;
 
 import static martian.mystery.controller.StoredData.DATA_COUNT_ATTEMPTS;
 import static martian.mystery.controller.StoredData.DATA_IS_WINNER;
@@ -674,45 +676,42 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             Log.d(TAG, "doInBackground: here");
             String answerOfUser = answer[0];
             if (!(answerOfUser.equals(""))) {
-                if (questionAnswerController.checkAnswer(answerOfUser)) { // если ответ правильный
-                    handler.sendEmptyMessage(RIGHT_ANSWER_ANIMATION);
-                    statisticsController.sendStatistics(); // отправляем стат на сервер
-                    if (Progress.getInstance().getLevel() <= 20) {
-                        Progress.getInstance().levelUp(); // повышвем уровень
-                        statisticsController.setStartTimeLevel(); // устанавливаем время начала прохождения нового уровня
-                    } else if (Progress.getInstance().getLevel() == 21) {
-                        Progress.getInstance().done(true);
-
-                        try {
+                try {
+                    if (questionAnswerController.checkAnswer(answerOfUser)) { // если ответ правильный
+                        handler.sendEmptyMessage(RIGHT_ANSWER_ANIMATION);
+                        statisticsController.sendStatistics(); // отправляем стат на сервер
+                        if (Progress.getInstance().getLevel() <= 20) {
+                            Progress.getInstance().levelUp(); // повышвем уровень
+                            statisticsController.setStartTimeLevel(); // устанавливаем время начала прохождения нового уровня
+                        } else if (Progress.getInstance().getLevel() == 21) {
+                            Progress.getInstance().done(true);
                             if (isWinner()) {
-                                Log.d(TAG, "doInBackground: работает после ошибки1");
-                                Log.d(TAG, "doInBackground: winnerIsChecked " + winnerIsChecked);
                                 StoredData.saveData(DATA_IS_WINNER, true);
                                 StoredData.saveData(DATA_COUNT_ATTEMPTS, 3);
                                 return true;
                             } else {
-                                Log.d(TAG, "doInBackground: работает после ошибки2");
                                 StoredData.saveData(DATA_IS_WINNER, false);
                                 StoredData.saveData(DATA_COUNT_ATTEMPTS, 3);
                                 return false;
                             }
-                        } catch (IOException ex) {
-                            AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_SERVER_ERROR);
-                            assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(), "ALERT_SERVER");
-                            winnerIsChecked = false;
-                        } catch (Exception ex) {
-                            AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_ALERT_INTERNET);
-                            assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(), "ALERT_INTERNET");
-                            UpdateDataController.getInstance().setWinnerChecked(false);
-                            winnerIsChecked = false;
+                        }
+                    } else { // если ответ неверный, уменьшаем попытки
+                        handler.sendEmptyMessage(WRONG_ANSWER_ANIMATION);
+                        int countAttempts = attemptsController.getCountAttempts();
+                        if (countAttempts > 0) {
+                            attemptsController.decrementCountAtempts();
                         }
                     }
-                } else { // если ответ неверный, уменьшаем попытки
-                    handler.sendEmptyMessage(WRONG_ANSWER_ANIMATION);
-                    int countAttempts = attemptsController.getCountAttempts();
-                    if (countAttempts > 0) {
-                        attemptsController.decrementCountAtempts();
-                    }
+                } catch (NoInternetException ex) {
+                    AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_ALERT_INTERNET);
+                    assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(),"ALERT_INTERNET");
+                    UpdateDataController.getInstance().setWinnerChecked(false);
+                } catch (ErrorOnServerException ex) {
+                    AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_SERVER_ERROR);
+                    assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(),"ALERT_SERVER");
+                } catch (IOException e) {
+                    AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_SERVER_ERROR);
+                    assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(),"ALERT_SERVER");
                 }
                 handler.sendEmptyMessage(CHANGE_HINT_ANSWER);
             }
@@ -735,7 +734,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             }
         }
 
-        private boolean isWinner() throws Exception, IOException {
+        private boolean isWinner() throws NoInternetException, ErrorOnServerException, IOException {
             boolean isWinner = false;
             if (RequestController.hasConnection(GetContextClass.getContext())) {
                 ResponseFromServer response = RequestController.getInstance()
@@ -752,15 +751,13 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     Progress.getInstance().levelUp();
                     StoredData.saveData(StoredData.DATA_PLACE, response.getPlace());
                     winnerIsChecked = true;
-                } else throw new IOException();
+                } else throw new ErrorOnServerException();
             } else {
-                throw new Exception();
+                throw new NoInternetException();
             }
             return isWinner;
         }
 
-        private void sendLevelUpFirebase(int level) {
-        }
     }
     /*private class CheckTask extends AsyncTask<Void, Void, Boolean> { // проверка ответа
 
