@@ -308,7 +308,10 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         animationController.changeQuestion();
         animationController.changeLevelTop();
         etAnswer.setText("");
-        if (Progress.getInstance().getLevel() == 21) {
+        if(Progress.getInstance().getLevel() == 15) {
+            AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_CHECK_ON_SERRVER_ALERT);
+            assistentDialog.show(this.getSupportFragmentManager(), "ALERT_SERVERCHECK_LVL");
+        } else if (Progress.getInstance().getLevel() == 21) {
             AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_ALERT_LAST_LVL);
             assistentDialog.show(this.getSupportFragmentManager(), "ALERT_LAST_LVL");
         }
@@ -680,6 +683,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     if (questionAnswerController.checkAnswer(answerOfUser)) { // если ответ правильный
                         handler.sendEmptyMessage(RIGHT_ANSWER_ANIMATION);
                         statisticsController.sendStatistics(); // отправляем стат на сервер
+                        StoredData.saveData(DATA_COUNT_ATTEMPTS, 3);
                         if (Progress.getInstance().getLevel() <= 20) {
                             Progress.getInstance().levelUp(); // повышвем уровень
                             statisticsController.setStartTimeLevel(); // устанавливаем время начала прохождения нового уровня
@@ -687,11 +691,9 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                             Progress.getInstance().done(true);
                             if (isWinner()) {
                                 StoredData.saveData(DATA_IS_WINNER, true);
-                                StoredData.saveData(DATA_COUNT_ATTEMPTS, 3);
                                 return true;
                             } else {
                                 StoredData.saveData(DATA_IS_WINNER, false);
-                                StoredData.saveData(DATA_COUNT_ATTEMPTS, 3);
                                 return false;
                             }
                         }
@@ -710,6 +712,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_SERVER_ERROR);
                     assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(),"ALERT_SERVER");
                 } catch (IOException e) {
+                    Log.d(TAG, "doInBackground: ex = " + e.toString());
                     AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_SERVER_ERROR);
                     assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(),"ALERT_SERVER");
                 }

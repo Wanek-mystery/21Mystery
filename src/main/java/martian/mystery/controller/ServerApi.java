@@ -29,7 +29,7 @@ public interface ServerApi {
     Call<Void> sendNameWinner(@Body DataOfUser data);
 
     @POST("/checkanswer/") // проверка ответа
-    Call<Void> checkAnswer(@Body DataOfUser data);
+    Call<ResponseFromServer> checkAnswer(@Body DataOfUser data);
 
 }
 

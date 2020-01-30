@@ -24,6 +24,7 @@ public class AssistentDialog extends DialogFragment {
     public static final int DIALOG_SERVER_ERROR = 5;
     public static final int DIALOG_UPDATE_APP = 6;
     public static final int DIALOG_UPDATE_APP_TECH = 7;
+    public static final int DIALOG_CHECK_ON_SERRVER_ALERT = 8;
     int typeDialog;
 
     public AssistentDialog(int typeDialog) {
@@ -62,6 +63,17 @@ public class AssistentDialog extends DialogFragment {
             case DIALOG_SERVER_ERROR: {
                 builder.setTitle(R.string.no_server)
                         .setPositiveButton(R.string.read_rules_ok_btn,null);
+                break;
+            }
+            case DIALOG_CHECK_ON_SERRVER_ALERT: {
+                builder.setTitle(R.string.alert_last_lvl_title)
+                        .setMessage(R.string.alert_last_lvl)
+                        .setPositiveButton(R.string.read_rules_ok_btn, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
                 break;
             }
             case DIALOG_ALERT_LAST_LVL: {

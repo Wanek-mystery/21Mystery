@@ -37,6 +37,8 @@
     <string name="error_download_ad">The ad is not ready yet</string>
     <string name="attempt_is_added">Attempt added</string>
     <string name="alert_last_lvl">If you answer correctly, you will need an Internet connection</string>
+    <string name="alert_check_on_server">In the following puzzles the answers will be checked remotely via the Internet,
+        therefore there may be small delays</string>
 
     <!--ЭКРАН ДЛЯ 2+ МЕСТ-->
     <string name="your_place">Your place:</string>
