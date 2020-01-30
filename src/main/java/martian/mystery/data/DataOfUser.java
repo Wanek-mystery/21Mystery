@@ -7,6 +7,7 @@ package martian.mystery.data;
 public class DataOfUser {
 
     private String nameOfUser = "none"; // по умлочанию none
+    private String answer;
     private int level = 1;
     private int timeOfLevel; // время прохождения последнего уровня
 
@@ -16,6 +17,14 @@ public class DataOfUser {
 
     public void setNameOfUser(String nameOfUser) {
         this.nameOfUser = nameOfUser;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public int getLevel() {

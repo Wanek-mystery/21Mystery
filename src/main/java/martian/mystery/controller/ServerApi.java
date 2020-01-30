@@ -28,5 +28,8 @@ public interface ServerApi {
     @POST("/winner/") // отправка имени победителя
     Call<Void> sendNameWinner(@Body DataOfUser data);
 
+    @POST("/checkanswer/") // проверка ответа
+    Call<Void> checkAnswer(@Body DataOfUser data);
+
 }
 

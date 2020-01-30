@@ -15,7 +15,8 @@ public class Progress { // класс синглтон для управлени
 
     private Progress() { this.level = getLevelFromStorage(); }
     private static int getLevelFromStorage() { // получение уровня игрока из какой-нибудь базы данных
-        return StoredData.getDataInt(DATA_LEVEL,1);
+        return StoredData.getDataInt(DATA_LEVEL,20
+        );
     }
     public void levelUp() {
         level++;

@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent;
                     if(Progress.getInstance().getLevel() < 22) {
                         intent = new Intent(MainActivity.this,QuestionActivity.class);
-                    } else if(Progress.getInstance().getLevel() == 22) {
+                    } else if(Progress.getInstance().isDone()) {
                         if(!UpdateDataController.getInstance().winnerIsChecked()) {
                             intent = new Intent(MainActivity.this,QuestionActivity.class);
                         } else if(!StoredData.getDataBool(StoredData.DATA_IS_WINNER)) {
@@ -283,6 +283,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.tvPrize: {
                     tvPrize.startAnimation(0,1);
+                    break;
                 }
             }
         }
