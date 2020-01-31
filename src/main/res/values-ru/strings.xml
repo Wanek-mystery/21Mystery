@@ -37,6 +37,7 @@
     <string name="error_download_ad">Реклама еще не готова</string>
     <string name="internet_error">Что-то с интернетом</string>
     <string name="attempt_is_added">Попытка добавлена</string>
+    <string name="alert_check_on_server_title">Дальше дорога для самых умных</string>
     <string name="alert_last_lvl">Если ты правильно ответишь на последнюю загадку, тебе понадобится подключение к интернету</string>
     <string name="alert_check_on_server">В следующих загадках ответы будут проверятся удаленно через интернет,
         поэтому возможны небольшие задержки</string>
@@ -158,13 +159,6 @@
     <string name="awr12">мдекез!мѐекез</string>
     <string name="awr13">лдлтико</string>
     <string name="awr14">тнп</string>
-    <string name="awr15">едлмлу!edkmlu</string>
-    <string name="awr16">рзвнепп!снёлщ!хнттвсйвмп</string>
-    <string name="awr17">гнжа</string>
-    <string name="awr18">лпрвщ</string>
-    <string name="awr19">удпь</string>
-    <string name="awr20">озн пкжек бпосптппв!озн бпосптппв!бпосптппв</string>
-    <string name="awr21">стнепмб</string>
 
     <!--<string name="awr1">2</string>
     <string name="awr2">3</string>

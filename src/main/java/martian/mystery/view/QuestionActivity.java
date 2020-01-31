@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -103,7 +102,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private boolean adLoaded = false;
     private boolean adFailed = false;
 
-    String TAG = "my";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -676,7 +674,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
         @Override
         protected Boolean doInBackground(String... answer) {
-            Log.d(TAG, "doInBackground: here");
             String answerOfUser = answer[0];
             if (!(answerOfUser.equals(""))) {
                 try {
@@ -712,7 +709,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_SERVER_ERROR);
                     assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(),"ALERT_SERVER");
                 } catch (IOException e) {
-                    Log.d(TAG, "doInBackground: ex = " + e.toString());
                     AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_SERVER_ERROR);
                     assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(),"ALERT_SERVER");
                 }
@@ -723,7 +719,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
         @Override
         protected void onPostExecute(Boolean isWinner) {
-            Log.d(TAG, "onPostExecute: here");
             if (Progress.getInstance().isDone()) {
                 if (winnerIsChecked) {
                     if (isWinner) {
@@ -762,112 +757,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         }
 
     }
-    /*private class CheckTask extends AsyncTask<Void, Void, Boolean> { // проверка ответа
-
-        boolean nextLvlIsLast = false;
-        boolean answerIsRight = false;
-        @Override
-        protected void onPreExecute() {
-            String answerOfUser = etAnswer.getText().toString();
-            if(!(answerOfUser.equals(""))) {
-                if(questionAnswerController.checkAnswer(answerOfUser)) { // если ответ правильный
-                    answerIsRight = true;
-                    animationController.editTextRightAnswer();
-                    mlMain.transitionToEnd();
-                    animationController.markAnimate();
-                    if(Progress.getInstance().getLevel() <= 20) {
-                        animationController.animationBtnNext(true);
-                        if(Progress.getInstance().getLevel() == 20) nextLvlIsLast = true;
-                        Progress.getInstance().levelUp(); // повышвем уровень
-                        statisticsController.sendStatistics(); // отправляем стат на сервер
-                        statisticsController.setStartTimeLevel(); // устанавливаем время начала прохождения нового уровня
-                    } else if(Progress.getInstance().getLevel() == 21) {
-                        animationController.animationBtnNext(false);
-                        Progress.getInstance().done(true);
-                    }
-                    StoredData.saveData(StoredData.DATA_LAST_ANSWER,answerOfUser);
-                    StoredData.saveData(DATA_COUNT_ATTEMPTS,3);
-
-                } else { // если ответ неверный, уменьшаем попытки
-                    answerIsRight = false;
-                    animationController.editTextWrongAnswer();
-                    etAnswer.setText("");
-                    int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
-                    if(countAttempts > 0) {
-                        attemptsController.decrementCountAtempts();
-                    } else if(countAttempts > 3) {
-                        StoredData.saveData(DATA_COUNT_ATTEMPTS,0);
-                    }
-                }
-
-                int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS,3);
-                if(countAttempts > 0 && countAttempts <= 3) {
-                    etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
-                    btnCheckAnswer.setMaxLines(1);
-                    btnCheckAnswer.setText(R.string.check_answer);
-                } else if(countAttempts == 0) {
-                    etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
-                    btnCheckAnswer.setMaxLines(2);
-                    btnCheckAnswer.setText(R.string.look_ad);
-                }
-            }
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-
-            if(Progress.getInstance().getLevel() == 21 && !nextLvlIsLast && answerIsRight) {
-                if(RequestController.hasConnection(GetContextClass.getContext())) {
-                    try {
-                        ResponseFromServer response = RequestController.getInstance()
-                                .getJsonApi()
-                                .getMainData("money")
-                                .execute().body();
-                        if(response.getExistWinner() == 0) {
-                            StoredData.saveData(StoredData.DATA_IS_WINNER,true);
-                        } else {
-                            StoredData.saveData(StoredData.DATA_IS_WINNER,false);
-                        }
-                        response = RequestController.getInstance()
-                                .getJsonApi()
-                                .sendWinner("acdc") // отпрвляем данные о том, что победитель есть
-                                .execute().body();
-                        if(response.getResult() == 1) {
-                            UpdateDataController.getInstance().setWinnerChecked(true);
-                            Progress.getInstance().levelUp();
-                            StoredData.saveData(StoredData.DATA_PLACE,response.getPlace());
-                            return true;
-                        } else throw new IOException();
-                    } catch (IOException e) {
-                        AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_SERVER_ERROR);
-                        assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(),"ALERT_SERVER");
-                        return false;
-                    }
-                } else {
-                    AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_ALERT_INTERNET);
-                    assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(),"ALERT_INTERNET");
-                    UpdateDataController.getInstance().setWinnerChecked(false);
-                    return false;
-                }
-            } else return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean isChecked) {
-            if(isChecked) { // если наличие победителя проверно
-                if(StoredData.getDataBool(StoredData.DATA_IS_WINNER)) {
-                    finish();
-                    startActivity(new Intent(QuestionActivity.this,DoneFirstActivity.class)); // замена текущего фрагмента на фрагмент с концом игры для побеителя
-                } else {
-                    finish();
-                    startActivity(new Intent(QuestionActivity.this,DoneActivity.class)); // замена текущего фрагмента на фрагмент с концом игры
-                }
-            }
-        }
-
-        private void sendLevelUpFirebase(int level) {
-        }
-    }*/
 
     /*@Override
     public void onBackPressed() {

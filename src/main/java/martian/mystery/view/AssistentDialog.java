@@ -77,8 +77,8 @@ public class AssistentDialog extends DialogFragment {
                 break;
             }
             case DIALOG_ALERT_LAST_LVL: {
-                builder.setTitle(R.string.alert_last_lvl_title)
-                        .setMessage(R.string.alert_last_lvl)
+                builder.setTitle(R.string.alert_check_on_server_title)
+                        .setMessage(R.string.alert_check_on_server)
                         .setPositiveButton(R.string.read_rules_ok_btn, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

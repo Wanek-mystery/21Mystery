@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //
         StoredData.saveData(DATA_COUNT_LAUNCH_APP,StoredData.getDataInt(DATA_COUNT_LAUNCH_APP,0)+1); // увеличиваем кол-во звапусков игры на один
         appUpdateManager = AppUpdateManagerFactory.create(GetContextClass.getContext());
 
@@ -264,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent;
                     if(Progress.getInstance().getLevel() < 22) {
                         intent = new Intent(MainActivity.this,QuestionActivity.class);
-                    } else if(Progress.getInstance().isDone()) {
+                    } else if(Progress.getInstance().getLevel() == 22) {
                         if(!UpdateDataController.getInstance().winnerIsChecked()) {
                             intent = new Intent(MainActivity.this,QuestionActivity.class);
                         } else if(!StoredData.getDataBool(StoredData.DATA_IS_WINNER)) {

@@ -33,6 +33,7 @@
     <string name="internet_error">There is no internet</string>
     <string name="no_server">An error occurred while connecting to the server</string>
     <string name="alert_last_lvl_title">Before the finish</string>
+    <string name="alert_check_on_server_title">Before the finish</string>
     <string name="dialog_review_no">Later</string>
     <string name="error_download_ad">The ad is not ready yet</string>
     <string name="attempt_is_added">Attempt added</string>
@@ -114,13 +115,6 @@
     <string name="awr12">21</string>
     <string name="awr13">22</string>
     <string name="awr14">23</string>
-    <string name="awr15">24</string>
-    <string name="awr16">25</string>
-    <string name="awr17">26</string>
-    <string name="awr18">27</string>
-    <string name="awr19">28</string>
-    <string name="awr20">3/</string>
-    <string name="awr21">30</string>
 
     <!--Если ты сюда зашел, уходи-->
     <!--<string name="awr1">tmqw</string>

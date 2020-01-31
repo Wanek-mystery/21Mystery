@@ -26,13 +26,6 @@ public class SecurityController {
             arrQuestions.addAll(Arrays.asList(GetContextClass.getContext().getResources().getString(R.string.awr12).split("!")));
             arrQuestions.addAll(Arrays.asList(GetContextClass.getContext().getResources().getString(R.string.awr13).split("!")));
             arrQuestions.addAll(Arrays.asList(GetContextClass.getContext().getResources().getString(R.string.awr14).split("!")));
-            arrQuestions.addAll(Arrays.asList(GetContextClass.getContext().getResources().getString(R.string.awr15).split("!")));
-            arrQuestions.addAll(Arrays.asList(GetContextClass.getContext().getResources().getString(R.string.awr16).split("!")));
-            arrQuestions.addAll(Arrays.asList(GetContextClass.getContext().getResources().getString(R.string.awr17).split("!")));
-            arrQuestions.addAll(Arrays.asList(GetContextClass.getContext().getResources().getString(R.string.awr18).split("!")));
-            arrQuestions.addAll(Arrays.asList(GetContextClass.getContext().getResources().getString(R.string.awr19).split("!")));
-            arrQuestions.addAll(Arrays.asList(GetContextClass.getContext().getResources().getString(R.string.awr20).split("!")));
-            arrQuestions.addAll(Arrays.asList(GetContextClass.getContext().getResources().getString(R.string.awr21).split("!")));
         }
         if(arrQuestions.size() == new HashSet<>(arrQuestions).size()) return true;
         else return false;
@@ -54,13 +47,6 @@ public class SecurityController {
             case 12: cipherAnswers = GetContextClass.getContext().getResources().getString(R.string.awr12).split("!"); break;
             case 13: cipherAnswers = GetContextClass.getContext().getResources().getString(R.string.awr13).split("!"); break;
             case 14: cipherAnswers = GetContextClass.getContext().getResources().getString(R.string.awr14).split("!"); break;
-            case 15: cipherAnswers = GetContextClass.getContext().getResources().getString(R.string.awr15).split("!"); break;
-            case 16: cipherAnswers = GetContextClass.getContext().getResources().getString(R.string.awr16).split("!"); break;
-            case 17: cipherAnswers = GetContextClass.getContext().getResources().getString(R.string.awr17).split("!"); break;
-            case 18: cipherAnswers = GetContextClass.getContext().getResources().getString(R.string.awr18).split("!"); break;
-            case 19: cipherAnswers = GetContextClass.getContext().getResources().getString(R.string.awr19).split("!"); break;
-            case 20: cipherAnswers = GetContextClass.getContext().getResources().getString(R.string.awr20).split("!"); break;
-            case 21: cipherAnswers = GetContextClass.getContext().getResources().getString(R.string.awr21).split("!"); break;
         }
 
         String[] answers = new String[cipherAnswers.length];
