@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">21 Mystery</string>
-    <string name="ad_block">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="ad_block">ca-app-pub-3637770884242866/6954195474</string>
 
     <!--ГЛАВНЫЙ ЭКРАН-->
     <string name="winner_is">Победитель:</string>
@@ -19,7 +19,7 @@
         Также чем дольше нет победителя, тем больше приз.</string>
     <string name="read_rules_ok_btn">Ок</string>
     <string name="prize_text">Приз:</string>
-    <string name="prize">500 рублей</string>
+    <string name="prize">1000 рублей</string>
     <string name="force_update_season">Хорошие новости, вышел новый сезон, скорей обновляйся:) (Предыдущий сезон теперь неактивный)</string>
     <string name="force_update_tech">Жутко извиняюсь, но нужно обновиться&#128528;</string>
     <string name="update_btn">Обновить</string>
@@ -37,7 +37,7 @@
     <string name="error_download_ad">Реклама еще не готова</string>
     <string name="internet_error">Что-то с интернетом</string>
     <string name="attempt_is_added">Попытка добавлена</string>
-    <string name="alert_check_on_server_title">Дальше дорога для самых умных</string>
+    <string name="alert_check_on_server_title">Дальше круче</string>
     <string name="alert_last_lvl">Если ты правильно ответишь на последнюю загадку, тебе понадобится подключение к интернету</string>
     <string name="alert_check_on_server">В следующих загадках ответы будут проверятся удаленно через интернет,
         поэтому возможны небольшие задержки</string>
@@ -122,30 +122,58 @@
     <string name="qst19">Загадка 19</string>
     <string name="qst20">Загадка 20</string>
     <string name="qst21">Загадка 21</string>-->
-    <string name="qst1">Кружится над нами, иногда хрустит под ногами</string>
-    <string name="qst2">Тот, чьё имя нельзя произносить</string>
-    <string name="qst3">Фильм, в котором отец на одной стороне, а сын на другой</string>
-    <string name="qst4">В каком городе был самый крутой мальчишник?</string>
-    <string name="qst5">Таблица дней</string>
-    <string name="qst6">Пролитое молоко на небе</string>
-    <string name="qst7">Зелёный и независимый</string>
-    <string name="qst8">Не взорвёшь, не поешь</string>
-    <string name="qst9">Объектив в молоке</string>
-    <string name="qst10">Где скачут по волнам кроме моря?</string>
-    <string name="qst11">Обычно днем мы делаем это на 1%, ночью на 100%</string>
-    <string name="qst12">Когда они наполнены, тебе хочется их опустошить, когда они опустошены, тебе хочется их наполнить</string>
-    <string name="qst13">Его звали Брюс. Как зовут её?</string>
-    <string name="qst14">Место, где можно встретить себя под маской другого</string>
-    <string name="qst15">Что находится на втором кольце четвёртого кольца?</string>
-    <string name="qst16">Ударишь сюда - высоко, ударишь туда - низко</string>
-    <string name="qst17">Она так близко, но мы ищем её так далеко</string>
-    <string name="qst18">Каждый день эта штука ходит по кругу. И кругов таких на Земле миллиарды</string>
-    <string name="qst19">Её присутствие это отсутствие</string>
-    <string name="qst20">Самый широкошагающий человек</string>
-    <string name="qst21">Кровь, нефть, подкова</string>
+    <string name="qst1">Слово из 4 букв, начинаетя на \"ле\", заканчивается на \"то\"</string>
+    <string name="qst2">Какой цвет самый зелёный?</string>
+    <string name="qst3">Варежки для ног</string>
+    <string name="qst4">Был высокий, сломался, стал низкий</string>
+    <string name="qst5">Ты приближаешься, он отдаляется</string>
+    <string name="qst6">Джордж Вашингтон, Санкт-Петербург, Носорог, Мао Цзэдун. Где все они находятся?</string>
+    <string name="qst7">Что такое осень?</string>
+    <string name="qst8">Что сказала Кэти Перри синей птичке 24 мая 2017 года?</string>
+    <string name="qst9">Два заборчика, один вверху, другой внизу</string>
+    <string name="qst10">Брюс Уиллис, Милла Йовович, Гэри Олдмен. Таблица Менделеева</string>
+    <string name="qst11">Франция - 3, Ирландия - 3, Гвинея - 2, Болгария - 2, Россия - 1, Румыния - 1</string>
+    <string name="qst12">Про это можно сказать так: чем правее, тем быстрее</string>
+    <string name="qst13">Четвёртый с конца, с Богиней разума под боком</string>
+    <string name="qst14">Черный титан, проигравший белому титану</string>
+    <string name="qst15">Может показаться, что они нарушают законы физики, но нет, это просто мандарин</string>
+    <string name="qst16">Сколько времени? - спросил Брюс.\n
+24 минуты первого, - ответил Бог.</string>
+    <string name="qst17">СИД-истребитель, глаз, бритва, расчёска, 7</string>
+    <string name="qst18">Мир света и тьмы.
+        Мир бесконечного количества дорог и развязок.
+        Мир, где матриархат могущественней патриархата.</string>
+    <string name="qst19">То, что посередине - слева.
+        То, что правее - правее.
+        То, что посередине - посередине.
+        То, что правее - левее.
+        То, что слева - справа.</string>
+    <string name="qst20">Mia.
+        Юрий Гагарин, Ванадий, 1, Пробуждение силы, Швеция, 4, Марс, Туманность Ориона, 13, Джеймс Бьюкенен, \"Скиапарелли\", 11.
+        Ответ на дне, повелительница преступлений подскажет путь.</string>
+    <string name="qst21">Что одним жизнь, то другим смерть.
+        Что одним смерть, то другие созидают.
+        Когда одни с оружием, другие с правосудием.
+        Когда одни единичны, другие идентичны.</string>
+
+    <!--ДЛЯ ТЕСТОВ-->
+    <string name='awr1'>qviggl!йжои!</string>
+    <string name='awr2'>лвкнухн!лвкљухн!kodmt!</string>
+    <string name='awr3'>ннщгй!ннщзл!snkd!snkdt!</string>
+    <string name='awr4'>вжоий!gaofYjy!bdlhlgn!gaofYjy bdlhlgn!</string>
+    <string name='awr5'>дифврпсм!iivcpr!te}froi!</string>
+    <string name='awr6'>тЪ йЯпьЫбм!йЯпьЫй!тЪ пнсюибм!тЪ пнсюиж!пнсюибм!пнсюиь!пнсюиб!g[pkfpk`!g[pkfpk`l!th g[pkfpk`!th g[pkfpk`l!th ybg gcnl!th gcnl!gcnl!</string>
+    <string name='awr7'>изЩч!шфж изЩч!евдце!шфж евдце!Эзкон!шфж Эзкон!]nawh!oq ]nawh!]nawhom^!</string>
+    <string name='awr8'>r unm n~!ј фэкуя ыдкї!ј фэкуя лЯъ!</string>
+    <string name='awr9'>Яожю!l`jwa!</string>
+    <string name='awr10'>Щрр!Zqrrh!</string>
+    <string name='awr11'>жцжжй мцжжйй!жцжжй мцжжй!жцжжй6опизв!жцжжй6опизва!nxggj| _xgc!nxggjiq _xgc!_xgc ki nxggj!</string>
+    <string name='awr12'>дщмлч!шсыдиЬобы!vrtd!euvbc hjjd!</string>
+    <string name='awr13'>ятиклм!krvagj!kxpazal!</string>
+    <string name='awr14'>ъмлЬхии!|mm]via!</string>
 
     <!-- ответы на загадки -->
-    <string name="awr1">тмзг!тмзжлм</string>
+    <!--<string name="awr1">тмзг!тмзжлм</string>
     <string name="awr2">гннак ед ннтт!гннак!оЯдаиюоэи</string>
     <string name="awr3">йкрн!нЯук!йкрн нЯук</string>
     <string name="awr4">мЯу гдеао!гдеао!мЯу-Яздвр!г гдеаоз!г мЯу гдеаоз!</string>
@@ -158,7 +186,7 @@
     <string name="awr11">иЯмршдбзл дквзЭ!ннтгЭзн!ннтгЭфэ!иЯмршдбфы дквзЭ</string>
     <string name="awr12">мдекез!мѐекез</string>
     <string name="awr13">лдлтико</string>
-    <string name="awr14">тнп</string>
+    <string name="awr14">тнп</string>-->
 
     <!--<string name="awr1">2</string>
     <string name="awr2">3</string>

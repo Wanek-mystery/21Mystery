@@ -160,6 +160,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                         animationController.editTextRightAnswer();
                         animationController.animationBtnNext();
                         animationController.markAnimate();
+                        btnCheckAnswer.setClickable(false);
                         break;
                     }
                     case WRONG_ANSWER_ANIMATION: {
@@ -304,8 +305,8 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         }).start();
 
         animationController.changeQuestion();
-        animationController.changeLevelTop();
-        etAnswer.setText("");
+        animationController.changeLevelTop();        btnCheckAnswer.setClickable(true);
+       etAnswer.setText("");
         if(Progress.getInstance().getLevel() == 15) {
             AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_CHECK_ON_SERRVER_ALERT);
             assistentDialog.show(this.getSupportFragmentManager(), "ALERT_SERVERCHECK_LVL");
@@ -757,18 +758,4 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         }
 
     }
-
-    /*@Override
-    public void onBackPressed() {
-        // при возвращении на главную активити отправляем разницу между уровнем, когда юзер был на главном экране, и уровнем на данный момент
-        // это нужно для анимации изменения уровня на главной активити
-        int pastLevel = getIntent().getIntExtra("level",1);
-        Intent intentMain = new Intent();
-        intentMain.putExtra("difflevel",Progress.getInstance().getLevel() - pastLevel);
-        try {
-            setResult(Activity.RESULT_OK,intentMain);
-            finish();
-        } catch (NullPointerException ex) {
-        }
-    }*/
 }

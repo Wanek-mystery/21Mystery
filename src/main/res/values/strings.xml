@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">21 Mystery</string>
-    <string name="ad_block">ca-app-pub-3940256099942544/5224354917</string> <!--ca-app-pub-3637770884242866/6954195474-->
+    <string name="ad_block">ca-app-pub-3637770884242866/6954195474</string>
 
     <!--ГЛАВНЫЙ ЭКРАН-->
     <string name="winner_is">Winner:</string>
@@ -15,10 +15,11 @@
     <string name="rules_text">The rules are very simple.
         The first to solve 21 puzzles will receive a prize.
         Each puzzle is given 3 attempts.
-        If they run out you can get one more if you watch the ads.</string>
+        If they run out you can get one more if you watch the ads.
+        The longer there is no winner, the bigger the prize.</string>
     <string name="read_rules_ok_btn">Whatever you say</string>
     <string name="prize_text">Prize:</string>
-    <string name="prize">8 dollars</string>
+    <string name="prize">15 dollars</string>
     <string name="update_btn">Update</string>
     <string name="force_update_season">Good news! There is a new season, rather update:) (The previous season is now inactive)</string>
     <string name="force_update_tech">Terribly sorry, but you need to update&#128528;</string>
@@ -33,7 +34,7 @@
     <string name="internet_error">There is no internet</string>
     <string name="no_server">An error occurred while connecting to the server</string>
     <string name="alert_last_lvl_title">Before the finish</string>
-    <string name="alert_check_on_server_title">Before the finish</string>
+    <string name="alert_check_on_server_title">Then more</string>
     <string name="dialog_review_no">Later</string>
     <string name="error_download_ad">The ad is not ready yet</string>
     <string name="attempt_is_added">Attempt added</string>
@@ -78,43 +79,56 @@
     <string name="place_congratulations_default"></string>
 
     <!-- загадки(вопросы) -->
-    <string name="qst1">Circling above us, sometimes crunching underfoot</string>
-    <string name="qst2">The one whose name cannot be spoken</string>
-    <string name="qst3">Who sent their car into space in 2018?</string>
-    <string name="qst4">Which city had the worst hangover?</string>
-    <string name="qst5">Days table</string>
-    <string name="qst6">This spilled milk is visible only at night</string>
-    <string name="qst7">Green and independent</string>
-    <string name="qst8">If you dont blow up, you wont eat</string>
-    <string name="qst9">Lens in milk</string>
-    <string name="qst10">Where do they ride the waves? (not sea)</string>
-    <string name="qst11">Usually during the day we do it at 1%, at night at 100%</string>
-    <string name="qst12">When they are full you want to empty them, when they are empty you want to fill them</string>
-    <string name="qst13">His name was Bruce. What is her name?</string>
-    <string name="qst14">A place where you can meet yourself under the mask of another</string>
-    <string name="qst15">What is on the second ring of the fourth ring?</string>
-    <string name="qst16">If you hit here - low, if you hit there-high</string>
-    <string name="qst17">It is so close, but we are looking so far away</string>
-    <string name="qst18">Every day this thing goes around in circles. And there are billions of such circles</string>
-    <string name="qst19">The presence of this is the absence</string>
-    <string name="qst20">The most widely walking man</string>
-    <string name="qst21">Blood, oil, horseshoe</string>
+    <string name="qst1">A 4-letter word that starts with \"sum\" and ends with \"mer\"</string>
+    <string name="qst2">What is the greenest color?</string>
+    <string name="qst3">Mittens for your feet.</string>
+    <string name="qst4">The woman who lost to the former owner of the Plaza Hotel.</string>
+    <string name="qst5">You approach it, it moves away</string>
+    <string name="qst6">George Washington, St. Petersburg, Rhino, Mao Zedong. Where are they all located?</string>
+    <string name="qst7">During the day we do it at 1%, at night we do it at 100%.</string>
+    <string name="qst8">What did Katy Perry say to the blue bird May 24, 2017?</string>
+    <string name="qst9">Two fences, one at the top, the other at the bottom.</string>
+    <string name="qst10">Bruce Willis, Milla Jovovich, Gary Oldman. Periodic table.</string>
+    <string name="qst11">France - 3, Ireland - 3, Guinea - 2, Bulgaria - 2, Russia - 1, Romania - 1</string>
+    <string name="qst12">We can say this about it: the more to the right the faster.</string>
+    <string name="qst13">The fourth from the end, with the Goddess of reason at his side.</string>
+    <string name="qst14">The black Titan who lost to the white Titan.</string>
+    <string name="qst15">It may seem that they violate the laws of physics, but no, it`s just tangerine.</string>
+    <string name="qst16">What time is it? - Bruce asked.\n
+        It`s 36 minutes to one, - God replied.</string>
+    <string name="qst17">TIE Fighter, eye, razor, hairbrush, 7</string>
+    <string name="qst18">A world of light and darkness.
+        A world of endless roads and interchanges.
+        A world where matriarchy is more powerful than Patriarchy.</string>
+    <string name="qst19">That in the middle is on the left.
+        That to the right is to the right.
+        That in the middle is in the middle.
+        That to the right is to the left.
+        That is left is right.</string>
+    <string name="qst20">Mia.
+        Yuri Gagarin, Vanadium, 1, The Force Awakens, Sweden, 4, Mars, Orion Nebula, 13, James Buchanan, Schiaparelli, 11.
+        Answer at the bottom, the lady of the crimes will tell you the way.</string>
+    <string name="qst21">That one life, then other death.
+        That some die, others create.
+        When some with weapons, others with justice.
+        When some are single, others are identical.</string>
 
     <!--ДЛЯ ТЕСТОВ-->
-    <string name="awr1">2</string>
-    <string name="awr2">3</string>
-    <string name="awr3">4</string>
-    <string name="awr4">5</string>
-    <string name="awr5">6</string>
-    <string name="awr6">7</string>
-    <string name="awr7">8</string>
-    <string name="awr8">9</string>
-    <string name="awr9">:</string>
-    <string name="awr10">2/</string>
-    <string name="awr11">20</string>
-    <string name="awr12">21</string>
-    <string name="awr13">22</string>
-    <string name="awr14">23</string>
+    <string name='awr1'>qviggl!йжои!</string>
+    <string name='awr2'>лвкнухн!лвкљухн!kodmt!</string>
+    <string name='awr3'>ннщгй!ннщзл!snkd!snkdt!</string>
+    <string name='awr4'>вжоий!gaofYjy!bdlhlgn!gaofYjy bdlhlgn!</string>
+    <string name='awr5'>дифврпсм!iivcpr!te}froi!</string>
+    <string name='awr6'>тЪ йЯпьЫбм!йЯпьЫй!тЪ пнсюибм!тЪ пнсюиж!пнсюибм!пнсюиь!пнсюиб!g[pkfpk`!g[pkfpk`l!th g[pkfpk`!th g[pkfpk`l!th ybg gcnl!th gcnl!gcnl!</string>
+    <string name='awr7'>изЩч!шфж изЩч!евдце!шфж евдце!Эзкон!шфж Эзкон!]nawh!oq ]nawh!]nawhom^!</string>
+    <string name='awr8'>r unm n~!ј фэкуя ыдкї!ј фэкуя лЯъ!</string>
+    <string name='awr9'>Яожю!l`jwa!</string>
+    <string name='awr10'>Щрр!Zqrrh!</string>
+    <string name='awr11'>жцжжй мцжжйй!жцжжй мцжжй!жцжжй6опизв!жцжжй6опизва!nxggj| _xgc!nxggjiq _xgc!_xgc ki nxggj!</string>
+    <string name='awr12'>дщмлч!шсыдиЬобы!vrtd!euvbc hjjd!</string>
+    <string name='awr13'>ятиклм!krvagj!kxpazal!</string>
+    <string name='awr14'>ъмлЬхии!|mm]via!</string>
+
 
     <!--Если ты сюда зашел, уходи-->
     <!--<string name="awr1">tmqw</string>

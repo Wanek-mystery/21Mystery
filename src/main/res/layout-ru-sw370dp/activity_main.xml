@@ -414,7 +414,7 @@
                 android:text="@string/winner_is"
                 android:textAlignment="center"
                 android:textColor="#fff"
-                android:fontFamily="@font/advent_pro_light"
+                android:fontFamily="@font/advent_pro_medium"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toTopOf="@+id/firstPerson"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -563,6 +563,6 @@
         app:layout_constraintTop_toBottomOf="@+id/clBottom"
         app:layout_constraintVertical_chainStyle="spread"
         app:layout_constraintVertical_weight="1"
-        app:srcCompat="@drawable/season4_ru" />
+        app:srcCompat="@drawable/season4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

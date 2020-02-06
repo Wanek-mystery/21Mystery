@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean existWinner = false; // наличие победителя
     private String linkToWinner = "none"; // ссылка на профиль победителя в соц сети
+    private String locale;
 
 
     @Override
@@ -97,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
         //
         StoredData.saveData(DATA_COUNT_LAUNCH_APP,StoredData.getDataInt(DATA_COUNT_LAUNCH_APP,0)+1); // увеличиваем кол-во звапусков игры на один
         appUpdateManager = AppUpdateManagerFactory.create(GetContextClass.getContext());
+        locale = Locale.getDefault().getLanguage();
+        Log.d("my", "onCreate: " + locale);
 
         btnNext = findViewById(R.id.btnNext);
         btnHelp = findViewById(R.id.btnHelp);
@@ -156,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
             animController.helpBtnAnimation();
         }
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -238,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
 
                     ViewTooltip
                             .on(MainActivity.this, tvWinner)
-                            .autoHide(true, 1500)
+                            .autoHide(true, 2000)
                             .corner(30)
                             .position(ViewTooltip.Position.BOTTOM)
                             .withShadow(false)
@@ -581,7 +584,7 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     }
                                     String prize; // переменная хранит приз в зависимости от языка устройства
-                                    if(Locale.getDefault().getLanguage().equals("ru")) {
+                                    if(locale.equals("ru") || locale.equals("be") || locale.equals("uk")) {
                                         prize = responseFromServer.getPrize().split(",")[0];
                                     } else prize = responseFromServer.getPrize().split(",")[1];
                                     if(!prize.equals(StoredData.getDataString(StoredData.DATA_PRIZE,GetContextClass.getContext().getResources().getString(R.string.prize)))) {

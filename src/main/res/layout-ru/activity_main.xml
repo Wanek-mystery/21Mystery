@@ -531,7 +531,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="6dp"
-            android:layout_marginBottom="7dp"
+            android:layout_marginBottom="5dp"
             android:text="@string/prize"
             android:textAlignment="center"
             app:autoStart="true"
@@ -564,6 +564,6 @@
         app:layout_constraintTop_toBottomOf="@+id/clBottom"
         app:layout_constraintVertical_chainStyle="spread"
         app:layout_constraintVertical_weight="1"
-        app:srcCompat="@drawable/season4_ru" />
+        app:srcCompat="@drawable/season4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

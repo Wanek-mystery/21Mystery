@@ -1,0 +1,23 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
+    <style name="ButtonTheme" parent="Widget.MaterialComponents.Button">
+        <item name="android:lines">1</item>
+        <item name="android:elevation">21dp</item>
+        <item name="android:textSize">21sp</item>
+        <item name="android:translationZ">9dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="android:windowBackground">@drawable/back_dialog</item>
+    </style>
+</resources>
