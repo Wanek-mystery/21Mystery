@@ -19,7 +19,7 @@
         The longer there is no winner, the bigger the prize.</string>
     <string name="read_rules_ok_btn">Whatever you say</string>
     <string name="prize_text">Prize:</string>
-    <string name="prize">15 dollars</string>
+    <string name="prize">30 dollars</string>
     <string name="update_btn">Update</string>
     <string name="force_update_season">Good news! There is a new season, rather update:) (The previous season is now inactive)</string>
     <string name="force_update_tech">Terribly sorry, but you need to update&#128528;</string>
