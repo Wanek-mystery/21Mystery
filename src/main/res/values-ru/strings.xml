@@ -41,6 +41,26 @@
     <string name="alert_last_lvl">Если ты правильно ответишь на последнюю загадку, тебе понадобится подключение к интернету</string>
     <string name="alert_check_on_server">В следующих загадках ответы будут проверятся удаленно через интернет,
         поэтому возможны небольшие задержки</string>
+    <!--список фраз, напутствий-->
+    <string name="parting_word1">Не можешь отгадать загадку сам, загадай её другому. У свежей головы свежие мысли</string>
+    <string name="parting_word2">В следующих загадках ответы будут проверятся удаленно через интернет,
+        поэтому возможны небольшие задержки</string>
+    <string name="parting_word3">Чем больше думаешь, тем меньше мыслей</string>
+    <string name="parting_word4">Гото</string>
+    <string name="parting_word5">5</string>
+    <string name="parting_word6">6</string>
+    <string name="parting_word7">7</string>
+    <string name="parting_word8">8</string>
+    <string name="parting_word9">9</string>
+    <string name="parting_word10">10</string>
+    <string name="parting_word11">11</string>
+    <string name="parting_word12">12</string>
+    <string name="parting_word13">13</string>
+    <string name="parting_word14">14</string>
+    <string name="parting_word15">15</string>
+    <string name="parting_word16">16</string>
+    <string name="parting_word17">17</string>
+    <string name="parting_word18">18</string>
 
 
     <!--ЭКРАНЫ ДЛЯ 2+ МЕСТ-->

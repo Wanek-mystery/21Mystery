@@ -23,6 +23,26 @@
     <string name="update_btn">Update</string>
     <string name="force_update_season">Good news! There is a new season, rather update:) (The previous season is now inactive)</string>
     <string name="force_update_tech">Terribly sorry, but you need to update&#128528;</string>
+    <!--список фраз, напутсвий-->
+    <string name="parting_word1">Если ты правильно ответишь на последнюю загадку, тебе понадобится подключение к интернету</string>
+    <string name="parting_word2"></string>
+    <string name="parting_word3"></string>
+    <string name="parting_word4"></string>
+    <string name="parting_word5"></string>
+    <string name="parting_word6"></string>
+    <string name="parting_word7"></string>
+    <string name="parting_word8"></string>
+    <string name="parting_word9"></string>
+    <string name="parting_word10"></string>
+    <string name="parting_word11"></string>
+    <string name="parting_word12"></string>
+    <string name="parting_word13"></string>
+    <string name="parting_word14"></string>
+    <string name="parting_word15"></string>
+    <string name="parting_word16"></string>
+    <string name="parting_word17"></string>
+    <string name="parting_word18"></string>
+
 
     <!--ЭКРАН С ЗАГАДКАМИ-->
     <string name="next_question">Next</string>

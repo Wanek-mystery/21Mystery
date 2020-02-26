@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -33,6 +34,8 @@ import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import martian.mystery.controller.GetContextClass;
@@ -60,6 +63,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private TextView tvQuestion;
     private TextView tvTopLvl;
     private TextView tvBottomLvl;
+    private TextView tvPartingWord;
     private EditText etAnswer;
     private Button btnNext;
     private Button btnCheckAnswer;
@@ -79,6 +83,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private AnimationController animationController;
     private AttemptsController attemptsController;
     private ProgressBarAdController progressBarAdController;
+    private PartingWords partingWords;
 
     private final int ALPHA_DOWN = 1;
     private final int ALPHA_UP = 2;
@@ -96,11 +101,14 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private final int HIDE_PROGRESS = 15;
     private final int WRONG_ANSWER_ANIMATION = 16;
     private final int CHANGE_HINT_ANSWER = 17;
+    private final int SHOW_PARTING_WORD = 18;
 
 
     private String adBlock;
     private boolean adLoaded = false;
     private boolean adFailed = false;
+
+    private static final String TAG = "QuestionActivity";
 
 
     @Override
@@ -115,6 +123,9 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         adBlock = this.getResources().getString(R.string.ad_block);
 
         handler = new Handler() {
+
+            ObjectAnimator animPartingWordShow = ObjectAnimator.ofFloat(tvPartingWord, "alpha", 0.0f,1.0f);
+            ObjectAnimator animPartingWordHide = ObjectAnimator.ofFloat(tvPartingWord, "alpha", 1.0f,0.0f);
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
@@ -197,6 +208,22 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                         progressBarAdController.hideProgress();
                         break;
                     }
+                    case SHOW_PARTING_WORD: {
+                        String partingWord = partingWords.getRandomWord();
+                        if(!partingWord.equals("")) {
+                            if(!animPartingWordHide.isStarted()) {
+                                tvPartingWord.setText(partingWord);
+                                animPartingWordShow = ObjectAnimator.ofFloat(tvPartingWord, "alpha", 0.0f,1.0f);
+                                animPartingWordHide = ObjectAnimator.ofFloat(tvPartingWord, "alpha", 1.0f,0.0f);
+                                animPartingWordShow.setDuration(1000);
+                                animPartingWordHide.setDuration(1000);
+                                animPartingWordHide.setStartDelay(9000);
+                                animPartingWordHide.start();
+                                animPartingWordShow.start();
+                            }
+                        }
+                        break;
+                    }
                 }
             }
         };
@@ -204,6 +231,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         tvQuestion = findViewById(R.id.tvQuestion);
         tvTopLvl = findViewById(R.id.tvTop);
         tvBottomLvl = findViewById(R.id.tvBottom);
+        tvPartingWord = findViewById(R.id.tvPartingWords);
         imgGreenMark = findViewById(R.id.imgGreenMark);
         etAnswer = findViewById(R.id.etAnswer);
         btnNext = findViewById(R.id.btnNextQuestion);
@@ -232,6 +260,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         statisticsController = new StatisticsController();
         animationController = new AnimationController();
         attemptsController = new AttemptsController();
+        partingWords = new PartingWords();
 
         // если юзер разгадал все, но не проверил является ли он победителем
         if (!StoredData.getDataBool(StoredData.DATA_WINNER_IS_CHECKED) && (Progress.getInstance().getLevel() < 22)) {
@@ -393,6 +422,12 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
     private class AttemptsController {
 
+        private String DATA_WRONG_ANSWERS = "count_wrong_answers";
+        private int countWrongAnswers;
+
+        public AttemptsController() {
+            countWrongAnswers = StoredData.getDataInt(DATA_WRONG_ANSWERS,0);
+        }
         public void getAttemptByAd() { // показать рекламу, чтобы добавить попытку
             if (mRewardedVideoAd.isLoaded()) {
                 mRewardedVideoAd.show();
@@ -428,6 +463,20 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                 btnCheckAnswer.setText(R.string.check_answer);
             }
             etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
+        }
+
+
+
+        public int getCountWrongAnswers() { return countWrongAnswers; }
+
+        public void increaseCountWrongAnswers() {
+            StoredData.saveData(DATA_WRONG_ANSWERS,++countWrongAnswers);
+            Log.d(TAG, "increaseCountWrongAnswers: count = " + countWrongAnswers);
+        }
+
+        public void resetCountWrongAnswers() {
+            StoredData.saveData(DATA_WRONG_ANSWERS,0);
+            countWrongAnswers = 0;
         }
     }
 
@@ -594,6 +643,51 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         }
     }
 
+    private class PartingWords {
+
+        private ArrayList<String> partingWords;
+        private String DATA_LAST_PARTING_WORD = "last_parting_word"; // последнее напутсвеннное слово (для StoredData)
+
+        PartingWords () {
+            partingWords = new ArrayList<>();
+            partingWords.add(getResources().getString(R.string.parting_word1));
+            partingWords.add(getResources().getString(R.string.parting_word2));
+            partingWords.add(getResources().getString(R.string.parting_word3));
+            partingWords.add(getResources().getString(R.string.parting_word4));
+            partingWords.add(getResources().getString(R.string.parting_word4));
+            partingWords.add(getResources().getString(R.string.parting_word5));
+            partingWords.add(getResources().getString(R.string.parting_word6));
+            partingWords.add(getResources().getString(R.string.parting_word7));
+            partingWords.add(getResources().getString(R.string.parting_word8));
+            partingWords.add(getResources().getString(R.string.parting_word9));
+            partingWords.add(getResources().getString(R.string.parting_word10));
+            partingWords.add(getResources().getString(R.string.parting_word11));
+            partingWords.add(getResources().getString(R.string.parting_word12));
+            partingWords.add(getResources().getString(R.string.parting_word13));
+            partingWords.add(getResources().getString(R.string.parting_word14));
+            partingWords.add(getResources().getString(R.string.parting_word15));
+            partingWords.add(getResources().getString(R.string.parting_word16));
+            partingWords.add(getResources().getString(R.string.parting_word17));
+            partingWords.add(getResources().getString(R.string.parting_word18));
+        }
+
+        String getRandomWord() {
+            if(attemptsController.getCountWrongAnswers() > 7 && (getRandomInt(1,3) == 3)) {
+                String lastWord = StoredData.getDataString(DATA_LAST_PARTING_WORD,"");
+                int indexWord = getRandomInt(0,17);
+                if(!partingWords.get(indexWord).equals(lastWord)) {
+                    StoredData.saveData(DATA_LAST_PARTING_WORD,partingWords.get(indexWord));
+                    return partingWords.get(indexWord);
+                }
+            }
+            return "";
+        }
+        private int getRandomInt(int min, int max) {
+            Random rnd = new Random(System.currentTimeMillis());
+            return (min + rnd.nextInt(max - min + 1));
+        }
+    }
+
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -606,12 +700,13 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     break;
                 }
                 case R.id.btnCheckAnswer: {
+                    handler.sendEmptyMessage(SHOW_PARTING_WORD);
                     if (adFailed) { // если взлома ответов нет(adFailed == true), то предоставляем функции
                         if (attemptsController.getCountAttempts() == 0) {
                             attemptsController.getAttemptByAd();
                         } else {
-                            CheckTask checkTask = new CheckTask();
-                            checkTask.execute(etAnswer.getText().toString());
+                            CheckAnswerTask checkAnswerTask = new CheckAnswerTask();
+                            checkAnswerTask.execute(etAnswer.getText().toString());
                         }
                     }
                     break;
@@ -664,7 +759,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         }
     }
 
-    private class CheckTask extends AsyncTask<String, Void, Boolean> { // проверка ответа
+    private class CheckAnswerTask extends AsyncTask<String, Void, Boolean> { // проверка ответа
 
         private boolean winnerIsChecked;
 
@@ -680,8 +775,9 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                 try {
                     if (questionAnswerController.checkAnswer(answerOfUser)) { // если ответ правильный
                         handler.sendEmptyMessage(RIGHT_ANSWER_ANIMATION);
-                        statisticsController.sendStatistics(); // отправляем стат на сервер
+                        statisticsController.sendStatistics(); // отправляем статистику на сервер
                         StoredData.saveData(DATA_COUNT_ATTEMPTS, 3);
+                        attemptsController.resetCountWrongAnswers();
                         if (Progress.getInstance().getLevel() <= 20) {
                             Progress.getInstance().levelUp(); // повышвем уровень
                             statisticsController.setStartTimeLevel(); // устанавливаем время начала прохождения нового уровня
@@ -701,15 +797,18 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                         if (countAttempts > 0) {
                             attemptsController.decrementCountAtempts();
                         }
+                        attemptsController.increaseCountWrongAnswers();
                     }
                 } catch (NoInternetException ex) {
                     AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_ALERT_INTERNET);
                     assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(),"ALERT_INTERNET");
                     UpdateDataController.getInstance().setWinnerChecked(false);
                 } catch (ErrorOnServerException ex) {
+                    Log.d(TAG, "doInBackground: error = " + ex.toString());
                     AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_SERVER_ERROR);
                     assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(),"ALERT_SERVER");
                 } catch (IOException e) {
+                    Log.d(TAG, "doInBackground: error = " + e.toString());
                     AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_SERVER_ERROR);
                     assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(),"ALERT_SERVER");
                 }

@@ -36,14 +36,14 @@ public class StatisticsController {
         String nowDateString = format.format(nowDate);
         StoredData.saveData(StoredData.DATA_LASTDATE,nowDateString);
     }
-    public void sendStatistics() {
+    public void sendStatistics() { // отправка статистики на сервер
         int level = 2;
         if(Progress.getInstance().getLevel() <= 21) {
             level = Progress.getInstance().getLevel();
         } else if(Progress.getInstance().isDone()) {
             level = 22;
         }
-        RequestController.getInstance()
+        /*RequestController.getInstance()
                 .getJsonApi()
                 .sendStatistics(level,getLongOfLevel())
                 .enqueue(new Callback<Void>() {
@@ -52,6 +52,6 @@ public class StatisticsController {
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) { }
-                });
+                });*/
     }
 }

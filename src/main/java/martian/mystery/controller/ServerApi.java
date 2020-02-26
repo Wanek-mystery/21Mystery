@@ -13,7 +13,7 @@ public interface ServerApi {
     @GET("/update/") // проверка обновлений
     Call<ResponseFromServer> checkUpdate(@Query("update") int versionCode);
 
-    @GET("/pubdata/") // публичные данные
+    @GET("/test.php") // публичные данные
     Call<ResponseFromServer> getMainData(@Query("green") String queryTrue);
 
     @GET("/winner/") // проверка на наличие победителя

@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     private String linkToWinner = "none"; // ссылка на профиль победителя в соц сети
     private String locale;
 
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -602,11 +603,13 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
                                 @Override
-                                public void onFailure(Call<ResponseFromServer> call, Throwable t) { }
+                                public void onFailure(Call<ResponseFromServer> call, Throwable t) {
+                                    Log.d(TAG, "onFailure: error =" + t.toString());
+                                }
                             });
 
                     try {
-                        sleep(2000);
+                        sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
