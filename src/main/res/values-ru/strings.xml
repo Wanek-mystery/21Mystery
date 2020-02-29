@@ -2,6 +2,10 @@
     <string name="app_name">21 Mystery</string>
     <string name="ad_block">ca-app-pub-3637770884242866/6954195474</string>
 
+    <!--ЭКРАН РЕГИСТРАЦИИ-->
+    <string name="logup">Зарегайся плиз</string>
+
+
     <!--ГЛАВНЫЙ ЭКРАН-->
     <string name="winner_is">Победитель:</string>
     <string name="no_winner_text"><u>Победителя еще нет, будь первым!</u></string>

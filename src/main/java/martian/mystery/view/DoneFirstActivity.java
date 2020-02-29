@@ -31,8 +31,6 @@ import retrofit2.Response;
 
 public class DoneFirstActivity extends AppCompatActivity {
 
-    private EditText etNameWin;
-    private ImageButton btnSendName;
     private TextView tvEmail;
     private Button btnSendReview;
 
@@ -81,54 +79,6 @@ public class DoneFirstActivity extends AppCompatActivity {
                     return true;
                 }
             });
-        } else {
-            setContentView(R.layout.donefirst_sendname_activity);
-            tvEmail = findViewById(R.id.tvEmail);
-            etNameWin = findViewById(R.id.etNameWin);
-            btnSendName = findViewById(R.id.btnSendWin);
-            btnSendReview = findViewById(R.id.btnSendReview);
-            tvEmail.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                        ClipData clip = ClipData.newPlainText("", tvEmail.getText().toString());
-                        clipboard.setPrimaryClip(clip);
-                        Toast.makeText(DoneFirstActivity.this, R.string.email_copy, Toast.LENGTH_SHORT).show();
-                    }
-                    return true;
-                }
-            });
-            btnSendName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String name = etNameWin.getText().toString().trim();
-                    DataOfUser dataOfUser = new DataOfUser();
-                    dataOfUser.setNameOfUser(name);
-                    if(!name.equals("") && !name.equals("none")) {
-                        RequestController.getInstance()
-                                .getJsonApi()
-                                .sendNameWinner(dataOfUser)
-                                .enqueue(new Callback<Void>() {
-                                    @Override
-                                    public void onResponse(Call<Void> call, Response<Void> response) {
-                                        UpdateDataController.getInstance().setNameIsSended(true);
-                                        finish();
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<Void> call, Throwable t) {
-                                        UpdateDataController.getInstance().setNameIsSended(false);
-                                        Toast.makeText(DoneFirstActivity.this,R.string.no_internet,Toast.LENGTH_SHORT);
-                                    }
-                                });
-                    } else {
-                        Toast.makeText(DoneFirstActivity.this,R.string.error_name,Toast.LENGTH_SHORT);
-                        UpdateDataController.getInstance().setNameIsSended(false);
-                    }
-
-                }
-            });
         }
     }
 
@@ -138,10 +88,12 @@ public class DoneFirstActivity extends AppCompatActivity {
         protected String doInBackground(Void... voids) {
             while(true) {
                 try {
+                    DataOfUser dataOfUser = new DataOfUser();
+                    dataOfUser.setAnswer("acdc");
                     ResponseFromServer response = RequestController
                             .getInstance()
                             .getJsonApi()
-                            .getEmail("keyb")
+                            .getEmail(dataOfUser)
                             .execute().body();
                     return response.getEmail();
 

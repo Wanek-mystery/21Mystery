@@ -6,7 +6,7 @@ package martian.mystery.data;
 
 public class DataOfUser {
 
-    private String nameOfUser = "none"; // по умлочанию none
+    private String nameOfUser = "";
     private String answer;
     private int level = 1;
     private int timeOfLevel; // время прохождения последнего уровня

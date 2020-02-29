@@ -14,24 +14,24 @@ public interface ServerApi {
     @GET("/update/") // проверка обновлений
     Call<ResponseFromServer> checkUpdate(@Query("update") int versionCode);
 
-    @Headers("dont touch")
+    @Headers("User-Agent: dont touch")
     @GET("/prize/") // получение приза
     Call<ResponseFromServer> getPrize(@Query("prize") String queryTrue);
 
-    @Headers("dont touch")
-    @GET("/login/") // регистрация логина
+    @Headers("User-Agent: dont touch")
+    @POST("/login/") // регистрация логина
     Call<ResponseFromServer> logup(@Body DataOfUser dataOfUser);
 
     @GET("/leaders/") // получение списка лидеров
     Call<ResponseFromServer> getEmail(@Query("lead") String lead);
 
-    @Headers("dont touch")
-    @GET("/changelevel/") // отправка информации о переходе на новый уровень
+    @Headers("User-Agent: dont touch")
+    @POST("/changelevel/") // отправка информации о переходе на новый уровень
     Call<ResponseFromServer> newLevel(@Body DataOfUser dataOfUser);
 
-    @Headers("dont touch")
+    @Headers("User-Agent: dont touch")
     @POST("/winner/") // получение email
-    Call<Void> getEmail(@Body DataOfUser data);
+    Call<ResponseFromServer> getEmail(@Body DataOfUser data);
 
     @POST("/checkanswer/") // проверка ответа
     Call<ResponseFromServer> checkAnswer(@Body DataOfUser data);

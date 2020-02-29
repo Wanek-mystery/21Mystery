@@ -10,7 +10,7 @@ public class ResponseFromServer { // ответ от сервера завора
     private String leaders; // инфа о каждом уровне записывается в таком виде: 'level'-'countPlayersOnThisLevel'-'firstPlayer'
     private int result; // результат запроса
     private int existwinner; // наличие победителя
-    private int updateapp; // обновление приложения
+    private int updating; // процесс обновления
     private int updateforce; // принудительное обновление приложения
     private int place; // место в игре
 
@@ -22,12 +22,12 @@ public class ResponseFromServer { // ответ от сервера завора
         this.linkwinner = linktowinner;
     }
 
-    public int getUpdate() {
-        return updateapp;
+    public int getUpdating() {
+        return updating;
     }
 
-    public void setUpdate(int update) {
-        this.updateapp = update;
+    public void setUpdating(int updating) {
+        this.updating = updating;
     }
 
     public int getForceUpdate() {

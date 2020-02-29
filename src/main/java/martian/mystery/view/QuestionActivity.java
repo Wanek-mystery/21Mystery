@@ -835,7 +835,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         private boolean isWinner() throws NoInternetException, ErrorOnServerException, IOException {
             boolean isWinner = false;
             if (RequestController.hasConnection(GetContextClass.getContext())) {
-                ResponseFromServer response = RequestController.getInstance()
+                /*ResponseFromServer response = RequestController.getInstance()
                         .getJsonApi()
                         .getMainData("money")
                         .execute().body();
@@ -849,7 +849,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     Progress.getInstance().levelUp();
                     StoredData.saveData(StoredData.DATA_PLACE, response.getPlace());
                     winnerIsChecked = true;
-                } else throw new ErrorOnServerException();
+                } else throw new ErrorOnServerException();*/
             } else {
                 throw new NoInternetException();
             }

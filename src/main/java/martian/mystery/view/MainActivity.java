@@ -23,11 +23,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.florent37.viewtooltip.ViewTooltip;
-import com.google.android.play.core.appupdate.AppUpdateInfo;
-import com.google.android.play.core.appupdate.AppUpdateManager;
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.install.model.UpdateAvailability;
-import com.google.android.play.core.tasks.OnSuccessListener;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -82,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
     private ProgressViewController progressViewController;
     private AnimationController animController;
     private ObjectAnimator animBtnHelp;
-    private AppUpdateManager appUpdateManager;
     private AssistentDialog assistentDialogRules;
 
     private boolean existWinner = false; // наличие победителя
@@ -93,15 +87,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        startActivity(new Intent(this,LogupActivity.class));
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //
         StoredData.saveData(DATA_COUNT_LAUNCH_APP,StoredData.getDataInt(DATA_COUNT_LAUNCH_APP,0)+1); // увеличиваем кол-во звапусков игры на один
-        appUpdateManager = AppUpdateManagerFactory.create(GetContextClass.getContext());
         locale = Locale.getDefault().getLanguage();
         Log.d("my", "onCreate: " + locale);
+
 
         btnNext = findViewById(R.id.btnNext);
         btnHelp = findViewById(R.id.btnHelp);
@@ -168,37 +163,6 @@ public class MainActivity extends AppCompatActivity {
         progressViewController.increaseProgressAnimation(0);
         animController.tvWinnerAnimationStart();
         animController.setTextForMainButton();
-
-        appUpdateManager // проверка обновлений игры
-                .getAppUpdateInfo()
-                .addOnSuccessListener(
-                        new OnSuccessListener<AppUpdateInfo>() {
-                            @Override
-                            public void onSuccess(AppUpdateInfo appUpdateInfo) {
-                                if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                                        new Thread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                ResponseFromServer response = null;
-                                                try {
-                                                    response = RequestController.getInstance()
-                                                            .getJsonApi()
-                                                            .checkUpdate(BuildConfig.VERSION_CODE)
-                                                            .execute().body();
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
-                                                }
-                                                if(response.getUpdate() == 1) {
-                                                    AssistentDialog updateDialog = new AssistentDialog(AssistentDialog.DIALOG_UPDATE_APP);
-                                                    updateDialog.show(getSupportFragmentManager(),"UPDATE");
-                                                }
-                                            }
-                                        }).start();
-                                } else if(appUpdateInfo.updateAvailability()
-                                        == UpdateAvailability.UPDATE_NOT_AVAILABLE) {
-                                }
-                            }
-                        });
 
         // запускаем потоки для обновления данных и проверки принудительных обновлений
         updateDataThread = new UpdateDataThread();
@@ -564,26 +528,11 @@ public class MainActivity extends AppCompatActivity {
                 if(!isStop) {
                     RequestController.getInstance() // загрузка данных с сервера
                             .getJsonApi()
-                            .getMainData("money")
+                            .getPrize("prize")
                             .enqueue(new Callback<ResponseFromServer>() {
                                 @Override
                                 public void onResponse(Call<ResponseFromServer> call, Response<ResponseFromServer> response) {
                                     ResponseFromServer responseFromServer = response.body();
-                                    existWinner = (responseFromServer.getExistWinner() == 1);
-                                    if(!responseFromServer.getWinner().equals(StoredData.getDataString(StoredData.DATA_WINS,GetContextClass.getContext().getResources().getString(R.string.no_winner_text)))) {
-                                        if(existWinner) {
-                                            if(responseFromServer.getWinner().equals("none")) {
-                                                StoredData.saveData(StoredData.DATA_WINS,getResources().getString(R.string.winner_didnt_name));
-                                                tvWinner.setText(getResources().getString(R.string.winner_didnt_name));
-                                            } else {
-                                                StoredData.saveData(StoredData.DATA_WINS,responseFromServer.getWinner());
-                                                tvWinner.setText(responseFromServer.getWinner());
-                                            }
-                                        } else {
-                                            tvWinner.setText(getResources().getString(R.string.no_winner_text));
-                                            StoredData.saveData(StoredData.DATA_WINS,getResources().getString(R.string.no_winner_text));
-                                        }
-                                    }
                                     String prize; // переменная хранит приз в зависимости от языка устройства
                                     if(locale.equals("ru") || locale.equals("be") || locale.equals("uk")) {
                                         prize = responseFromServer.getPrize().split(",")[0];
@@ -594,12 +543,12 @@ public class MainActivity extends AppCompatActivity {
                                         tvPrize.startAnimation(0,1);
                                     }
 
-                                    // проверяем есть ли ссылка на ооцсеть победителя
+                                    /*// проверяем есть ли ссылка на ооцсеть победителя
                                     if(existWinner) {
                                         if(!responseFromServer.getLinktowinner().equals("none")) {
                                             linkToWinner = responseFromServer.getLinktowinner();
                                         } else linkToWinner = "none";
-                                    }
+                                    }*/
                                 }
 
                                 @Override
