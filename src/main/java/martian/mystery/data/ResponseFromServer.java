@@ -7,6 +7,7 @@ public class ResponseFromServer { // ответ от сервера завора
     private String season; // сезон
     private String email; // контакт для связи
     private String linkwinner; // ссылка на соц сеть победителя
+    private String leaders; // инфа о каждом уровне записывается в таком виде: 'level'-'countPlayersOnThisLevel'-'firstPlayer'
     private int result; // результат запроса
     private int existwinner; // наличие победителя
     private int updateapp; // обновление приложения
@@ -91,5 +92,13 @@ public class ResponseFromServer { // ответ от сервера завора
 
     public void setSeason(String season) {
         this.season = season;
+    }
+
+    public String getLeaders() {
+        return leaders;
+    }
+
+    public void setLeaders(String leaders) {
+        this.leaders = leaders;
     }
 }

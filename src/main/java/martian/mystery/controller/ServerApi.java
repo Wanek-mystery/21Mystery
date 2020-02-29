@@ -5,6 +5,7 @@ import martian.mystery.data.ResponseFromServer;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -13,20 +14,24 @@ public interface ServerApi {
     @GET("/update/") // проверка обновлений
     Call<ResponseFromServer> checkUpdate(@Query("update") int versionCode);
 
-    @GET("/test.php") // публичные данные
-    Call<ResponseFromServer> getMainData(@Query("green") String queryTrue);
+    @Headers("dont touch")
+    @GET("/prize/") // получение приза
+    Call<ResponseFromServer> getPrize(@Query("prize") String queryTrue);
 
-    @GET("/winner/") // проверка на наличие победителя
-    Call<ResponseFromServer> sendWinner(@Query("black") String winner);
+    @Headers("dont touch")
+    @GET("/login/") // регистрация логина
+    Call<ResponseFromServer> logup(@Body DataOfUser dataOfUser);
 
-    @GET("/winner/") // получение контактов для получения приза
-    Call<ResponseFromServer> getEmail(@Query("mouse") String way);
+    @GET("/leaders/") // получение списка лидеров
+    Call<ResponseFromServer> getEmail(@Query("lead") String lead);
 
-    @GET("/statistics/") // отправка статистики
-    Call<Void> sendStatistics(@Query("newlevel") int level, @Query("time") int time);
+    @Headers("dont touch")
+    @GET("/changelevel/") // отправка информации о переходе на новый уровень
+    Call<ResponseFromServer> newLevel(@Body DataOfUser dataOfUser);
 
-    @POST("/winner/") // отправка имени победителя
-    Call<Void> sendNameWinner(@Body DataOfUser data);
+    @Headers("dont touch")
+    @POST("/winner/") // получение email
+    Call<Void> getEmail(@Body DataOfUser data);
 
     @POST("/checkanswer/") // проверка ответа
     Call<ResponseFromServer> checkAnswer(@Body DataOfUser data);

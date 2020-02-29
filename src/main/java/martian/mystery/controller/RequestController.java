@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RequestController { // класс-синглтон для управления запросами к серверу
 
     private final static RequestController instanceController = new RequestController();
-    private final static String URL = "https://tomystery.herokuapp.com"; //"https://wroadbot.000webhostapp.com/"
+    private final static String URL = "http://195.133.145.74"; //"https://wroadbot.000webhostapp.com/"
     private Retrofit retrofit;
 
     public static RequestController getInstance() {
