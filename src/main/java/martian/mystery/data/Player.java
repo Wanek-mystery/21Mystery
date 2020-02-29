@@ -7,9 +7,15 @@ public class Player {
 
     private String name;
     private int level;
-    private final String DATA_NAME_PLAYER = "name_player";
+    public static final String DATA_NAME_PLAYER = "name_player";
+    private static final Player instancePlayer = new Player();
 
-    public Player() {
+
+    public static Player getInstance() {
+        return instancePlayer;
+    }
+
+    private Player() {
         name = StoredData.getDataString(DATA_NAME_PLAYER,"");
     }
 

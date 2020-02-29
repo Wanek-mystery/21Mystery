@@ -4,6 +4,7 @@
 
     <!--ЭКРАН РЕГИСТРАЦИИ-->
     <string name="logup">Зарегайся плиз</string>
+    <string name="error_name">Недопустимое имя</string>
 
 
     <!--ГЛАВНЫЙ ЭКРАН-->
@@ -75,11 +76,7 @@
 
 
     <!--ЭКРАНЫ ДЛЯ ПОБЕДИТЕЛЕЙ-->
-    <string name="finish_phrase_win_sendname">Мои поздравления!
-        Отправь свое имя или ник (который будет отображаться на главном экране),
-                                              чтобы все знали, кто здесь самый умный:)</string>
-    <string name="error_name">Недопустимое имя</string>
-    <string name="finish_phrase_win">Новый сезон уже скоро&#8230;</string>
+    <string name="finish_phrase_win">Ну и долго тебя ждать? Уже почта запылилась</string>
     <string name="write_email">Напиши на этот email, чтобы связаться со мной по поводу приза: </string>
     <string name="email_copy">Email скопирован</string>
 
@@ -180,7 +177,6 @@
         Когда одни с оружием, другие с правосудием.
         Когда одни единичны, другие идентичны.</string>
 
-    <!--ДЛЯ ТЕСТОВ-->
     <string name='awr1'>qviggl!йжои!</string>
     <string name='awr2'>лвкнухн!лвкљухн!kodmt!</string>
     <string name='awr3'>ннщгй!ннщзл!snkd!snkdt!</string>
@@ -195,22 +191,6 @@
     <string name='awr12'>дщмлч!шсыдиЬобы!vrtd!euvbc hjjd!</string>
     <string name='awr13'>ятиклм!krvagj!kxpazal!</string>
     <string name='awr14'>ъмлЬхии!|mm]via!</string>
-
-    <!-- ответы на загадки -->
-    <!--<string name="awr1">тмзг!тмзжлм</string>
-    <string name="awr2">гннак ед ннтт!гннак!оЯдаиюоэи</string>
-    <string name="awr3">йкрн!нЯук!йкрн нЯук</string>
-    <string name="awr4">мЯу гдеао!гдеао!мЯу-Яздвр!г гдеаоз!г мЯу гдеаоз!</string>
-    <string name="awr5">лЯнекжбты</string>
-    <string name="awr6">нкзчкэк ртфь!дЯназфймЯ</string>
-    <string name="awr7">еннлЭт</string>
-    <string name="awr8">рнсклто</string>
-    <string name="awr9">дквз!ипвчлм!дквзЭ!ипвчзк</string>
-    <string name="awr10">г ймфенпжфд!ймфенпжф!сЯжил!оЯ сЯжил!</string>
-    <string name="awr11">иЯмршдбзл дквзЭ!ннтгЭзн!ннтгЭфэ!иЯмршдбфы дквзЭ</string>
-    <string name="awr12">мдекез!мѐекез</string>
-    <string name="awr13">лдлтико</string>
-    <string name="awr14">тнп</string>-->
 
     <!--<string name="awr1">2</string>
     <string name="awr2">3</string>

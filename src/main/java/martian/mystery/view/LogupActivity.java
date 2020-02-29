@@ -15,7 +15,9 @@ import java.io.IOException;
 import martian.mystery.R;
 import martian.mystery.controller.Progress;
 import martian.mystery.controller.RequestController;
+import martian.mystery.controller.StoredData;
 import martian.mystery.data.DataOfUser;
+import martian.mystery.data.Player;
 import martian.mystery.data.ResponseFromServer;
 
 public class LogupActivity extends AppCompatActivity {
@@ -53,6 +55,8 @@ public class LogupActivity extends AppCompatActivity {
     }
 
     private class LogupTask extends AsyncTask<String,Void,Integer> {
+
+        private String resultLogin;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -63,9 +67,13 @@ public class LogupActivity extends AppCompatActivity {
         protected Integer doInBackground(String... voids) {
             String login = voids[0].trim();
             int validateLogin = isValidLogin(login);
+
             if(validateLogin != LOGIN_IS_ACCESS) return validateLogin;
             if(loginIsExist(login)) return LOGIN_EXIST;
-            else return LOGIN_NOT_EXIST;
+            else {
+                resultLogin = login;
+                return LOGIN_NOT_EXIST;
+            }
         }
 
         @Override
@@ -75,6 +83,7 @@ public class LogupActivity extends AppCompatActivity {
                 Log.d(TAG, "onPostExecute: login exist");
             } else if(res == LOGIN_NOT_EXIST) {
                 Log.d(TAG, "onPostExecute: login not exist");
+                StoredData.saveData(Player.DATA_NAME_PLAYER,resultLogin);
             } else if(res == WRONG_SYMBOLS) {
                 Log.d(TAG, "onPostExecute: wrong symbols");
             } else if(res == BAD_WORDS) {
@@ -108,7 +117,7 @@ public class LogupActivity extends AppCompatActivity {
                 Log.d(TAG, "isValidLogin: bad words");
                 return BAD_WORDS;
             }
-            if(login.indexOf(' ') != login.lastIndexOf(' ')) return MANY_SPACE;
+            if(login.indexOf(' ') != login.lastIndexOf(' ')) return MANY_SPACE; // если больше одного пробела
             if(login.matches("[A-Za-z_0-9а-яА-Я?\\s]+")) return LOGIN_IS_ACCESS;
             else return WRONG_SYMBOLS;
         }

@@ -33,6 +33,10 @@ public interface ServerApi {
     @POST("/winner/") // получение email
     Call<ResponseFromServer> getEmail(@Body DataOfUser data);
 
+    @Headers("User-Agent: dont touch")
+    @GET("/winner/")
+    Call<ResponseFromServer> checkWinner(@Query("green") String green);
+
     @POST("/checkanswer/") // проверка ответа
     Call<ResponseFromServer> checkAnswer(@Body DataOfUser data);
 
