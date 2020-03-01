@@ -9,7 +9,7 @@ import static martian.mystery.controller.StoredData.DATA_LEVEL;
 public class Progress { // класс синглтон для управления уровнем(прогрессом)
     private int level;
     private boolean isDone = false;
-    public static final int DEFAULT_LEVEL = 93124;
+    public static final int DEFAULT_LEVEL = 1;
 
     private static final Progress instanceProgress = new Progress();
 
@@ -23,10 +23,10 @@ public class Progress { // класс синглтон для управлени
         int countLaunches = StoredData.getDataInt(DATA_COUNT_LAUNCH_APP,0);
         int level = ciphering(StoredData.getDataInt(DATA_LEVEL,DEFAULT_LEVEL));
         Log.d("my", "getLevelFromStorage: level = " + level);
-        /*if(level != -1) {
+        if(level != -1) {
             if(countLaunches == 1 && level > 1) level = 1; // для защиты от взлома
             return level;
-        } else level = 1;*/
+        } else level = 1;
         return level;
     }
     public void levelUp() {

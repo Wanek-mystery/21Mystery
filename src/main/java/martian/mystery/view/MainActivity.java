@@ -3,6 +3,8 @@ package martian.mystery.view;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.ObjectAnimator;
 import android.content.ClipData;
@@ -25,10 +27,12 @@ import android.widget.TextView;
 import com.github.florent37.viewtooltip.ViewTooltip;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import martian.mystery.BuildConfig;
 import martian.mystery.controller.GetContextClass;
+import martian.mystery.controller.LeadersAdapter;
 import martian.mystery.controller.Progress;
 import martian.mystery.R;
 import martian.mystery.controller.RequestController;
@@ -46,8 +50,8 @@ import static martian.mystery.controller.StoredData.DATA_COUNT_LAUNCH_APP;
 
 public class MainActivity extends AppCompatActivity {
 
+    private RecyclerView leadersList;
     private Button btnNext;
-    private TextView tvWinner;
     private AsyncTextPathView tvPrize;
     private TextView tvProgressPick1;
     private TextView tvProgressPick2;
@@ -79,15 +83,14 @@ public class MainActivity extends AppCompatActivity {
     private ObjectAnimator animBtnHelp;
     private AssistentDialog assistentDialogRules;
 
-    private boolean existWinner = false; // наличие победителя
-    private String linkToWinner = "none"; // ссылка на профиль победителя в соц сети
     private String locale;
+    private ArrayList<String> playersNames = new ArrayList<>();
+    private ArrayList<String> playersLevels = new ArrayList<>();
 
     private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        startActivity(new Intent(this,LogupActivity.class));
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -97,6 +100,11 @@ public class MainActivity extends AppCompatActivity {
         locale = Locale.getDefault().getLanguage();
         Log.d("my", "onCreate: " + locale);
 
+        leadersList = findViewById(R.id.leadersList);
+        leadersList.setAdapter(new LeadersAdapter(this,playersNames,playersLevels));
+        leadersList.setLayoutManager(new LinearLayoutManager(this));
+        init();
+        Log.d(TAG, "onClick: first item = " + leadersList.getAdapter().getItemId(2));
 
         btnNext = findViewById(R.id.btnNext);
         btnHelp = findViewById(R.id.btnHelp);
@@ -124,12 +132,6 @@ public class MainActivity extends AppCompatActivity {
         imgTop3Params = (ConstraintLayout.LayoutParams) imgLvlTop3.getLayoutParams();
         imgTop4Params = (ConstraintLayout.LayoutParams) imgLvlTop4.getLayoutParams();
 
-        tvWinner = findViewById(R.id.firstPerson);
-        tvWinner.setText(
-                String.valueOf(
-                StoredData.getDataString(StoredData.DATA_WINS,
-                        getResources().getString(R.string.no_winner_text))));
-        tvWinner.setOnClickListener(onClickListenerWinner);
         tvPrize = findViewById(R.id.tvPrize);
         tvPrize.setText(
                 String.valueOf(
@@ -156,12 +158,27 @@ public class MainActivity extends AppCompatActivity {
             animController.helpBtnAnimation();
         }
     }
+    private void init() {
+        playersNames.add("Wanek");
+        playersLevels.add("12 ур.");
+
+        playersNames.add("Игорь");
+        playersLevels.add("10 ур.");
+
+        playersNames.add("Mike32 и ещё 8 чел.");
+        playersLevels.add("9 ур.");
+
+        playersNames.add("Алигатор и ещё 12 чел.");
+        playersLevels.add("8 ур.");
+
+        playersNames.add("Ниночка и ещё 56 чел.");
+        playersLevels.add("6 ур.");
+    }
     @Override
     protected void onResume() {
         super.onResume();
 
         progressViewController.increaseProgressAnimation(0);
-        animController.tvWinnerAnimationStart();
         animController.setTextForMainButton();
 
         // запускаем потоки для обновления данных и проверки принудительных обновлений
@@ -195,36 +212,6 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    View.OnClickListener onClickListenerWinner = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {  //обработчик касаний для имени победителя (tvPrize)
-            if(existWinner) {
-                if(!linkToWinner.equals("none")) {
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("", linkToWinner);
-                    clipboard.setPrimaryClip(clip);
-
-                    ViewTooltip
-                            .on(MainActivity.this, tvWinner)
-                            .autoHide(true, 2000)
-                            .corner(30)
-                            .position(ViewTooltip.Position.BOTTOM)
-                            .withShadow(false)
-                            .text(getResources().getString(R.string.link_towinner_copied))
-                            .show();
-                }
-            } else {
-                ViewTooltip
-                        .on(MainActivity.this, tvWinner)
-                        .autoHide(true, 4000)
-                        .corner(30)
-                        .position(ViewTooltip.Position.BOTTOM)
-                        .withShadow(false)
-                        .text(getResources().getString(R.string.winner_update_info))
-                        .show();
-            }
-        }
-    };
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -279,14 +266,7 @@ public class MainActivity extends AppCompatActivity {
             if(Progress.getInstance().getLevel() == 1) btnNext.setText(MainActivity.this.getResources().getString(R.string.start_game));
             else if(Progress.getInstance().getLevel() < 22) btnNext.setText(MainActivity.this.getResources().getString(R.string.continue_game));
         }
-        public void tvWinnerAnimationStart() { // анимация имени победителя
-            Animation anim = new AlphaAnimation(1.0f, 0.0f);
-            anim.setDuration(1200);
-            anim.setStartOffset(20);
-            anim.setRepeatMode(Animation.REVERSE);
-            anim.setRepeatCount(3);
-            tvWinner.startAnimation(anim);
-        }
+
         public void clickRules() { // анимация нажатия кнопки с правилами
             ObjectAnimator animBtnHelpClickX = ObjectAnimator.ofFloat(btnHelp, "scaleX", 1.0f,0.8f,1.0f);
             ObjectAnimator animBtnHelpClickY = ObjectAnimator.ofFloat(btnHelp, "scaleY", 1.0f,0.8f,1.0f);

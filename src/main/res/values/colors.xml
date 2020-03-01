@@ -8,6 +8,8 @@
     <color name="strokeEditText">#A86F10</color>
     <color name="colorAdd">#FF99FF2A</color>
     <color name="back">#46408E</color>
+    <color name="back_leaders">#001426</color>
+    <color name="leader_line">#FF9100</color>
 
     <color name="strokeReview">#F4511E</color>
     <color name="strokeReviewPressed">#F44336</color>
@@ -18,6 +20,4 @@
     <color name="wrongAnswer">#D81B47</color>
     <color name="rightAnswer">#4CAF50</color>
 
-
-    <color name="test">#DA3939</color>
 </resources>

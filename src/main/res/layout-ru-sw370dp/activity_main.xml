@@ -386,7 +386,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/glineBottom"
@@ -394,71 +393,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/glineTop">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clWinner"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:autoSizeTextType="uniform"
+            android:fontFamily="@font/advent_pro_light"
+            android:text="Лидеры"
+            android:textAlignment="center"
+            android:textColor="#fff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvFirst"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:text="@string/winner_is"
-                android:textAlignment="center"
-                android:textColor="#fff"
-                android:fontFamily="@font/advent_pro_medium"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toTopOf="@+id/firstPerson"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/firstPerson"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:elevation="10dp"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
-                android:text="@string/no_winner_text"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvFirst" />
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/line"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/firstPerson" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/leadersList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:padding="3dp"
+            android:layoutAnimation="@anim/anim_leaders"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnNext"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="58dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/back_btn_continue"
             android:elevation="20dp"
@@ -468,8 +437,9 @@
             android:translationZ="15dp"
             app:autoSizeTextType="uniform"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/clWinner" />
+            app:layout_constraintTop_toBottomOf="@+id/leadersList" />
 
         <ImageView
             android:id="@+id/btnHelp"
