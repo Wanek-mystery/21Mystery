@@ -1,11 +1,16 @@
 package martian.mystery.view;
 
+import android.animation.ObjectAnimator;
+import android.content.Intent;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,8 +27,14 @@ import martian.mystery.data.ResponseFromServer;
 
 public class LogupActivity extends AppCompatActivity {
 
+    private TextView tvInfo;
+    private ImageView imgAnimation;
     private EditText etLogin;
     private Button btnLogup;
+    private TextView tvError;
+
+    private ObjectAnimator errorAnimatorShow = ObjectAnimator.ofFloat(tvError, "alpha", 1.0f,0.0f);
+    private ObjectAnimator errorAnimatorHide = ObjectAnimator.ofFloat(tvError, "alpha", 0.0f,1.0f);
 
     private final int LOGIN_WRONG = -1;
     private final int LOGIN_EXIST = 0;
@@ -42,17 +53,69 @@ public class LogupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.logup_activity);
 
+        tvInfo = findViewById(R.id.tvTopWord);
+        imgAnimation = findViewById(R.id.imgLogupAnimation);
         etLogin = findViewById(R.id.etLogin);
         btnLogup = findViewById(R.id.btnLogup);
+        tvError = findViewById(R.id.tvInvalidName);
 
         btnLogup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LogupTask logupTask = new LogupTask();
-                logupTask.execute(etLogin.getText().toString());
+                if(!etLogin.getText().toString().equals("")) {
+                    LogupTask logupTask = new LogupTask();
+                    logupTask.execute(etLogin.getText().toString());
+                }
             }
         });
+        if(StoredData.getDataInt(StoredData.DATA_COUNT_LAUNCH_APP,0) > 1) {
+            tvInfo.setText(R.string.logup_info);
+            btnLogup.setText(R.string.continue_game);
+        }
+        etLogin.setOnFocusChangeListener(onFocusChangeListener);
     }
+
+    private void animateError(int errorString, int duration) {
+        if(errorAnimatorHide.isStarted()) {
+            errorAnimatorShow.cancel();
+            errorAnimatorHide.cancel();
+
+            tvError.setText(errorString);
+            errorAnimatorHide = ObjectAnimator.ofFloat(tvError, "alpha", 1.0f,0.0f);
+            errorAnimatorShow = ObjectAnimator.ofFloat(tvError, "alpha", 0.0f,1.0f);
+            errorAnimatorHide.setDuration(800);
+            errorAnimatorHide.setStartDelay(duration);
+            errorAnimatorShow.setDuration(800);
+            errorAnimatorShow.start();
+            errorAnimatorHide.start();
+            return;
+        } else {
+            tvError.setText(errorString);
+            errorAnimatorHide = ObjectAnimator.ofFloat(tvError, "alpha", 1.0f,0.0f);
+            errorAnimatorShow = ObjectAnimator.ofFloat(tvError, "alpha", 0.0f,1.0f);
+            errorAnimatorHide.setDuration(800);
+            errorAnimatorHide.setStartDelay(duration);
+            errorAnimatorShow.setDuration(800);
+            errorAnimatorShow.start();
+            errorAnimatorHide.start();
+            return;
+        }
+    }
+
+    View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
+
+        private boolean wasShow = false;
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if(hasFocus) {
+                if(!wasShow) { // если warning еще не был показан
+                    animateError(R.string.logup_warning,7000);
+                }
+                TransitionDrawable transitionDrawable = (TransitionDrawable) imgAnimation.getDrawable();
+                transitionDrawable.startTransition(1200);
+            }
+        }
+    };
 
     private class LogupTask extends AsyncTask<String,Void,Integer> {
 
@@ -80,20 +143,22 @@ public class LogupActivity extends AppCompatActivity {
         protected void onPostExecute(Integer res) {
             super.onPostExecute(res);
             if(res == LOGIN_EXIST) {
-                Log.d(TAG, "onPostExecute: login exist");
+                animateError(R.string.login_exist,6000);
             } else if(res == LOGIN_NOT_EXIST) {
-                Log.d(TAG, "onPostExecute: login not exist");
                 StoredData.saveData(Player.DATA_NAME_PLAYER,resultLogin);
+                Player.getInstance().setName(resultLogin);
+                startActivity(new Intent(LogupActivity.this,MainActivity.class));
+                finish();
             } else if(res == WRONG_SYMBOLS) {
-                Log.d(TAG, "onPostExecute: wrong symbols");
+                animateError(R.string.wrong_symbols,6000);
             } else if(res == BAD_WORDS) {
-                Log.d(TAG, "onPostExecute: fuck");
+                animateError(R.string.bad_words,6000);
             } else if (res == SHORT_LOGIN) {
-                Log.d(TAG, "onPostExecute: login is short");
+                animateError(R.string.invalid_long_name,6000);
             } else if(res == LONG_LOGIN) {
-
+                animateError(R.string.invalid_long_name,6000);
             } else if(res == MANY_SPACE) {
-
+                animateError(R.string.many_scapes,6000);
             }
             btnLogup.setClickable(true);
         }

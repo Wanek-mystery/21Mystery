@@ -3,7 +3,17 @@
     <string name="ad_block">ca-app-pub-3637770884242866/6954195474</string>
 
     <!--ЭКРАН РЕГИСТРАЦИИ-->
-    <string name="logup">Зарегайся плиз</string>
+    <string name="logup_info">Come up with your nickname. It will be displayed in the leaderboard</string>
+    <string name="logup_info_new">First come up with your nickname. It will be displayed in the leaderboard</string>
+    <string name="logup_warning">Important!
+        If you delete the app or delete its data, the nickname will not be returned.</string>
+    <string name="logup">Start game</string>
+    <string name="error_name">Invalid name</string>
+    <string name="invalid_long_name">The nickname must contain from 4 to 15 characters.</string>
+    <string name="login_exist">Nickname is already taken, think of something else.</string>
+    <string name="wrong_symbols">A nickname can only contain numbers and letters</string>
+    <string name="many_scapes">There should be no more than one space.</string>
+    <string name="bad_words">Oh wait</string>
 
     <!--ГЛАВНЫЙ ЭКРАН-->
     <string name="winner_is">Winner:</string>
@@ -11,7 +21,8 @@
     <string name="winner_didnt_name">There is a winner, but he did not write his name</string>
     <string name="winner_update_info">Information is updated every second</string>
     <string name="link_towinner_copied">The link to the winner is copied</string>
-    <string name="start_game">Start</string>
+    <string name="empty_player">Empty</string>
+    <string name="start_game">Start game</string>
     <string name="continue_game">Continue</string>
     <string name="read_rules">Read the rules before you start</string>
     <string name="rules">Rules</string>
@@ -72,10 +83,7 @@
 
     <!--ЭКРАНЫ ДЛЯ ПОБЕДИТЕЛЕЙ-->
     <string name="write_email">Write to this email to contact me about the prize: </string>
-    <string name="finish_phrase_win_sendname">Hi winner! Send your name or nickname (which will be displayed on the home screen),
-                                              so everyone will know who is the smartest here:)</string>
     <string name="finish_phrase_win">The new season is coming soon&#8230;</string>
-    <string name="error_name">Invalid name</string>
     <string name="email_copy">Email copied</string>
     <string name="write_review">leave a review</string>
 

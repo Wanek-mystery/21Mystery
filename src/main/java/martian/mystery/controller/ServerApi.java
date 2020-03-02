@@ -23,7 +23,7 @@ public interface ServerApi {
     Call<ResponseFromServer> logup(@Body DataOfUser dataOfUser);
 
     @GET("/leaders/") // получение списка лидеров
-    Call<ResponseFromServer> getEmail(@Query("lead") String lead);
+    Call<ResponseFromServer> getLeaders(@Query("lead") String lead);
 
     @Headers("User-Agent: dont touch")
     @POST("/changelevel/") // отправка информации о переходе на новый уровень

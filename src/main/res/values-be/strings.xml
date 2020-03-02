@@ -3,7 +3,16 @@
     <string name="ad_block">ca-app-pub-3637770884242866/6954195474</string>
 
     <!--ЭКРАН РЕГИСТРАЦИИ-->
-    <string name="logup"></string>
+    <string name="logup_info">Придумай свой никнейм. Он будет отображаться в таблице лидеров</string>
+    <string name="logup_info_new">Для начала придумай свой никнейм. Он будет отображаться в таблице лидеров</string>
+    <string name="logup_warning">Важно! Если удалить приложение или стереть его данные, никнейм уже не вернуть</string>
+    <string name="logup">Начать игру</string>
+    <string name="error_name">Недопустимое имя</string>
+    <string name="invalid_long_name">Никнейм должен содержать от 4 до 15 символов</string>
+    <string name="login_exist">Никнейм уже занят, придумай что-нибудь другое</string>
+    <string name="wrong_symbols">Никнейм может содержать только цифры, символы русского и английского алфавита</string>
+    <string name="many_scapes">Должно быть не больше одного пробела</string>
+    <string name="bad_words">Шалунишка</string>
 
 
     <!--ГЛАВНЫЙ ЭКРАН-->
@@ -12,6 +21,7 @@
     <string name="winner_didnt_name">Победитель есть, но он не написал свое имя</string>
     <string name="winner_update_info">Информация обновляется каждую секунду</string>
     <string name="link_towinner_copied">Ссылка на победителя скопирована</string>
+    <string name="empty_player">Пусто</string>
     <string name="start_game">Начать</string>
     <string name="continue_game">Продолжить игру</string>
     <string name="read_rules">Советую почитать правила</string>
@@ -46,7 +56,7 @@
     <string name="alert_check_on_server">В следующих загадках ответы будут проверятся удаленно через интернет,
         поэтому возможны небольшие задержки</string>
     <!--список фраз, напутсвий-->
-    <string name="parting_word1"></string>
+    <string name="parting_word1">Дам подсказку: не можешь разгадать загадку сам, загадай её другому</string>
     <string name="parting_word2"></string>
     <string name="parting_word3"></string>
     <string name="parting_word4"></string>
@@ -74,10 +84,6 @@
 
 
     <!--ЭКРАНЫ ДЛЯ ПОБЕДИТЕЛЕЙ-->
-    <string name="finish_phrase_win_sendname">Мои поздравления!
-        Отправь свое имя или ник (который будет отображаться на главном экране),
-                                              чтобы все знали, кто здесь самый умный:)</string>
-    <string name="error_name">Недопустимое имя</string>
     <string name="finish_phrase_win">Новый сезон уже скоро&#8230;</string>
     <string name="write_email">Напиши на этот email, чтобы связаться со мной по поводу приза: </string>
     <string name="email_copy">Email скопирован</string>

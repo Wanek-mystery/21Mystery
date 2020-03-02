@@ -27,7 +27,10 @@ import android.widget.TextView;
 import com.github.florent37.viewtooltip.ViewTooltip;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import martian.mystery.BuildConfig;
@@ -37,6 +40,7 @@ import martian.mystery.controller.Progress;
 import martian.mystery.R;
 import martian.mystery.controller.RequestController;
 import martian.mystery.controller.UpdateDataController;
+import martian.mystery.data.Player;
 import martian.mystery.data.ResponseFromServer;
 import martian.mystery.controller.StoredData;
 import retrofit2.Call;
@@ -86,11 +90,16 @@ public class MainActivity extends AppCompatActivity {
     private String locale;
     private ArrayList<String> playersNames = new ArrayList<>();
     private ArrayList<String> playersLevels = new ArrayList<>();
+    private ArrayList<Integer> playersCount = new ArrayList<>();
 
     private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(StoredData.getDataString(Player.DATA_NAME_PLAYER,Player.getInstance().getName()).equals("")) {
+            startActivity(new Intent(this,LogupActivity.class));
+            finish();
+        }
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -101,10 +110,10 @@ public class MainActivity extends AppCompatActivity {
         Log.d("my", "onCreate: " + locale);
 
         leadersList = findViewById(R.id.leadersList);
-        leadersList.setAdapter(new LeadersAdapter(this,playersNames,playersLevels));
+        leadersList.setHasFixedSize(true);
+        leadersList.setAdapter(new LeadersAdapter(this,playersNames,playersLevels,playersCount));
         leadersList.setLayoutManager(new LinearLayoutManager(this));
-        init();
-        Log.d(TAG, "onClick: first item = " + leadersList.getAdapter().getItemId(2));
+
 
         btnNext = findViewById(R.id.btnNext);
         btnHelp = findViewById(R.id.btnHelp);
@@ -158,22 +167,6 @@ public class MainActivity extends AppCompatActivity {
             animController.helpBtnAnimation();
         }
     }
-    private void init() {
-        playersNames.add("Wanek");
-        playersLevels.add("12 ур.");
-
-        playersNames.add("Игорь");
-        playersLevels.add("10 ур.");
-
-        playersNames.add("Mike32 и ещё 8 чел.");
-        playersLevels.add("9 ур.");
-
-        playersNames.add("Алигатор и ещё 12 чел.");
-        playersLevels.add("8 ур.");
-
-        playersNames.add("Ниночка и ещё 56 чел.");
-        playersLevels.add("6 ур.");
-    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -197,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        updateDataThread.toStop();
+        if(updateDataThread != null) updateDataThread.toStop();
     }
 
     @Override
@@ -501,12 +494,39 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private class UpdateDataThread extends Thread { // поток, обновляющий основыне данные на главной активити
+
         private boolean isStop = false;
+        private final String DATA_LEADERS = "leaders_list";
+        private String leaders;
+        private ArrayList<String> newPlayersNames = new ArrayList<>(5);
+        private ArrayList<String> newPlayersLevels = new ArrayList<>(5);
+        private ArrayList<Integer> newPlayersCount = new ArrayList<>(5);
+
+        public UpdateDataThread() {
+            leaders = StoredData.getDataString(DATA_LEADERS,"0-0-...;0-0-...;0-0-...;0-0-...;0-0-...;");
+            if(playersNames.size() == 0) { // если поток запустился первый раз в сессии, то инициализируем
+                initLeaders();
+            }
+        }
+
+        private void initLeaders() {
+            String[] oneLevelLeadersTemp = leaders.split(";");
+            List<String> oneLevelLeaders = Arrays.asList("0-0-...;","0-0-...;","0-0-...;","0-0-...;","0-0-...;");
+            for(int i = 0; i < oneLevelLeadersTemp.length; i++) {
+                 oneLevelLeaders.set(i,oneLevelLeadersTemp[i]);
+            }
+            for(int i = 0; i < oneLevelLeaders.size(); i++) {
+                playersNames.add(i, oneLevelLeaders.get(i).split("-")[2]);
+                playersCount.add(i, Integer.valueOf(oneLevelLeaders.get(i).split("-")[1]));
+                playersLevels.add(i, oneLevelLeaders.get(i).split("-")[0]);
+            }
+        }
+
         @Override
         public void run() {
             while (true) {
                 if(!isStop) {
-                    RequestController.getInstance() // загрузка данных с сервера
+                    RequestController.getInstance() // получем приз
                             .getJsonApi()
                             .getPrize("prize")
                             .enqueue(new Callback<ResponseFromServer>() {
@@ -534,6 +554,44 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onFailure(Call<ResponseFromServer> call, Throwable t) {
                                     Log.d(TAG, "onFailure: error =" + t.toString());
+                                }
+                            });
+
+                    RequestController.getInstance() // получаем список лидеров
+                            .getJsonApi()
+                            .getLeaders("please")
+                            .enqueue(new Callback<ResponseFromServer>() {
+                                @Override
+                                public void onResponse(Call<ResponseFromServer> call, Response<ResponseFromServer> response) {
+                                    ResponseFromServer responseFromServer = response.body();
+                                    if(!responseFromServer.getLeaders().equals(leaders)) {
+                                        leaders = responseFromServer.getLeaders();
+                                        Log.d(TAG, "onResponse: leadersUpdate = " + leaders);
+                                        StoredData.saveData(DATA_LEADERS,leaders);
+                                        String oneLevelLeaders[] = leaders.split(";");
+                                        for(int i = 0; i < oneLevelLeaders.length; i++) {
+                                            newPlayersNames.add(i, oneLevelLeaders[i].split("-")[2]);
+                                            newPlayersCount.add(i, Integer.valueOf(oneLevelLeaders[i].split("-")[1]));
+                                            newPlayersLevels.add(i, oneLevelLeaders[i].split("-")[0]);
+                                            Log.d(TAG, "onResponse: new Leader = " + newPlayersNames.get(i));
+                                            Log.d(TAG, "onResponse: new Count = " + newPlayersCount.get(i));
+                                            Log.d(TAG, "onResponse: new Level = " + newPlayersLevels.get(i));
+
+                                            if(!newPlayersNames.get(i).equals(playersNames.get(i)) ||
+                                                    newPlayersCount.get(i) != (playersCount.get(i)) ||
+                                                    !newPlayersLevels.get(i).equals(playersLevels.get(i))) {
+                                                playersNames.set(i,newPlayersNames.get(i));
+                                                playersCount.set(i,newPlayersCount.get(i));
+                                                playersLevels.set(i,newPlayersLevels.get(i));
+                                                leadersList.getAdapter().notifyItemChanged(i);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResponseFromServer> call, Throwable t) {
+                                    Log.d(TAG, "onFailure: leaderserror = " + t.toString());
                                 }
                             });
 

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/green_mark_anim"
-    android:background="@color/colorPrimaryDark">
+    android:background="@drawable/back_question_activity">
 
     <ImageView
         android:id="@+id/imgBackToMain"
@@ -94,7 +94,6 @@
         android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:gravity="bottom"
         android:text="Кто первый полетел в космос?"
         android:textAlignment="center"
         android:textColor="#fff"

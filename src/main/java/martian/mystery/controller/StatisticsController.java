@@ -51,7 +51,7 @@ public class StatisticsController {
     public int sendNewLevel() throws IOException, ErrorOnServerException { // отправка статистики на сервер
         DataOfUser data = new DataOfUser();
         data.setNameOfUser(encryptLogin(Player.getInstance().getName()));
-        Log.d(TAG, "sendNewLevel: name = " + data.getNameOfUser());
+        Log.d(TAG, "sendNewLevel: name = " + data.getNameOfUser() + " other: " + Player.getInstance().getName());
         data.setLevel(Player.getInstance().getLevel());
         if(Progress.getInstance().getLevel() <= 21) {
             RequestController.getInstance()
