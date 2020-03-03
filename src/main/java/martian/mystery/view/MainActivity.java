@@ -1,11 +1,14 @@
 package martian.mystery.view;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -14,6 +17,11 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -25,6 +33,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.florent37.viewtooltip.ViewTooltip;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -54,7 +64,6 @@ import static martian.mystery.controller.StoredData.DATA_COUNT_LAUNCH_APP;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView leadersList;
     private Button btnNext;
     private AsyncTextPathView tvPrize;
     private TextView tvProgressPick1;
@@ -86,13 +95,16 @@ public class MainActivity extends AppCompatActivity {
     private AnimationController animController;
     private ObjectAnimator animBtnHelp;
     private AssistentDialog assistentDialogRules;
+    private Handler handler;
 
     private String locale;
     private ArrayList<String> playersNames = new ArrayList<>();
-    private ArrayList<String> playersLevels = new ArrayList<>();
+    private ArrayList<Integer> playersLevels = new ArrayList<>();
     private ArrayList<Integer> playersCount = new ArrayList<>();
 
     private static final String TAG = "MainActivity";
+    private final String DATA_LEADERS = "leaders_list";
+    private final int CHANGE_LEADER_INFO = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,16 +115,26 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //
         StoredData.saveData(DATA_COUNT_LAUNCH_APP,StoredData.getDataInt(DATA_COUNT_LAUNCH_APP,0)+1); // увеличиваем кол-во звапусков игры на один
         locale = Locale.getDefault().getLanguage();
         Log.d("my", "onCreate: " + locale);
+        handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                switch (msg.what) {
+                    case CHANGE_LEADER_INFO: {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
 
-        leadersList = findViewById(R.id.leadersList);
-        leadersList.setHasFixedSize(true);
-        leadersList.setAdapter(new LeadersAdapter(this,playersNames,playersLevels,playersCount));
-        leadersList.setLayoutManager(new LinearLayoutManager(this));
+                            }
+                        });
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
 
 
         btnNext = findViewById(R.id.btnNext);
@@ -244,8 +266,36 @@ public class MainActivity extends AppCompatActivity {
     // внутренние контроллеры и потоки -----------------------------------------------------------------------------
     private class AnimationController {
 
+        private ArrayList<TextView> namesLeaders = new ArrayList<>();
+        private ArrayList<TextView> levelsLeaders = new ArrayList<>();
+        private ArrayList<ImageView> lines = new ArrayList<>();
+
+        ObjectAnimator nameHide;
+        ObjectAnimator nameShow;
+        ObjectAnimator levelHide;
+        ObjectAnimator levelShow;
+        ObjectAnimator lineShow;
+        ObjectAnimator lineScale;
+
         public AnimationController() {
             assistentDialogRules = new AssistentDialog(AssistentDialog.DIALOG_RULES);
+
+            namesLeaders.add((TextView)findViewById(R.id.tvNameLeader1));
+            namesLeaders.add((TextView)findViewById(R.id.tvNameLeader2));
+            namesLeaders.add((TextView)findViewById(R.id.tvNameLeader3));
+            namesLeaders.add((TextView)findViewById(R.id.tvNameLeader4));
+            namesLeaders.add((TextView)findViewById(R.id.tvNameLeader5));
+            levelsLeaders.add((TextView)findViewById(R.id.tvLevel1));
+            levelsLeaders.add((TextView)findViewById(R.id.tvLevel2));
+            levelsLeaders.add((TextView)findViewById(R.id.tvLevel3));
+            levelsLeaders.add((TextView)findViewById(R.id.tvLevel4));
+            levelsLeaders.add((TextView)findViewById(R.id.tvLevel5));
+            lines.add((ImageView)findViewById(R.id.underLine1));
+            lines.add((ImageView)findViewById(R.id.underLine2));
+            lines.add((ImageView)findViewById(R.id.underLine3));
+            lines.add((ImageView)findViewById(R.id.underLine4));
+            lines.add((ImageView)findViewById(R.id.underLine5));
+            initLeaders();
         }
 
         public void helpBtnAnimation() {
@@ -277,6 +327,114 @@ public class MainActivity extends AppCompatActivity {
                 animBtnHelp.start();
             }
 
+        }
+        public void initLeaders() {
+            String leaders = StoredData.getDataString(DATA_LEADERS,"0-0-...;0-0-...;0-0-...;0-0-...;0-0-...;");
+            String[] oneLevelLeadersTemp = leaders.split(";");
+            List<String> oneLevelLeaders = Arrays.asList("0-0-...","0-0-...","0-0-...","0-0-...","0-0-...");
+            for(int i = 0; i < oneLevelLeadersTemp.length; i++) {
+                oneLevelLeaders.set(i,oneLevelLeadersTemp[i]);
+            }
+            for(int i = 0; i < oneLevelLeaders.size(); i++) {
+                playersNames.add(oneLevelLeaders.get(i).split("-")[2]);
+                playersCount.add(Integer.valueOf(oneLevelLeaders.get(i).split("-")[1]));
+                playersLevels.add(Integer.valueOf(oneLevelLeaders.get(i).split("-")[0]));
+
+                // установка имени первого игрока и кол-ва других игроков на этом уровне
+                if(playersCount.get(i) > 2) {
+                    namesLeaders.get(i).setText(spanText(playersNames.get(i) + " " + getString(R.string.and) + " " + (playersCount.get(i)-1) + " " + getString(R.string.people)));
+                } else if(playersCount.get(i) == 2) {
+                    if(locale.equals("en")) {
+                        namesLeaders.get(i).setText(spanText(playersNames.get(i) + " " + getString(R.string.and) +
+                                " " + getString(R.string.one_person)));
+                    } else {
+                        namesLeaders.get(i).setText(spanText(playersNames.get(i) + " " + getString(R.string.and) + " " + (playersCount.get(i)-1) + " " + getString(R.string.people)));
+                    }
+                 } else {
+                     namesLeaders.get(i).setText(playersNames.get(i));
+                 }
+
+                // установка уровня
+                if(playersLevels.get(i) > 0 && playersLevels.get(i) < 22) {
+                    levelsLeaders.get(i).setText(playersLevels.get(i) + " " + getString(R.string.lvl));
+                } else if (playersLevels.get(i) == 22) {
+                    levelsLeaders.get(i).setText(getString(R.string.complete_game_level));
+                } else {
+                    levelsLeaders.get(i).setText(playersLevels.get(i) + " " + getString(R.string.lvl));
+                }
+            }
+            initLeadersAnimation();
+        }
+        private void initLeadersAnimation() {
+            for(int i = 0, delay = 0; i < 5; i++, delay += 300) {
+                lineShow = ObjectAnimator.ofFloat(lines.get(i),"alpha",0f,1f);
+                lineScale = ObjectAnimator.ofFloat(lines.get(i),"scaleX",0f,1f);
+                nameShow = ObjectAnimator.ofFloat(namesLeaders.get(i),"alpha",0f,1f);
+                levelShow = ObjectAnimator.ofFloat(levelsLeaders.get(i),"alpha",0f,1f);
+                lines.get(i).setPivotX(0);
+                lineScale.setDuration(1000);
+                lineScale.setStartDelay(delay);
+                lineShow.setStartDelay(delay);
+                nameShow.setStartDelay(delay);
+                nameShow.setDuration(1500);
+                levelShow.setDuration(1500);
+                levelShow.setStartDelay(delay+500);
+                lineShow.start();
+                lineScale.start();
+                nameShow.start();
+                levelShow.start();
+            }
+        }
+        private void changeInfoLeader(int position, String nameLeader, int countOtherPLayers, int level) {
+            // установка имени первого игрока и кол-ва других игроков на этом уровне
+            if(playersCount.get(position) > 2) {
+                namesLeaders.get(position).setText(spanText(playersNames.get(position) + " " + getString(R.string.and) + " " + (playersCount.get(position)-1) + " " + getString(R.string.people)));
+            } else if(playersCount.get(position) == 2) {
+                if(locale.equals("en")) {
+                    namesLeaders.get(position).setText(spanText(playersNames.get(position) + " " + getString(R.string.and) +
+                            " " + getString(R.string.one_person)));
+                } else {
+                    namesLeaders.get(position).setText(spanText(playersNames.get(position) + " " + getString(R.string.and) + " " + (playersCount.get(position)-1) + " " + getString(R.string.people)));
+                }
+            } else {
+                namesLeaders.get(position).setText(playersNames.get(position));
+            }
+
+            // установка уровня
+            if(playersLevels.get(position) > 0 && playersLevels.get(position) < 22) {
+                levelsLeaders.get(position).setText(playersLevels.get(position) + " " + getString(R.string.lvl));
+            } else if (playersLevels.get(position) == 22) {
+                levelsLeaders.get(position).setText(getString(R.string.complete_game_level));
+            } else {
+                levelsLeaders.get(position).setText(playersLevels.get(position) + " " + getString(R.string.lvl));
+            }
+        }
+        public void animateChangeLeaders(final int position, final String nameLeader, final int countOtherPLayers, final int level) {
+            nameHide = ObjectAnimator.ofFloat(namesLeaders.get(position),"alpha",1f,0f);
+            nameShow = ObjectAnimator.ofFloat(namesLeaders.get(position),"alpha",0f,1f);
+            levelHide = ObjectAnimator.ofFloat(levelsLeaders.get(position),"alpha",1f,0f);
+            levelShow = ObjectAnimator.ofFloat(levelsLeaders.get(position),"alpha",0f,1f);
+            nameHide.setDuration(800);
+            nameShow.setDuration(1000);
+            levelHide.setDuration(800);
+            levelShow.setDuration(1000);
+            nameShow.setStartDelay(1000);
+            levelShow.setStartDelay(1000);
+            nameHide.start();
+            nameShow.start();
+            levelHide.start();
+            levelShow.start();
+            nameHide.addListener(new AnimatorListenerAdapter() {
+                public void onAnimationEnd(Animator animation) {
+                    changeInfoLeader(position,nameLeader,countOtherPLayers,level);
+                }
+            });
+        }
+        private Spannable spanText(String str) {
+            Spannable spans = new SpannableString(str);
+            spans.setSpan(new ForegroundColorSpan(MainActivity.this.getResources().getColor(R.color.count_players)), str.lastIndexOf(getString(R.string.letter_from_gray)), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            //spans.setSpan(new ForegroundColorSpan(MainActivity.this.getResources().getColor(R.color.colorAccent)), 0, str.indexOf(' '), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return spans;
         }
     }
     private class ProgressViewController { // класс для управления состоянием (вида) прогресса
@@ -496,31 +654,12 @@ public class MainActivity extends AppCompatActivity {
     private class UpdateDataThread extends Thread { // поток, обновляющий основыне данные на главной активити
 
         private boolean isStop = false;
-        private final String DATA_LEADERS = "leaders_list";
         private String leaders;
         private ArrayList<String> newPlayersNames = new ArrayList<>(5);
-        private ArrayList<String> newPlayersLevels = new ArrayList<>(5);
+        private ArrayList<Integer> newPlayersLevels = new ArrayList<>(5);
         private ArrayList<Integer> newPlayersCount = new ArrayList<>(5);
 
-        public UpdateDataThread() {
-            leaders = StoredData.getDataString(DATA_LEADERS,"0-0-...;0-0-...;0-0-...;0-0-...;0-0-...;");
-            if(playersNames.size() == 0) { // если поток запустился первый раз в сессии, то инициализируем
-                initLeaders();
-            }
-        }
-
-        private void initLeaders() {
-            String[] oneLevelLeadersTemp = leaders.split(";");
-            List<String> oneLevelLeaders = Arrays.asList("0-0-...;","0-0-...;","0-0-...;","0-0-...;","0-0-...;");
-            for(int i = 0; i < oneLevelLeadersTemp.length; i++) {
-                 oneLevelLeaders.set(i,oneLevelLeadersTemp[i]);
-            }
-            for(int i = 0; i < oneLevelLeaders.size(); i++) {
-                playersNames.add(i, oneLevelLeaders.get(i).split("-")[2]);
-                playersCount.add(i, Integer.valueOf(oneLevelLeaders.get(i).split("-")[1]));
-                playersLevels.add(i, oneLevelLeaders.get(i).split("-")[0]);
-            }
-        }
+        public UpdateDataThread() { }
 
         @Override
         public void run() {
@@ -566,16 +705,12 @@ public class MainActivity extends AppCompatActivity {
                                     ResponseFromServer responseFromServer = response.body();
                                     if(!responseFromServer.getLeaders().equals(leaders)) {
                                         leaders = responseFromServer.getLeaders();
-                                        Log.d(TAG, "onResponse: leadersUpdate = " + leaders);
                                         StoredData.saveData(DATA_LEADERS,leaders);
                                         String oneLevelLeaders[] = leaders.split(";");
                                         for(int i = 0; i < oneLevelLeaders.length; i++) {
                                             newPlayersNames.add(i, oneLevelLeaders[i].split("-")[2]);
                                             newPlayersCount.add(i, Integer.valueOf(oneLevelLeaders[i].split("-")[1]));
-                                            newPlayersLevels.add(i, oneLevelLeaders[i].split("-")[0]);
-                                            Log.d(TAG, "onResponse: new Leader = " + newPlayersNames.get(i));
-                                            Log.d(TAG, "onResponse: new Count = " + newPlayersCount.get(i));
-                                            Log.d(TAG, "onResponse: new Level = " + newPlayersLevels.get(i));
+                                            newPlayersLevels.add(i, Integer.valueOf(oneLevelLeaders[i].split("-")[0]));
 
                                             if(!newPlayersNames.get(i).equals(playersNames.get(i)) ||
                                                     newPlayersCount.get(i) != (playersCount.get(i)) ||
@@ -583,7 +718,7 @@ public class MainActivity extends AppCompatActivity {
                                                 playersNames.set(i,newPlayersNames.get(i));
                                                 playersCount.set(i,newPlayersCount.get(i));
                                                 playersLevels.set(i,newPlayersLevels.get(i));
-                                                leadersList.getAdapter().notifyItemChanged(i);
+                                                animController.animateChangeLeaders(i,playersNames.get(i),playersCount.get(i),playersLevels.get(i));
                                             }
                                         }
                                     }

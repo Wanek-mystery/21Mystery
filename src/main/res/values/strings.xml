@@ -159,6 +159,12 @@
     <string name='awr12'>дщмлч!шсыдиЬобы!vrtd!euvbc hjjd!</string>
     <string name='awr13'>ятиклм!krvagj!kxpazal!</string>
     <string name='awr14'>ъмлЬхии!|mm]via!</string>
+    <string name="letter_from_gray">a</string>
+    <string name="and">and</string>
+    <string name="people">others</string>
+    <string name="lvl">lvl</string>
+    <string name="one_person" translatable="false">another</string>
+    <string name="complete_game_level" translatable="false">All</string>
 
 
     <!--Если ты сюда зашел, уходи-->

@@ -14,8 +14,8 @@
     <color name="count_players">#737373</color>
     <color name="player_line">#5B2CC3</color>
     <color name="leader_line">#FF9100</color>
-    <color name="second_line">#8160CC</color>
-    <color name="third_line">#6E49C1</color>
+    <color name="second_line">#876AC6</color>
+    <color name="third_line">#7C56D3</color>
 
     <color name="invalid_name">#fff</color>
     <color name="strokeReview">#F4511E</color>

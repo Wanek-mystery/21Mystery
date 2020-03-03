@@ -37,9 +37,9 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.player_item,parent,false);
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
+        /*View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.player_item,parent,false);
+        ViewHolder holder = new ViewHolder(view);*/
+        return null;
     }
 
     @Override
@@ -91,10 +91,10 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvNumber = itemView.findViewById(R.id.tvNumber);
+            /*tvNumber = itemView.findViewById(R.id.tvNumber);
             tvNamePlayer = itemView.findViewById(R.id.tvNameLeader);
             tvLevel = itemView.findViewById(R.id.tvLevel);
-            underLine = itemView.findViewById(R.id.underLine);
+            underLine = itemView.findViewById(R.id.underLine);*/
         }
 
         public Spannable spanText(String str) {
