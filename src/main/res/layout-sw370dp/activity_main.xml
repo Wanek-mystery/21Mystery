@@ -386,13 +386,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/glineBottom"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/glineTop">
+        app:layout_constraintTop_toTopOf="@+id/glineTop"
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvLeaders"
@@ -402,6 +403,7 @@
             android:layout_marginEnd="32dp"
             android:text="Лидеры"
             android:textAlignment="center"
+            android:fontFamily="@font/advent_pro_light"
             android:textColor="#fff"
             app:autoSizeTextType="uniform"
             app:layout_constraintEnd_toEndOf="parent"
@@ -446,10 +448,11 @@
                 android:text="..."
                 android:textAlignment="textStart"
                 android:textColor="#fff"
+                android:alpha="0"
                 app:layout_constraintBottom_toTopOf="@id/underLine1"
                 app:layout_constraintEnd_toStartOf="@+id/tvLevel1"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="60"
+                app:layout_constraintHorizontal_weight="68"
                 app:layout_constraintStart_toEndOf="@+id/tvNumber1"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -457,18 +460,16 @@
                 android:id="@+id/tvLevel1"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:alpha="0.7"
                 android:autoSizeTextType="uniform"
                 android:paddingTop="4dp"
-                android:paddingEnd="10dp"
-                android:paddingRight="10dp"
                 android:text="0 ур."
-                android:textAlignment="textEnd"
+                android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 app:autoSizeTextType="uniform"
+                android:alpha="0"
                 app:layout_constraintBottom_toTopOf="@id/underLine1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="32"
+                app:layout_constraintHorizontal_weight="24"
                 app:layout_constraintStart_toEndOf="@+id/tvNameLeader1"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -476,20 +477,21 @@
                 android:id="@+id/underLine1"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                app:srcCompat="@color/leader_line"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:alpha="0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tvLevel1"
                 app:layout_constraintStart_toStartOf="@id/tvNameLeader1"
-                app:layout_constraintTop_toBottomOf="@id/tvLevel1" />
+                app:layout_constraintTop_toBottomOf="@id/tvLevel1"
+                app:srcCompat="@color/leader_line" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clLeader2"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="34dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -524,10 +526,11 @@
                 android:text="..."
                 android:textAlignment="textStart"
                 android:textColor="#fff"
+                android:alpha="0"
                 app:layout_constraintBottom_toTopOf="@id/underLine2"
                 app:layout_constraintEnd_toStartOf="@+id/tvLevel2"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="60"
+                app:layout_constraintHorizontal_weight="68"
                 app:layout_constraintStart_toEndOf="@+id/tvNumber2"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -535,18 +538,16 @@
                 android:id="@+id/tvLevel2"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:alpha="0.7"
                 android:autoSizeTextType="uniform"
                 android:paddingTop="4dp"
-                android:paddingEnd="10dp"
-                android:paddingRight="10dp"
                 android:text="0 ур."
-                android:textAlignment="textEnd"
+                android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 app:autoSizeTextType="uniform"
+                android:alpha="0"
                 app:layout_constraintBottom_toTopOf="@id/underLine2"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="32"
+                app:layout_constraintHorizontal_weight="24"
                 app:layout_constraintStart_toEndOf="@+id/tvNameLeader2"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -554,20 +555,21 @@
                 android:id="@+id/underLine2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                app:srcCompat="@color/second_line"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:alpha="0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tvLevel2"
                 app:layout_constraintStart_toStartOf="@id/tvNameLeader2"
-                app:layout_constraintTop_toBottomOf="@id/tvLevel2" />
+                app:layout_constraintTop_toBottomOf="@id/tvLevel2"
+                app:srcCompat="@color/second_line" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clLeader3"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="34dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -602,10 +604,11 @@
                 android:text="..."
                 android:textAlignment="textStart"
                 android:textColor="#fff"
+                android:alpha="0"
                 app:layout_constraintBottom_toTopOf="@id/underLine3"
                 app:layout_constraintEnd_toStartOf="@+id/tvLevel3"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="60"
+                app:layout_constraintHorizontal_weight="68"
                 app:layout_constraintStart_toEndOf="@+id/tvNumber3"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -613,18 +616,16 @@
                 android:id="@+id/tvLevel3"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:alpha="0.7"
                 android:autoSizeTextType="uniform"
                 android:paddingTop="4dp"
-                android:paddingEnd="10dp"
-                android:paddingRight="10dp"
                 android:text="0 ур."
-                android:textAlignment="textEnd"
+                android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 app:autoSizeTextType="uniform"
+                android:alpha="0"
                 app:layout_constraintBottom_toTopOf="@id/underLine3"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="32"
+                app:layout_constraintHorizontal_weight="24"
                 app:layout_constraintStart_toEndOf="@+id/tvNameLeader3"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -632,20 +633,21 @@
                 android:id="@+id/underLine3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                app:srcCompat="@color/third_line"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:alpha="0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tvLevel3"
                 app:layout_constraintStart_toStartOf="@id/tvNameLeader3"
-                app:layout_constraintTop_toBottomOf="@id/tvLevel3" />
+                app:layout_constraintTop_toBottomOf="@id/tvLevel3"
+                app:srcCompat="@color/third_line" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clLeader4"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="34dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -680,10 +682,11 @@
                 android:text="..."
                 android:textAlignment="textStart"
                 android:textColor="#fff"
+                android:alpha="0"
                 app:layout_constraintBottom_toTopOf="@id/underLine4"
                 app:layout_constraintEnd_toStartOf="@+id/tvLevel4"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="60"
+                app:layout_constraintHorizontal_weight="68"
                 app:layout_constraintStart_toEndOf="@+id/tvNumber4"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -691,18 +694,16 @@
                 android:id="@+id/tvLevel4"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:alpha="0.7"
                 android:autoSizeTextType="uniform"
                 android:paddingTop="4dp"
-                android:paddingEnd="10dp"
-                android:paddingRight="10dp"
                 android:text="0 ур."
-                android:textAlignment="textEnd"
+                android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 app:autoSizeTextType="uniform"
+                android:alpha="0"
                 app:layout_constraintBottom_toTopOf="@id/underLine4"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="32"
+                app:layout_constraintHorizontal_weight="24"
                 app:layout_constraintStart_toEndOf="@+id/tvNameLeader4"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -710,20 +711,21 @@
                 android:id="@+id/underLine4"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                app:srcCompat="@color/player_line"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:alpha="0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tvLevel4"
                 app:layout_constraintStart_toStartOf="@id/tvNameLeader4"
-                app:layout_constraintTop_toBottomOf="@id/tvLevel4" />
+                app:layout_constraintTop_toBottomOf="@id/tvLevel4"
+                app:srcCompat="@color/player_line" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clLeader5"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="34dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -758,10 +760,11 @@
                 android:text="..."
                 android:textAlignment="textStart"
                 android:textColor="#fff"
+                android:alpha="0"
                 app:layout_constraintBottom_toTopOf="@id/underLine5"
                 app:layout_constraintEnd_toStartOf="@+id/tvLevel5"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="60"
+                app:layout_constraintHorizontal_weight="68"
                 app:layout_constraintStart_toEndOf="@+id/tvNumber5"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -769,18 +772,16 @@
                 android:id="@+id/tvLevel5"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:alpha="0.7"
                 android:autoSizeTextType="uniform"
                 android:paddingTop="4dp"
-                android:paddingEnd="10dp"
-                android:paddingRight="10dp"
                 android:text="0 ур."
-                android:textAlignment="textEnd"
+                android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 app:autoSizeTextType="uniform"
+                android:alpha="0"
                 app:layout_constraintBottom_toTopOf="@id/underLine5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="32"
+                app:layout_constraintHorizontal_weight="24"
                 app:layout_constraintStart_toEndOf="@+id/tvNameLeader5"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -788,13 +789,14 @@
                 android:id="@+id/underLine5"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                app:srcCompat="@color/player_line"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:alpha="0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tvLevel5"
                 app:layout_constraintStart_toStartOf="@id/tvNameLeader5"
-                app:layout_constraintTop_toBottomOf="@id/tvLevel5" />
+                app:layout_constraintTop_toBottomOf="@id/tvLevel5"
+                app:srcCompat="@color/player_line" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -814,6 +816,7 @@
             app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clLeader5"
             app:layout_constraintVertical_bias="0.26" />
@@ -828,6 +831,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_info" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -857,12 +861,11 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/advent_pro_medium"
-            android:gravity="bottom"
             android:paddingStart="14dp"
             android:paddingTop="14dp"
             android:paddingEnd="14dp"
             android:text="@string/prize_text"
-            android:textAlignment="center"
+            android:gravity="bottom|center"
             android:textColor="#fff"
             app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toTopOf="@+id/tvPrize"
@@ -889,11 +892,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvPrizeText"
             app:layout_constraintVertical_weight="60"
-            app:pathStrokeColor="@color/colorPrize"
+            app:pathStrokeColor="@color/colorAccent"
             app:showInStart="true"
             app:showPainter="true"
             app:textInCenter="true"
-            app:textSize="57sp" />
+            app:textSize="49sp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -901,9 +904,9 @@
         android:id="@+id/imgSeason"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:padding="6dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:padding="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

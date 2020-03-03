@@ -359,6 +359,7 @@ public class MainActivity extends AppCompatActivity {
                     levelsLeaders.get(i).setText(playersLevels.get(i) + " " + getString(R.string.lvl));
                 } else if (playersLevels.get(i) == 22) {
                     levelsLeaders.get(i).setText(getString(R.string.complete_game_level));
+                    lines.get(i).setImageDrawable(getDrawable(R.drawable.winner_line));
                 } else {
                     levelsLeaders.get(i).setText(playersLevels.get(i) + " " + getString(R.string.lvl));
                 }
@@ -366,7 +367,7 @@ public class MainActivity extends AppCompatActivity {
             initLeadersAnimation();
         }
         private void initLeadersAnimation() {
-            for(int i = 0, delay = 0; i < 5; i++, delay += 300) {
+            for(int i = 0, delay = 0; i < namesLeaders.size(); i++, delay += 300) {
                 lineShow = ObjectAnimator.ofFloat(lines.get(i),"alpha",0f,1f);
                 lineScale = ObjectAnimator.ofFloat(lines.get(i),"scaleX",0f,1f);
                 nameShow = ObjectAnimator.ofFloat(namesLeaders.get(i),"alpha",0f,1f);
@@ -405,6 +406,7 @@ public class MainActivity extends AppCompatActivity {
                 levelsLeaders.get(position).setText(playersLevels.get(position) + " " + getString(R.string.lvl));
             } else if (playersLevels.get(position) == 22) {
                 levelsLeaders.get(position).setText(getString(R.string.complete_game_level));
+                lines.get(position).setImageDrawable(getDrawable(R.drawable.winner_line));
             } else {
                 levelsLeaders.get(position).setText(playersLevels.get(position) + " " + getString(R.string.lvl));
             }
@@ -433,7 +435,7 @@ public class MainActivity extends AppCompatActivity {
         private Spannable spanText(String str) {
             Spannable spans = new SpannableString(str);
             spans.setSpan(new ForegroundColorSpan(MainActivity.this.getResources().getColor(R.color.count_players)), str.lastIndexOf(getString(R.string.letter_from_gray)), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            //spans.setSpan(new ForegroundColorSpan(MainActivity.this.getResources().getColor(R.color.colorAccent)), 0, str.indexOf(' '), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            //spans.setSpan(new ForegroundColorSpan(MainActivity.this.getResources().getColor(R.color.colorAccent)), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             return spans;
         }
     }
@@ -665,6 +667,11 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             while (true) {
                 if(!isStop) {
+                    try {
+                        sleep(3500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     RequestController.getInstance() // получем приз
                             .getJsonApi()
                             .getPrize("prize")
@@ -729,12 +736,6 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d(TAG, "onFailure: leaderserror = " + t.toString());
                                 }
                             });
-
-                    try {
-                        sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                 } else return;
             }
         }
