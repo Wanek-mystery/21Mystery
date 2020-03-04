@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -42,12 +41,10 @@ import martian.mystery.controller.GetContextClass;
 import martian.mystery.controller.Progress;
 import martian.mystery.R;
 import martian.mystery.controller.QuestionAnswerController;
-import martian.mystery.controller.RequestController;
 import martian.mystery.controller.SecurityController;
 import martian.mystery.controller.StatisticsController;
 import martian.mystery.controller.StoredData;
 import martian.mystery.controller.UpdateDataController;
-import martian.mystery.data.ResponseFromServer;
 import martian.mystery.exceptions.ErrorOnServerException;
 import martian.mystery.exceptions.NoInternetException;
 
@@ -258,7 +255,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         });
 
         progressBarAdController = new ProgressBarAdController();
-        statisticsController = new StatisticsController();
+        statisticsController = new StatisticsController(this);
         animationController = new AnimationController();
         attemptsController = new AttemptsController();
         partingWords = new PartingWords();
@@ -468,7 +465,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
         public void increaseCountWrongAnswers() {
             StoredData.saveData(DATA_WRONG_ANSWERS,++countWrongAnswers);
-            Log.d(TAG, "increaseCountWrongAnswers: count = " + countWrongAnswers);
+            statisticsController.sendAttempt();
         }
 
         public void resetCountWrongAnswers() {
@@ -583,7 +580,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         private void animationBtnNext() { // анимация появлеия кнопки "дальше"
             ObjectAnimator animatorBtnNextX;
             ObjectAnimator animatorBtnNextY;
-            if (Progress.getInstance().getLevel() <= 20) {
+            if (Progress.getInstance().getLevel() <= 21) {
                 btnNext.setVisibility(View.VISIBLE);
                 btnNext.setClickable(true);
                 btnNext.setAlpha(1.0f);
@@ -771,16 +768,17 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             if (!(answerOfUser.equals(""))) {
                 try {
                     if (questionAnswerController.checkAnswer(answerOfUser)) { // если ответ правильный
-                        handler.sendEmptyMessage(RIGHT_ANSWER_ANIMATION);
                         StoredData.saveData(DATA_COUNT_ATTEMPTS, 3);
                         attemptsController.resetCountWrongAnswers();
                         if (Progress.getInstance().getLevel() <= 20) {
                             Progress.getInstance().levelUp(); // повышвем уровень
                             statisticsController.sendNewLevel(); // отправляем статистику на сервер
                             statisticsController.setStartTimeLevel(); // устанавливаем время начала прохождения нового уровня
+                            handler.sendEmptyMessage(RIGHT_ANSWER_ANIMATION);
                         } else if (Progress.getInstance().getLevel() == 21) {
                             Progress.getInstance().done(true);
                             Progress.getInstance().levelUp();
+                            handler.sendEmptyMessage(RIGHT_ANSWER_ANIMATION);
                             int place = statisticsController.sendNewLevel(); // отправляем статистику на сервер и получем место игрока
                             StoredData.saveData(DATA_PLACE,place);
                             winnerIsChecked = true;
@@ -808,12 +806,10 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     UpdateDataController.getInstance().setWinnerChecked(false);
                     winnerIsChecked = false;
                 } catch (ErrorOnServerException ex) {
-                    Log.d(TAG, "doInBackground: error = " + ex.toString());
                     AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_SERVER_ERROR);
                     assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(),"ALERT_SERVER");
                     winnerIsChecked = false;
                 } catch (IOException e) {
-                    Log.d(TAG, "doInBackground: error = " + e.toString());
                     AssistentDialog assistentDialog = new AssistentDialog(AssistentDialog.DIALOG_SERVER_ERROR);
                     assistentDialog.show(QuestionActivity.this.getSupportFragmentManager(),"ALERT_SERVER");
                     winnerIsChecked = false;

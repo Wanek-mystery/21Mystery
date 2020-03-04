@@ -56,7 +56,7 @@
     <string name="alert_check_on_server">В следующих загадках ответы будут проверятся удаленно через интернет,
         поэтому возможны небольшие задержки</string>
     <!--список фраз, напутсвий-->
-    <string name="parting_word1"></string>
+    <string name="parting_word1">Не можешь отгадать загадку сам, загадай её другому. У свежей головы свежие мысли:)</string>
     <string name="parting_word2"></string>
     <string name="parting_word3"></string>
     <string name="parting_word4"></string>
@@ -204,6 +204,9 @@
     <string name="and">и еще</string>
     <string name="people">чел.</string>
     <string name="lvl">ур.</string>
+    <string name="tv_leaders">Лидеры</string>
+    <string name="many_ip_logup">Можно регистрировать новый никнейм не больше 3 раз в день</string>
+    <string name="current_level_info">Сейчас игрок решает данный уровень</string>
 
     <!-- ответы на загадки -->
     <!--<string name="awr1">тмзг!тмзжлм</string>

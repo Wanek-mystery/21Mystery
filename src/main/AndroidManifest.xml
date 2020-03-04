@@ -16,7 +16,8 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".view.DoneFirstActivity"></activity>
         <activity android:name=".view.DoneActivity" />
-        <activity android:name=".view.LogupActivity"/>
+        <activity android:name=".view.LogupActivity"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

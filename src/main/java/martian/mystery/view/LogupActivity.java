@@ -4,8 +4,9 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,7 +37,7 @@ public class LogupActivity extends AppCompatActivity {
     private ObjectAnimator errorAnimatorShow = ObjectAnimator.ofFloat(tvError, "alpha", 1.0f,0.0f);
     private ObjectAnimator errorAnimatorHide = ObjectAnimator.ofFloat(tvError, "alpha", 0.0f,1.0f);
 
-    private final int LOGIN_WRONG = -1;
+    private final int MANY_LOGUP_IP = -2;
     private final int LOGIN_EXIST = 0;
     private final int LOGIN_NOT_EXIST = 1;
     private final int BAD_WORDS = 2;
@@ -132,11 +133,11 @@ public class LogupActivity extends AppCompatActivity {
             int validateLogin = isValidLogin(login);
 
             if(validateLogin != LOGIN_IS_ACCESS) return validateLogin;
-            if(loginIsExist(login)) return LOGIN_EXIST;
             else {
                 resultLogin = login;
-                return LOGIN_NOT_EXIST;
+                return loginIsExist(login);
             }
+
         }
 
         @Override
@@ -150,15 +151,17 @@ public class LogupActivity extends AppCompatActivity {
                 startActivity(new Intent(LogupActivity.this,MainActivity.class));
                 finish();
             } else if(res == WRONG_SYMBOLS) {
-                animateError(R.string.wrong_symbols,6000);
+                animateError(R.string.wrong_symbols,5000);
             } else if(res == BAD_WORDS) {
                 animateError(R.string.bad_words,6000);
             } else if (res == SHORT_LOGIN) {
-                animateError(R.string.invalid_long_name,6000);
+                animateError(R.string.invalid_long_name,5000);
             } else if(res == LONG_LOGIN) {
-                animateError(R.string.invalid_long_name,6000);
+                animateError(R.string.invalid_long_name,5000);
             } else if(res == MANY_SPACE) {
-                animateError(R.string.many_scapes,6000);
+                animateError(R.string.many_scapes,5000);
+            } else if(res == MANY_LOGUP_IP) {
+                animateError(R.string.many_ip_logup,4000);
             }
             btnLogup.setClickable(true);
         }
@@ -166,20 +169,19 @@ public class LogupActivity extends AppCompatActivity {
         private int isValidLogin(String login) { // проверка логина на валидность
             if(login.length() < 4) return SHORT_LOGIN;
             if(login.length() > 15) return LONG_LOGIN;
-            if(login.contains("хуй") ||
-                    login.contains("пизда") ||
-                    login.contains("fuck") ||
-                    login.contains("член") ||
-                    login.contains("пидор") ||
-                    login.contains("пидр") ||
-                    login.contains("pidor") ||
-                    login.equals("соси") ||
-                    login.equals("sosi") ||
-                    login.contains("pizda") ||
-                    login.contains("hui") ||
-                    login.contains("pizdec") ||
-                    login.contains("pidr")) {
-                Log.d(TAG, "isValidLogin: bad words");
+            if(login.toLowerCase().contains("хуй") ||
+                    login.toLowerCase().contains("пизда") ||
+                    login.toLowerCase().contains("fuck") ||
+                    login.toLowerCase().contains("член") ||
+                    login.toLowerCase().contains("пидор") ||
+                    login.toLowerCase().contains("пидр") ||
+                    login.toLowerCase().contains("pidor") ||
+                    login.toLowerCase().equals("соси") ||
+                    login.toLowerCase().equals("sosi") ||
+                    login.toLowerCase().contains("pizda") ||
+                    login.toLowerCase().contains("hui") ||
+                    login.toLowerCase().contains("pizdec") ||
+                    login.toLowerCase().contains("pidr")) {
                 return BAD_WORDS;
             }
             if(login.indexOf(' ') != login.lastIndexOf(' ')) return MANY_SPACE; // если больше одного пробела
@@ -189,21 +191,25 @@ public class LogupActivity extends AppCompatActivity {
         private String encryptLogin(String login) { // шифруем логин перед отправкой
             return "hik;" + login + ";9gl";
         }
-        private boolean loginIsExist(String login) { // проверка логина на занятость
+        private int loginIsExist(String login) { // проверка логина на занятость
             DataOfUser dataOfUser = new DataOfUser();
             dataOfUser.setNameOfUser(encryptLogin(login));
             dataOfUser.setLevel(Progress.getInstance().getLevel());
+            if(Build.VERSION.SDK_INT <= 28) {
+                dataOfUser.setDeviceId(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+            }
             try {
                 ResponseFromServer response = RequestController.getInstance()
                         .getJsonApi()
                         .logup(dataOfUser)
                         .execute().body();
-                if(response.getResult() == LOGIN_NOT_EXIST) return false;
-                else if(response.getResult() == LOGIN_EXIST) return true;
+                if(response.getResult() == LOGIN_NOT_EXIST) return LOGIN_NOT_EXIST;
+                else if(response.getResult() == LOGIN_EXIST) return LOGIN_EXIST;
+                else if(response.getResult() == MANY_LOGUP_IP) return MANY_LOGUP_IP;
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return true;
+            return 0;
         }
     }
 }

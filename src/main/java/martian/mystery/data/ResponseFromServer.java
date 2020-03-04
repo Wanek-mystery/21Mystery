@@ -22,20 +22,12 @@ public class ResponseFromServer { // ответ от сервера завора
         this.linkwinner = linktowinner;
     }
 
-    public int getUpdating() {
-        return updating;
-    }
-
-    public void setUpdating(int updating) {
-        this.updating = updating;
-    }
-
-    public int getForceUpdate() {
+    public int getUpdateforce() {
         return updateforce;
     }
 
-    public void setForceUpdate(int forceUpdate) {
-        this.updateforce = forceUpdate;
+    public void setUpdateforce(int updateforce) {
+        this.updateforce = updateforce;
     }
 
     public int getExistWinner() {

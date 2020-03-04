@@ -11,7 +11,7 @@ import retrofit2.http.Query;
 
 public interface ServerApi {
 
-    @GET("/update/") // проверка обновлений
+    @GET("/updateapp/") // проверка обновлений
     Call<ResponseFromServer> checkUpdate(@Query("update") int versionCode);
 
     @Headers("User-Agent: dont touch")
@@ -30,12 +30,9 @@ public interface ServerApi {
     Call<ResponseFromServer> newLevel(@Body DataOfUser dataOfUser);
 
     @Headers("User-Agent: dont touch")
-    @POST("/winner/") // получение email
+    @POST("/conn/") // получение email
     Call<ResponseFromServer> getEmail(@Body DataOfUser data);
 
-    @Headers("User-Agent: dont touch")
-    @GET("/winner/")
-    Call<ResponseFromServer> checkWinner(@Query("green") String green);
 
     @POST("/checkanswer/") // проверка ответа
     Call<ResponseFromServer> checkAnswer(@Body DataOfUser data);

@@ -3,11 +3,10 @@
     android:id="@+id/mlMain"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/green_mark_anim"
-    android:background="@color/colorPrimaryDark">
+    android:background="@drawable/back_question_activity">
 
     <ImageView
         android:id="@+id/imgBackToMain"

@@ -4,15 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.AsyncTask;
@@ -22,22 +17,17 @@ import android.os.Message;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.florent37.viewtooltip.ViewTooltip;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,14 +35,15 @@ import java.util.Locale;
 
 import martian.mystery.BuildConfig;
 import martian.mystery.controller.GetContextClass;
-import martian.mystery.controller.LeadersAdapter;
 import martian.mystery.controller.Progress;
 import martian.mystery.R;
 import martian.mystery.controller.RequestController;
+import martian.mystery.controller.StatisticsController;
 import martian.mystery.controller.UpdateDataController;
 import martian.mystery.data.Player;
 import martian.mystery.data.ResponseFromServer;
 import martian.mystery.controller.StoredData;
+import martian.mystery.exceptions.ErrorOnServerException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -117,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         StoredData.saveData(DATA_COUNT_LAUNCH_APP,StoredData.getDataInt(DATA_COUNT_LAUNCH_APP,0)+1); // увеличиваем кол-во звапусков игры на один
         locale = Locale.getDefault().getLanguage();
-        Log.d("my", "onCreate: " + locale);
         handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull Message msg) {
@@ -187,6 +177,10 @@ public class MainActivity extends AppCompatActivity {
                     .text(getResources().getString(R.string.read_rules))
                     .show();
             animController.helpBtnAnimation();
+        } else {
+            if(StoredData.getDataString(StatisticsController.DATA_UPDATE_LEVEL,"no").equals("no")) {
+                new LoadNewLevelTask().execute();
+            }
         }
     }
     @Override
@@ -260,7 +254,19 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
+    View.OnClickListener levelClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ViewTooltip
+                    .on(MainActivity.this, v)
+                    .autoHide(true, 5000)
+                    .corner(30)
+                    .position(ViewTooltip.Position.BOTTOM)
+                    .withShadow(false)
+                    .text(getResources().getString(R.string.current_level_info))
+                    .show();
+        }
+    };
 
 
     // внутренние контроллеры и потоки -----------------------------------------------------------------------------
@@ -339,6 +345,7 @@ public class MainActivity extends AppCompatActivity {
                 playersNames.add(oneLevelLeaders.get(i).split("-")[2]);
                 playersCount.add(Integer.valueOf(oneLevelLeaders.get(i).split("-")[1]));
                 playersLevels.add(Integer.valueOf(oneLevelLeaders.get(i).split("-")[0]));
+                levelsLeaders.get(i).setOnClickListener(levelClickListener);
 
                 // установка имени первого игрока и кол-ва других игроков на этом уровне
                 if(playersCount.get(i) > 2) {
@@ -417,11 +424,11 @@ public class MainActivity extends AppCompatActivity {
             levelHide = ObjectAnimator.ofFloat(levelsLeaders.get(position),"alpha",1f,0f);
             levelShow = ObjectAnimator.ofFloat(levelsLeaders.get(position),"alpha",0f,1f);
             nameHide.setDuration(800);
-            nameShow.setDuration(1000);
+            nameShow.setDuration(800);
             levelHide.setDuration(800);
-            levelShow.setDuration(1000);
-            nameShow.setStartDelay(1000);
-            levelShow.setStartDelay(1000);
+            levelShow.setDuration(800);
+            nameShow.setStartDelay(800);
+            levelShow.setStartDelay(800);
             nameHide.start();
             nameShow.start();
             levelHide.start();
@@ -608,6 +615,30 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    private class LoadNewLevelTask extends AsyncTask<Void,Void,Void> { // отправляем данные о новым уровне, если в прошлый раз не было инета
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            StatisticsController statisticsController = new StatisticsController(MainActivity.this);
+            try {
+                statisticsController.sendNewLevel();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ErrorOnServerException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
     private class CheckForceUpdateTask extends AsyncTask<Void,Void,Boolean> { // проверяет принудительные обновления
 
         int typeUpdate; // тип обновления
@@ -624,8 +655,8 @@ public class MainActivity extends AppCompatActivity {
                         .getJsonApi()
                         .checkUpdate(BuildConfig.VERSION_CODE)
                         .execute().body();
-                if(responseFromServer.getForceUpdate() > 0) {
-                    typeUpdate = responseFromServer.getForceUpdate();
+                if(responseFromServer.getUpdateforce() > 0) {
+                    typeUpdate = responseFromServer.getUpdateforce();
                     return true;
                 }
             } catch (IOException e) {
@@ -678,15 +709,19 @@ public class MainActivity extends AppCompatActivity {
                             .enqueue(new Callback<ResponseFromServer>() {
                                 @Override
                                 public void onResponse(Call<ResponseFromServer> call, Response<ResponseFromServer> response) {
-                                    ResponseFromServer responseFromServer = response.body();
-                                    String prize; // переменная хранит приз в зависимости от языка устройства
-                                    if(locale.equals("ru") || locale.equals("be") || locale.equals("uk")) {
-                                        prize = responseFromServer.getPrize().split(",")[0];
-                                    } else prize = responseFromServer.getPrize().split(",")[1];
-                                    if(!prize.equals(StoredData.getDataString(StoredData.DATA_PRIZE,GetContextClass.getContext().getResources().getString(R.string.prize)))) {
-                                        StoredData.saveData(StoredData.DATA_PRIZE,prize);
-                                        tvPrize.setText(prize);
-                                        tvPrize.startAnimation(0,1);
+                                    try {
+                                        ResponseFromServer responseFromServer = response.body();
+                                        String prize; // переменная хранит приз в зависимости от языка устройства
+                                        if(locale.equals("ru") || locale.equals("be") || locale.equals("uk")) {
+                                            prize = responseFromServer.getPrize().split(",")[0];
+                                        } else prize = responseFromServer.getPrize().split(",")[1];
+                                        if(!prize.equals(StoredData.getDataString(StoredData.DATA_PRIZE,GetContextClass.getContext().getResources().getString(R.string.prize)))) {
+                                            StoredData.saveData(StoredData.DATA_PRIZE,prize);
+                                            tvPrize.setText(prize);
+                                            tvPrize.startAnimation(0,1);
+                                        }
+                                    } catch (NullPointerException ex) {
+                                        Toast.makeText(MainActivity.this,"Prize error",Toast.LENGTH_SHORT).show();
                                     }
 
                                     /*// проверяем есть ли ссылка на ооцсеть победителя
@@ -699,7 +734,6 @@ public class MainActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onFailure(Call<ResponseFromServer> call, Throwable t) {
-                                    Log.d(TAG, "onFailure: error =" + t.toString());
                                 }
                             });
 
@@ -712,8 +746,10 @@ public class MainActivity extends AppCompatActivity {
                                     ResponseFromServer responseFromServer = response.body();
                                     if(!responseFromServer.getLeaders().equals(leaders)) {
                                         leaders = responseFromServer.getLeaders();
+                                        String oldLeaders = StoredData.getDataString(DATA_LEADERS,"0-0-...;0-0-...;0-0-...;0-0-...;0-0-...;");
                                         StoredData.saveData(DATA_LEADERS,leaders);
                                         String oneLevelLeaders[] = leaders.split(";");
+                                        int oldLength = oldLeaders.split(";").length;
                                         for(int i = 0; i < oneLevelLeaders.length; i++) {
                                             newPlayersNames.add(i, oneLevelLeaders[i].split("-")[2]);
                                             newPlayersCount.add(i, Integer.valueOf(oneLevelLeaders[i].split("-")[1]));
@@ -728,12 +764,17 @@ public class MainActivity extends AppCompatActivity {
                                                 animController.animateChangeLeaders(i,playersNames.get(i),playersCount.get(i),playersLevels.get(i));
                                             }
                                         }
+                                        for(int i = oneLevelLeaders.length, j = 0; j < (oldLength - oneLevelLeaders.length); j++) {
+                                            playersNames.set(i,"...");
+                                            playersCount.set(i,0);
+                                            playersLevels.set(i,0);
+                                            animController.animateChangeLeaders(i,"...",0,0);
+                                        }
                                     }
                                 }
 
                                 @Override
                                 public void onFailure(Call<ResponseFromServer> call, Throwable t) {
-                                    Log.d(TAG, "onFailure: leaderserror = " + t.toString());
                                 }
                             });
                 } else return;

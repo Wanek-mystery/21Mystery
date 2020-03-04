@@ -9,12 +9,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,13 +20,9 @@ import java.util.concurrent.TimeUnit;
 
 import martian.mystery.R;
 import martian.mystery.controller.RequestController;
-import martian.mystery.controller.UpdateDataController;
 import martian.mystery.data.DataOfUser;
 import martian.mystery.data.Player;
 import martian.mystery.data.ResponseFromServer;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DoneFirstActivity extends AppCompatActivity {
 
@@ -99,7 +92,6 @@ public class DoneFirstActivity extends AppCompatActivity {
                             .getJsonApi()
                             .getEmail(dataOfUser)
                             .execute().body();
-                    Log.d(TAG, "doInBackground: email = " + response.getEmail());
                     return response.getEmail();
 
                 } catch (IOException e) {

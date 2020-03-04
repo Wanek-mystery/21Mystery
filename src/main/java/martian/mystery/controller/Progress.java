@@ -1,8 +1,6 @@
 package martian.mystery.controller;
 
 
-import android.util.Log;
-
 import static martian.mystery.controller.StoredData.DATA_COUNT_LAUNCH_APP;
 import static martian.mystery.controller.StoredData.DATA_LEVEL;
 
@@ -22,7 +20,6 @@ public class Progress { // класс синглтон для управлени
         // получение уровня игрока из какой-нибудь базы данных
         int countLaunches = StoredData.getDataInt(DATA_COUNT_LAUNCH_APP,0);
         int level = ciphering(StoredData.getDataInt(DATA_LEVEL,DEFAULT_LEVEL));
-        Log.d("my", "getLevelFromStorage: level = " + level);
         if(level != -1) {
             if(countLaunches == 1 && level > 1) level = 1; // для защиты от взлома
             return level;

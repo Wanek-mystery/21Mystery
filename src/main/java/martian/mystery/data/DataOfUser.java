@@ -9,7 +9,16 @@ public class DataOfUser {
     private String nameOfUser = "";
     private String answer;
     private int level = 1;
-    private int timeOfLevel; // время прохождения последнего уровня
+    private int timeOfLevel; // время прохождения последнего уровняp
+    private String deviceId;
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 
     public String getNameOfUser() {
         return nameOfUser;
