@@ -58,10 +58,22 @@ public class StatisticsController {
     }
     public void sendAttempt() {
         Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "attempt_item");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Level: " + Player.getInstance().getLevel());
         bundle.putDouble(FirebaseAnalytics.Param.VALUE, 1);
         bundle.putString(FirebaseAnalytics.Param.VIRTUAL_CURRENCY_NAME, "attempt");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SPEND_VIRTUAL_CURRENCY, bundle);
+    }
+    public void sendPurchase(int countWrongAttempts) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Count wrong attempts");
+        bundle.putInt(FirebaseAnalytics.Param.VALUE,countWrongAttempts);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE,bundle);
+    }
+    public void sendErrorAd(int errorCode) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Error showing ad");
+        bundle.putInt(FirebaseAnalytics.Param.VALUE,errorCode);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.CAMPAIGN_DETAILS,bundle);
     }
     public int sendNewLevel() throws IOException, ErrorOnServerException { // отправка статистики на сервер
         DataOfUser data = new DataOfUser();

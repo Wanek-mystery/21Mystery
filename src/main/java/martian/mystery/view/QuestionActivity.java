@@ -1,7 +1,10 @@
 package martian.mystery.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.drawable.Animatable;
@@ -11,7 +14,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,20 +28,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.motion.widget.MotionLayout;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
+import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import martian.mystery.controller.AttemptsController;
 import martian.mystery.controller.GetContextClass;
 import martian.mystery.controller.Progress;
 import martian.mystery.R;
@@ -45,6 +65,7 @@ import martian.mystery.controller.SecurityController;
 import martian.mystery.controller.StatisticsController;
 import martian.mystery.controller.StoredData;
 import martian.mystery.controller.UpdateDataController;
+import martian.mystery.data.Player;
 import martian.mystery.exceptions.ErrorOnServerException;
 import martian.mystery.exceptions.NoInternetException;
 
@@ -73,6 +94,9 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private ImageView imgBackToMain;
     private MotionLayout mlMain;
     private MotionLayout mlLevel;
+    private MotionLayout mlBottom;
+    private ImageView imgShowBuy;
+    private Button btnBuy;
 
     private QuestionAnswerController questionAnswerController = new QuestionAnswerController();
     private StatisticsController statisticsController;
@@ -81,6 +105,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private AnimationController animationController;
     private AttemptsController attemptsController;
     private ProgressBarAdController progressBarAdController;
+    private PurchaseController purchaseController;
     private PartingWords partingWords;
 
     private final int ALPHA_DOWN = 1;
@@ -100,11 +125,14 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private final int WRONG_ANSWER_ANIMATION = 16;
     private final int CHANGE_HINT_ANSWER = 17;
     private final int SHOW_PARTING_WORD = 18;
+    private final int SHOW_PURCHASE = 19;
+    private final int HIDE_PURCHASE = 20;
 
 
     private String adBlock;
     private boolean adLoaded = false;
     private boolean adFailed = false;
+    private boolean adShowed = false; // если реклама показалась, то можно показывать предложение о покупке
 
     private static final String TAG = "QuestionActivity";
 
@@ -178,15 +206,19 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                         break;
                     }
                     case CHANGE_HINT_ANSWER: {
-                        int countAttempts = attemptsController.getCountAttempts();
-                        if (countAttempts > 0 && countAttempts <= 3) {
-                            etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
-                            btnCheckAnswer.setMaxLines(1);
-                            btnCheckAnswer.setText(R.string.check_answer);
-                        } else if (countAttempts == 0) {
-                            etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
-                            btnCheckAnswer.setMaxLines(2);
-                            btnCheckAnswer.setText(R.string.look_ad);
+                        if(!attemptsController.isEndlessAttempts()) {
+                            int countAttempts = attemptsController.getCountAttempts();
+                            if (countAttempts > 0 && countAttempts <= 3) {
+                                etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
+                                btnCheckAnswer.setMaxLines(1);
+                                btnCheckAnswer.setText(R.string.check_answer);
+                            } else if (countAttempts == 0) {
+                                etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
+                                btnCheckAnswer.setMaxLines(2);
+                                btnCheckAnswer.setText(R.string.look_ad);
+                            }
+                        } else {
+                            etAnswer.setHint("");
                         }
                         break;
                     }
@@ -204,6 +236,14 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     }
                     case HIDE_PROGRESS: {
                         progressBarAdController.hideProgress();
+                        break;
+                    }
+                    case SHOW_PURCHASE: {
+                        animationController.showPurchase();
+                        break;
+                    }
+                    case HIDE_PURCHASE: {
+                        animationController.hidePurchase();
                         break;
                     }
                     case SHOW_PARTING_WORD: {
@@ -241,6 +281,15 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         imgBackToMain = findViewById(R.id.imgBackToMain);
         mlMain = findViewById(R.id.mlMain);
         mlLevel = findViewById(R.id.mlLevel);
+        mlBottom = findViewById(R.id.mlCheckAndNext);
+        imgShowBuy = findViewById(R.id.imgShowBuy);
+        btnBuy = findViewById(R.id.btnBuy);
+        btnBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                purchaseController.buy();
+            }
+        });
 
         btnNext.setOnClickListener(onClickListener);
         btnCheckAnswer.setOnClickListener(onClickListener);
@@ -256,8 +305,9 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
         progressBarAdController = new ProgressBarAdController();
         statisticsController = new StatisticsController(this);
+        purchaseController = new PurchaseController(this);
         animationController = new AnimationController();
-        attemptsController = new AttemptsController();
+        attemptsController = new AttemptsController(statisticsController);
         partingWords = new PartingWords();
 
         // если юзер разгадал все, но не проверил является ли он победителем
@@ -292,7 +342,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     public void onResume() {
         super.onResume();
         if (!mRewardedVideoAd.isLoaded()) loadRewardedVideoAd();
-        attemptsController.setAttemptsOnScreen();
+        animationController.setAttemptsOnScreen();
         if (Progress.getInstance().getLevel() == 22) {
             etAnswer.setText(StoredData.getDataString(StoredData.DATA_LAST_ANSWER, ""));
         }
@@ -308,6 +358,17 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    public void getAttemptByAd() { // показать рекламу, чтобы добавить попытку
+        if (mRewardedVideoAd.isLoaded()) {
+            mRewardedVideoAd.show();
+        } else {
+            if (showAdThread == null || !showAdThread.isAlive()) {
+                showAdThread = new QuestionActivity.ShowAdThread();
+                showAdThread.start();
+            }
+        }
     }
 
     private void changeQuestion() {
@@ -349,6 +410,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     public void onRewarded(RewardItem reward) {
         Toast.makeText(this, R.string.attempt_is_added, Toast.LENGTH_SHORT).show();
         attemptsController.incrementCountAtempts();
+        adShowed = true;
     }
 
     @Override
@@ -369,6 +431,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             Toast.makeText(GetContextClass.getContext(), R.string.error_download_ad, Toast.LENGTH_SHORT).show();
         }
         progressBarAdController.setCurrentState(2);
+        statisticsController.sendErrorAd(errorCode);
     }
 
     @Override
@@ -414,63 +477,109 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         }
     }
 
-    private class AttemptsController {
+    public class PurchaseController {
 
-        private String DATA_WRONG_ANSWERS = "count_wrong_answers";
-        private int countWrongAnswers;
+        BillingClient billingClient;
+        private Map<String, SkuDetails> mSkuDetailsMap = new HashMap<>();
+        private Context context;
+        private int countPurchase;
+        private boolean isPayComplete = false;
 
-        public AttemptsController() {
-            countWrongAnswers = StoredData.getDataInt(DATA_WRONG_ANSWERS,0);
-        }
-        public void getAttemptByAd() { // показать рекламу, чтобы добавить попытку
-            if (mRewardedVideoAd.isLoaded()) {
-                mRewardedVideoAd.show();
-            } else {
-                if (showAdThread == null || !showAdThread.isAlive()) {
-                    showAdThread = new ShowAdThread();
-                    showAdThread.start();
+        private String mSkuId = "endless_attempts";
+        public final static String DATA_SHOW_PURCHASE = "show_purchase";
+        private static final String TAG = "PurchaseController";
+
+        public PurchaseController(Context context) {
+            this.context = context;
+            countPurchase = StoredData.getDataInt(DATA_SHOW_PURCHASE,0);
+            billingClient = BillingClient.newBuilder(context)
+                    .enablePendingPurchases()
+                    .setListener(new PurchasesUpdatedListener() {
+                        @Override
+                        public void onPurchasesUpdated(BillingResult billingResult, @Nullable List< Purchase > list) {
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null) {
+                                //сюда мы попадем когда будет осуществлена покупка
+                                payComplete();
+                                statisticsController.sendPurchase(attemptsController.getCountWrongAnswers());
+                                handler.sendEmptyMessage(HIDE_PURCHASE);
+                            }
+                        }
+
+                    }).build();
+            billingClient.startConnection(new BillingClientStateListener() {
+
+                @Override
+                public void onBillingSetupFinished(BillingResult billingResult) {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        querySkuDetails(); //запрос о товарах
+                        List<Purchase> purchasesList = queryPurchases(); //запрос о покупках
+
+                        //если товар уже куплен, предоставить его пользователю
+                        for (int i = 0; i < purchasesList.size(); i++) {
+                            String purchaseId = purchasesList.get(i).getSku();
+                            if(TextUtils.equals(mSkuId, purchaseId)) {
+                                payComplete();
+                            }
+                        }
+                    }
                 }
-            }
+
+                private List<Purchase> queryPurchases() {
+                    Purchase.PurchasesResult purchasesResult = billingClient.queryPurchases(BillingClient.SkuType.INAPP);
+                    return purchasesResult.getPurchasesList();
+                }
+
+                @Override
+                public void onBillingServiceDisconnected() {
+                    //сюда мы попадем если что-то пойдет не так
+                }
+            });
         }
 
-        public int getCountAttempts() {
-            return StoredData.getDataInt(DATA_COUNT_ATTEMPTS, 3);
+        public int getCountShowPurches() {
+            return countPurchase;
         }
 
-        public void decrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет
-            int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS, 3);
-            if (countAttempts > 0) StoredData.saveData(DATA_COUNT_ATTEMPTS, countAttempts - 1);
+        public void increaseCountPurchase() {
+            StoredData.saveData(DATA_SHOW_PURCHASE,++countPurchase);
         }
 
-        public void incrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет
-            int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS, 3);
-            if (countAttempts < 9) StoredData.saveData(DATA_COUNT_ATTEMPTS, countAttempts + 1);
+        public void buy() {
+            BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
+                    .setSkuDetails(mSkuDetailsMap.get(mSkuId))
+                    .build();
+            billingClient.launchBillingFlow((Activity) context,billingFlowParams);
         }
 
-        public void setAttemptsOnScreen() {
-            int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS, 3);
-            if (countAttempts == 0) {
-                btnCheckAnswer.setMaxLines(2);
-                btnCheckAnswer.setText(R.string.look_ad);
-            } else if (countAttempts <= 3) {
-                btnCheckAnswer.setMaxLines(1);
-                btnCheckAnswer.setText(R.string.check_answer);
-            }
-            etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
+        private void payComplete() {
+            attemptsController.setEndlessAttempts(true);
+            etAnswer.setHint("");
+            animationController.setAttemptsOnScreen();
+            isPayComplete = true;
+            imgShowBuy.setClickable(false);
+            imgShowBuy.setAlpha(0f);
         }
 
-
-
-        public int getCountWrongAnswers() { return countWrongAnswers; }
-
-        public void increaseCountWrongAnswers() {
-            StoredData.saveData(DATA_WRONG_ANSWERS,++countWrongAnswers);
-            statisticsController.sendAttempt();
+        public boolean isPayComplete() {
+            return isPayComplete;
         }
 
-        public void resetCountWrongAnswers() {
-            StoredData.saveData(DATA_WRONG_ANSWERS,0);
-            countWrongAnswers = 0;
+        private void querySkuDetails() {
+            SkuDetailsParams.Builder skuDetailsParamsBuilder = SkuDetailsParams.newBuilder();
+            List<String> skuList = new ArrayList<>();
+            skuList.add(mSkuId);
+            skuDetailsParamsBuilder.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
+            billingClient.querySkuDetailsAsync(skuDetailsParamsBuilder.build(), new SkuDetailsResponseListener() {
+
+                @Override
+                public void onSkuDetailsResponse(BillingResult billingResult, List<SkuDetails> list) {
+                    if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null) {
+                        for (SkuDetails skuDetails : list) {
+                            mSkuDetailsMap.put(skuDetails.getSku(), skuDetails);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -482,6 +591,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         2 - красное
         */
         public int INPUT_STATE = 0;
+        private boolean isFirstLaunch = true;
 
         private TransitionDrawable imgBottomDrawable;
 
@@ -489,6 +599,30 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             animationBtnNext(false); // делаем кнопку "дальше" невидимой при старте
             imgBottomDrawable = (TransitionDrawable) imgBottom.getDrawable();
             imgBottomDrawable.setCrossFadeEnabled(true);
+            mlBottom.setTransitionListener(new MotionLayout.TransitionListener() {
+                @Override
+                public void onTransitionStarted(MotionLayout motionLayout, int i, int i1) {
+                }
+
+                @Override
+                public void onTransitionChange(MotionLayout motionLayout, int i, int i1, float v) {
+
+                }
+
+                @Override
+                public void onTransitionCompleted(MotionLayout motionLayout, int i) {
+                    if(i == R.id.end) {
+                        imgShowBuy.animate().rotation(180);
+                    } else if(i == R.id.start) {
+                        imgShowBuy.animate().rotation(0);
+                    }
+                }
+
+                @Override
+                public void onTransitionTrigger(MotionLayout motionLayout, int i, boolean b, float v) {
+
+                }
+            });
         }
 
         private float getWidth() {
@@ -500,6 +634,24 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
         private float dpToPx(float dp) {
             return dp * ((float) GetContextClass.getContext().getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        }
+
+        public void setAttemptsOnScreen() {
+            int countAttempts = attemptsController.getCountAttempts();
+            if(attemptsController.isEndlessAttempts()) {
+                btnCheckAnswer.setMaxLines(1);
+                btnCheckAnswer.setText(R.string.check_answer);
+                etAnswer.setHint("");
+            } else if (countAttempts == 0 ) {
+                btnCheckAnswer.setMaxLines(2);
+                btnCheckAnswer.setText(R.string.look_ad);
+                etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
+            } else if (countAttempts <= 3) {
+                btnCheckAnswer.setMaxLines(1);
+                btnCheckAnswer.setText(R.string.check_answer);
+                etAnswer.setHint(getResources().getString(R.string.attempts) + " " + countAttempts);
+            }
+
         }
 
         public void focusEditText() {
@@ -518,6 +670,14 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             if (drawable instanceof Animatable) {
                 ((Animatable) drawable).start();
             }
+        }
+
+        private void showPurchase() {
+            mlBottom.transitionToEnd();
+        }
+
+        private void hidePurchase() {
+            mlBottom.transitionToStart();
         }
 
         private void changeLevelTop() {
@@ -562,18 +722,9 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                 animatorBtnNextX.start();
             } else {
                 btnNext.setClickable(false);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        handler.sendEmptyMessage(ALPHA_DOWN_BTNNEXT);
-                        try {
-                            TimeUnit.MILLISECONDS.sleep(400);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        handler.sendEmptyMessage(SET_INVISIBLE_BTNNEXT);
-                    }
-                }).start();
+                ObjectAnimator btnNextAnimator = ObjectAnimator.ofFloat(btnNext, "alpha", 1.0f,0.0f);
+                btnNextAnimator.setDuration(400);
+                btnNextAnimator.start();
             }
         }
 
@@ -591,7 +742,22 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                 animatorBtnNextX.start();
             } else {
                 btnNext.setClickable(false);
-                new Thread(new Runnable() {
+                ObjectAnimator btnNextAnimator = ObjectAnimator.ofFloat(btnNext, "alpha", 1.0f,0.0f);
+                if(!isFirstLaunch) {
+                    btnNextAnimator.setDuration(400);
+                } else {
+                    isFirstLaunch = false;
+                    btnNext.setVisibility(View.INVISIBLE);
+                    btnNextAnimator.setDuration(0);
+                }
+                btnNextAnimator.start();
+                /*btnNextAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                    }
+                });*/
+                /*new Thread(new Runnable() {
                     @Override
                     public void run() {
                         handler.sendEmptyMessage(ALPHA_DOWN_BTNNEXT);
@@ -602,7 +768,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                         }
                         handler.sendEmptyMessage(SET_INVISIBLE_BTNNEXT);
                     }
-                }).start();
+                }).start();*/
             }
         }
 
@@ -669,7 +835,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             if(attemptsController.getCountWrongAnswers() > 7 && (getRandomInt(1,3) == 3)) {
                 String lastWord = StoredData.getDataString(DATA_LAST_PARTING_WORD,"");
                 int indexWord = getRandomInt(0,17);
-                if(!partingWords.get(indexWord).equals(lastWord)) {
+                if(!partingWords.get(indexWord).equals(lastWord) && !partingWords.get(indexWord).equals("")) {
                     StoredData.saveData(DATA_LAST_PARTING_WORD,partingWords.get(indexWord));
                     return partingWords.get(indexWord);
                 }
@@ -696,8 +862,11 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                 case R.id.btnCheckAnswer: {
                     handler.sendEmptyMessage(SHOW_PARTING_WORD);
                     if (adFailed) { // если взлома ответов нет(adFailed == true), то предоставляем функции
-                        if (attemptsController.getCountAttempts() == 0) {
-                            attemptsController.getAttemptByAd();
+                        if(attemptsController.isEndlessAttempts()) {
+                            CheckAnswerTask checkAnswerTask = new CheckAnswerTask();
+                            checkAnswerTask.execute(etAnswer.getText().toString());
+                        } else if (attemptsController.getCountAttempts() == 0) {
+                            getAttemptByAd();
                         } else {
                             CheckAnswerTask checkAnswerTask = new CheckAnswerTask();
                             checkAnswerTask.execute(etAnswer.getText().toString());
@@ -770,6 +939,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     if (questionAnswerController.checkAnswer(answerOfUser)) { // если ответ правильный
                         StoredData.saveData(DATA_COUNT_ATTEMPTS, 3);
                         attemptsController.resetCountWrongAnswers();
+                        handler.sendEmptyMessage(HIDE_PURCHASE);
                         if (Progress.getInstance().getLevel() <= 20) {
                             Progress.getInstance().levelUp(); // повышвем уровень
                             statisticsController.sendNewLevel(); // отправляем статистику на сервер
@@ -794,8 +964,22 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                         }
                     } else { // если ответ неверный, уменьшаем попытки
                         handler.sendEmptyMessage(WRONG_ANSWER_ANIMATION);
+
+                        // показываем предложение о покупке
+                        if(adShowed && !purchaseController.isPayComplete()) {
+                            if(purchaseController.getCountShowPurches() == 0) {
+                                handler.sendEmptyMessage(SHOW_PURCHASE);
+                                purchaseController.increaseCountPurchase();
+                            } else if(purchaseController.getCountShowPurches() == 1) {
+                                if(attemptsController.getCountWrongAnswers() == 18) {
+                                    handler.sendEmptyMessage(SHOW_PURCHASE);
+                                    purchaseController.increaseCountPurchase();
+                                }
+                            }
+                        }
+
                         int countAttempts = attemptsController.getCountAttempts();
-                        if (countAttempts > 0) {
+                        if (countAttempts > 0 && !attemptsController.isEndlessAttempts()) {
                             attemptsController.decrementCountAtempts();
                         }
                         attemptsController.increaseCountWrongAnswers();

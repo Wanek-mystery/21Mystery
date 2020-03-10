@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imgFirst;
     private ImageView imgLast;
     private ImageView btnHelp;
+    private ImageView imgSeason;
     private ConstraintLayout clProgressPick1;
     private ConstraintLayout clProgressPick2;
     private ConstraintLayout clProgressPick3;
@@ -86,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
     private AnimationController animController;
     private ObjectAnimator animBtnHelp;
     private AssistentDialog assistentDialogRules;
-    private Handler handler;
 
     private String locale;
     private ArrayList<String> playersNames = new ArrayList<>();
@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private final String DATA_LEADERS = "leaders_list";
-    private final int CHANGE_LEADER_INFO = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,23 +107,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         StoredData.saveData(DATA_COUNT_LAUNCH_APP,StoredData.getDataInt(DATA_COUNT_LAUNCH_APP,0)+1); // увеличиваем кол-во звапусков игры на один
         locale = Locale.getDefault().getLanguage();
-        handler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(@NonNull Message msg) {
-                switch (msg.what) {
-                    case CHANGE_LEADER_INFO: {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                            }
-                        });
-                        break;
-                    }
-                }
-                return true;
-            }
-        });
 
 
         btnNext = findViewById(R.id.btnNext);
@@ -160,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
                         getResources().getString(R.string.prize))));
         tvPrize.setOnClickListener(onClickListener);
         tvPrize.setCalculator(new AroundCalculator());
+        imgSeason = findViewById(R.id.imgSeason);
+        imgSeason.setOnClickListener(onClickListener);
 
         btnNext.setOnClickListener(onClickListener);
         btnHelp.setOnClickListener(onClickListener);
@@ -167,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         progressViewController = new ProgressViewController(); // контроллер для анимации прогресса
         animController = new AnimationController(); // контроллер для остальных анимаций в данной активити
 
-        if(StoredData.getDataInt(DATA_COUNT_LAUNCH_APP,0) == 1) { // доп. анимации и подсказки, если запуск первый
+        if(StoredData.getDataInt(DATA_COUNT_LAUNCH_APP,0) == 2) { // доп. анимации и подсказки, если запуск первый
             ViewTooltip
                     .on(this, btnHelp)
                     .autoHide(true, 5000)
@@ -246,10 +230,46 @@ public class MainActivity extends AppCompatActivity {
                     animController.clickRules();
                     break;
                 }
+                case R.id.imgSeason: {
+                    ViewTooltip
+                            .on(MainActivity.this, imgSeason)
+                            .autoHide(true, 4000)
+                            .corner(30)
+                            .position(ViewTooltip.Position.BOTTOM)
+                            .withShadow(false)
+                            .text(getResources().getString(R.string.date_start_season))
+                            .show();
+                    break;
+                }
                 case R.id.tvPrize: {
                     tvPrize.startAnimation(0,1);
                     break;
                 }
+            }
+        }
+    };
+
+    View.OnClickListener playerClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(v.getId() != R.id.tvNameLeader1) {
+                ViewTooltip
+                        .on(MainActivity.this, v)
+                        .autoHide(true, 5000)
+                        .corner(30)
+                        .position(ViewTooltip.Position.BOTTOM)
+                        .withShadow(false)
+                        .text(getResources().getString(R.string.info_player))
+                        .show();
+            } else {
+                ViewTooltip
+                        .on(MainActivity.this, v)
+                        .autoHide(true, 5000)
+                        .corner(30)
+                        .position(ViewTooltip.Position.BOTTOM)
+                        .withShadow(false)
+                        .text(getResources().getString(R.string.info_first_player))
+                        .show();
             }
         }
     };
@@ -335,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         public void initLeaders() {
-            String leaders = StoredData.getDataString(DATA_LEADERS,"0-0-...;0-0-...;0-0-...;0-0-...;0-0-...;");
+            String leaders = StoredData.getDataString(DATA_LEADERS,"0-0-...;0-0-...;0-0-...;0-0-...;0-0-...;"); //0-0-...;0-0-...;0-0-...;0-0-...;0-0-...;
             String[] oneLevelLeadersTemp = leaders.split(";");
             List<String> oneLevelLeaders = Arrays.asList("0-0-...","0-0-...","0-0-...","0-0-...","0-0-...");
             for(int i = 0; i < oneLevelLeadersTemp.length; i++) {
@@ -346,6 +366,7 @@ public class MainActivity extends AppCompatActivity {
                 playersCount.add(Integer.valueOf(oneLevelLeaders.get(i).split("-")[1]));
                 playersLevels.add(Integer.valueOf(oneLevelLeaders.get(i).split("-")[0]));
                 levelsLeaders.get(i).setOnClickListener(levelClickListener);
+                namesLeaders.get(i).setOnClickListener(playerClickListener);
 
                 // установка имени первого игрока и кол-ва других игроков на этом уровне
                 if(playersCount.get(i) > 2) {
@@ -687,6 +708,7 @@ public class MainActivity extends AppCompatActivity {
     private class UpdateDataThread extends Thread { // поток, обновляющий основыне данные на главной активити
 
         private boolean isStop = false;
+        private boolean isFirstLaunch = true;
         private String leaders;
         private ArrayList<String> newPlayersNames = new ArrayList<>(5);
         private ArrayList<Integer> newPlayersLevels = new ArrayList<>(5);
@@ -698,10 +720,19 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             while (true) {
                 if(!isStop) {
-                    try {
-                        sleep(3500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    if(!isFirstLaunch) {
+                        try {
+                            sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            sleep(3500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        isFirstLaunch = false;
                     }
                     RequestController.getInstance() // получем приз
                             .getJsonApi()

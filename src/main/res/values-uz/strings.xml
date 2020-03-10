@@ -30,7 +30,8 @@
         Первый отгадываешь 21 загадку - получаешь приз.
         На каждую загадку дается 3 попытки. Если они закончатся, всегда можно получить еще одну, посмотрев рекламу.
         Если вдруг не стал первым, после 21-ой загадки можешь узнать свое место.
-        Также чем дольше нет победителя, тем больше приз.</string>
+        Также чем дольше нет победителя, тем больше приз.\n\n
+         Сезон начался 2 февраля 2020</string>
     <string name="read_rules_ok_btn">Ок</string>
     <string name="prize_text">Приз:</string>
     <string name="prize">2000 рублей</string>
@@ -56,14 +57,14 @@
     <string name="alert_check_on_server">В следующих загадках ответы будут проверятся удаленно через интернет,
         поэтому возможны небольшие задержки</string>
     <!--список фраз, напутсвий-->
-    <string name="parting_word1">Не можешь отгадать загадку сам, загадай её другому. У свежей головы свежие мысли:)</string>
-    <string name="parting_word2"></string>
-    <string name="parting_word3"></string>
-    <string name="parting_word4"></string>
-    <string name="parting_word5"></string>
-    <string name="parting_word6"></string>
-    <string name="parting_word7"></string>
-    <string name="parting_word8"></string>
+    <string name="parting_word1">Совет: не можешь отгадать загадку сам(а), загадай её другому. У свежей головы свежие мысли</string>
+    <string name="parting_word2">Чем труднее путь, тем слаще победа</string>
+    <string name="parting_word3">Верю, что у тебя все получится</string>
+    <string name="parting_word4">Легкой бывает только легкая дорога, трудная дорога всегда трудна</string>
+    <string name="parting_word5">Не ошибается тот, кто не делает ошибок. Джейсон Стетхем</string>
+    <string name="parting_word6">Все получится, попыток у тебя также много, как президентских сроков у Путина</string>
+    <string name="parting_word7">Попытка не пытка, ёж не улитка</string>
+    <string name="parting_word8">Не получается найти ответ? Сделай перерыв, съешь котлету</string>
     <string name="parting_word9"></string>
     <string name="parting_word10"></string>
     <string name="parting_word11"></string>
@@ -207,6 +208,10 @@
     <string name="tv_leaders">Лидеры</string>
     <string name="many_ip_logup">Можно регистрировать новый никнейм не больше 3 раз в день</string>
     <string name="current_level_info">Сейчас игрок решает данный уровень</string>
+    <string name="btn_purchase">купить бесконечные попытки</string>
+    <string name="date_start_season">Сезон начался 2 февраля 2020</string>
+    <string name="info_player">Этот игрок первый перешел на данный уровень, если не считать тех, кто выше него</string>
+    <string name="info_first_player">Этот игрок первый перешел на данный уровень</string>
 
     <!-- ответы на загадки -->
     <!--<string name="awr1">тмзг!тмзжлм</string>

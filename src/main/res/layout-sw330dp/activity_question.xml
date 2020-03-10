@@ -103,14 +103,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.26999998" />
+        app:layout_constraintVertical_bias="0.25" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clInputAnswer"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -216,13 +216,13 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clCheckAndNext"
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/mlCheckAndNext"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
+        app:layoutDescription="@xml/show_buy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clInputAnswer">
@@ -263,7 +263,6 @@
             android:text="@string/next_question"
             android:textAlignment="center"
             android:textColor="#fff"
-            android:visibility="invisible"
             app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -290,6 +289,35 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgShowBuy"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/btnBuy"
+            app:layout_constraintStart_toEndOf="@+id/progressLoadAd"
+            app:layout_constraintTop_toTopOf="@id/btnBuy"
+            app:srcCompat="@drawable/ic_show_buy" />
+
+        <Button
+            android:id="@+id/btnBuy"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/click_btn_buy"
+            android:elevation="21dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="2dp"
+            android:text="@string/btn_purchase"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imgShowBuy"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
