@@ -16,7 +16,7 @@
     <ConstraintSet android:id="@+id/start">
         <Constraint
             android:id="@+id/imgShowBuy"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="0dp"
             motion:layout_constraintBottom_toBottomOf="@id/btnBuy"
             motion:layout_constraintEnd_toEndOf="parent"
@@ -30,11 +30,11 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/click_btn_buy"
             android:elevation="21dp"
-            android:paddingLeft="10dp"
+            android:paddingLeft="4dp"
             android:paddingTop="2dp"
-            android:paddingRight="10dp"
+            android:paddingRight="4dp"
             android:paddingBottom="2dp"
-            android:text="Купить бесконечные попытки"
+            android:text="@string/btn_purchase"
             android:textAlignment="center"
             android:textColor="#fff"
             motion:autoSizeTextType="uniform"

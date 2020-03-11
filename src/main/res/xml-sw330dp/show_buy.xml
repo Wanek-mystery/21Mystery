@@ -11,6 +11,7 @@
         <OnClick
             motion:targetId="@id/imgShowBuy"
             motion:clickAction="toggle"/>
+
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
@@ -25,23 +26,22 @@
 
         <Constraint
             android:id="@+id/btnBuy"
-            android:layout_width="0dp"
+            android:layout_width="120dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/click_btn_buy"
             android:elevation="21dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="1dp"
-            android:paddingRight="5dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="2dp"
+            android:paddingRight="8dp"
             android:paddingBottom="2dp"
             android:text="@string/btn_purchase"
             android:textAlignment="center"
             android:textColor="#fff"
             motion:autoSizeTextType="uniform"
             motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toEndOf="@+id/imgShowBuy"
-            motion:layout_constraintTop_toTopOf="parent" />
+            motion:layout_constraintTop_toTopOf="parent"/>
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
@@ -62,11 +62,11 @@
             android:layout_marginEnd="12dp"
             android:background="@drawable/click_btn_buy"
             android:elevation="21dp"
-            android:paddingLeft="10dp"
+            android:paddingLeft="8dp"
             android:paddingTop="2dp"
-            android:paddingRight="10dp"
+            android:paddingRight="8dp"
             android:paddingBottom="2dp"
-            android:text="Купить бесконечные попытки"
+            android:text="@string/btn_purchase"
             android:textAlignment="center"
             android:textColor="#fff"
             motion:autoSizeTextType="uniform"
