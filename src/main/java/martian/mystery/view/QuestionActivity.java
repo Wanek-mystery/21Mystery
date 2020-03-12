@@ -1,7 +1,5 @@
 package martian.mystery.view;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
@@ -16,7 +14,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -510,18 +507,20 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
                 @Override
                 public void onBillingSetupFinished(BillingResult billingResult) {
-                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                        querySkuDetails(); //запрос о товарах
-                        List<Purchase> purchasesList = queryPurchases(); //запрос о покупках
+                    try {
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                            querySkuDetails(); //запрос о товарах
+                            List<Purchase> purchasesList = queryPurchases(); //запрос о покупках
 
-                        //если товар уже куплен, предоставить его пользователю
-                        for (int i = 0; i < purchasesList.size(); i++) {
-                            String purchaseId = purchasesList.get(i).getSku();
-                            if(TextUtils.equals(mSkuId, purchaseId)) {
-                                payComplete();
+                            //если товар уже куплен, предоставить его пользователю
+                            for (int i = 0; i < purchasesList.size(); i++) {
+                                String purchaseId = purchasesList.get(i).getSku();
+                                if(TextUtils.equals(mSkuId, purchaseId)) {
+                                    payComplete();
+                                }
                             }
                         }
-                    }
+                    } catch (NullPointerException ex) {}
                 }
 
                 private List<Purchase> queryPurchases() {
