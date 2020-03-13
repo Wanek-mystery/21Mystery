@@ -479,7 +479,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         BillingClient billingClient;
         private Map<String, SkuDetails> mSkuDetailsMap = new HashMap<>();
         private Context context;
-        private int countPurchase;
+        private int countPurchaseOffer;
         private boolean isPayComplete = false;
 
         private String mSkuId = "endless_attempts";
@@ -488,7 +488,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
         public PurchaseController(Context context) {
             this.context = context;
-            countPurchase = StoredData.getDataInt(DATA_SHOW_PURCHASE,0);
+            countPurchaseOffer = StoredData.getDataInt(DATA_SHOW_PURCHASE,0);
             billingClient = BillingClient.newBuilder(context)
                     .enablePendingPurchases()
                     .setListener(new PurchasesUpdatedListener() {
@@ -535,12 +535,12 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             });
         }
 
-        public int getCountShowPurches() {
-            return countPurchase;
+        public int getCountPurchaseOffer() {
+            return countPurchaseOffer;
         }
 
-        public void increaseCountPurchase() {
-            StoredData.saveData(DATA_SHOW_PURCHASE,++countPurchase);
+        public void increaseCountPurchaseOffer() {
+            StoredData.saveData(DATA_SHOW_PURCHASE,++countPurchaseOffer);
         }
 
         public void buy() {
@@ -552,11 +552,8 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
         private void payComplete() {
             attemptsController.setEndlessAttempts(true);
-            etAnswer.setHint("");
             animationController.setAttemptsOnScreen();
             isPayComplete = true;
-            imgShowBuy.setClickable(false);
-            imgShowBuy.setAlpha(0f);
         }
 
         public boolean isPayComplete() {
@@ -640,6 +637,8 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             if(attemptsController.isEndlessAttempts()) {
                 btnCheckAnswer.setMaxLines(1);
                 btnCheckAnswer.setText(R.string.check_answer);
+                imgShowBuy.setClickable(false);
+                imgShowBuy.setAlpha(0f);
                 etAnswer.setHint("");
             } else if (countAttempts == 0 ) {
                 btnCheckAnswer.setMaxLines(2);
@@ -876,9 +875,9 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                 case R.id.imgBackToMain:
                     // при возвращении на главную активити отправляем разницу между уровнем, когда юзер был на главном экране, и уровнем на данный момент
                     // это нужно для анимации изменения уровня на главной активити
-                    int pastLevel = 1;//getActivity().getIntent().getIntExtra("level",1);
+                    int pastLevel = getIntent().getIntExtra("past_level",1);
                     Intent intentMain = new Intent();
-                    //intentMain.putExtra("difflevel",Progress.getInstance().getLevel() - pastLevel);
+                    intentMain.putExtra("differ_level",Progress.getInstance().getLevel() - pastLevel);
                     try {
                         setResult(Activity.RESULT_OK, intentMain);
                         finish();
@@ -936,7 +935,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             if (!(answerOfUser.equals(""))) {
                 try {
                     if (questionAnswerController.checkAnswer(answerOfUser)) { // если ответ правильный
-                        StoredData.saveData(DATA_COUNT_ATTEMPTS, 3);
+                        attemptsController.resetCountAttempts();
                         attemptsController.resetCountWrongAnswers();
                         handler.sendEmptyMessage(HIDE_PURCHASE);
                         if (Progress.getInstance().getLevel() <= 20) {
@@ -944,7 +943,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                             statisticsController.sendNewLevel(); // отправляем статистику на сервер
                             statisticsController.setStartTimeLevel(); // устанавливаем время начала прохождения нового уровня
                             handler.sendEmptyMessage(RIGHT_ANSWER_ANIMATION);
-                        } else if (Progress.getInstance().getLevel() == 21) {
+                        } else if (Progress.getInstance().getLevel() == 21) { // если пройденнй уровень был последним
                             Progress.getInstance().done(true);
                             Progress.getInstance().levelUp();
                             handler.sendEmptyMessage(RIGHT_ANSWER_ANIMATION);
@@ -966,13 +965,13 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
                         // показываем предложение о покупке
                         if(adShowed && !purchaseController.isPayComplete()) {
-                            if(purchaseController.getCountShowPurches() == 0) {
+                            if(purchaseController.getCountPurchaseOffer() == 0) {
                                 handler.sendEmptyMessage(SHOW_PURCHASE);
-                                purchaseController.increaseCountPurchase();
-                            } else if(purchaseController.getCountShowPurches() == 1) {
+                                purchaseController.increaseCountPurchaseOffer();
+                            } else if(purchaseController.getCountPurchaseOffer() == 1) {
                                 if(attemptsController.getCountWrongAnswers() == 18) {
                                     handler.sendEmptyMessage(SHOW_PURCHASE);
-                                    purchaseController.increaseCountPurchase();
+                                    purchaseController.increaseCountPurchaseOffer();
                                 }
                             }
                         }

@@ -80,7 +80,7 @@ public class StatisticsController {
         data.setNameOfUser(encryptLogin(Player.getInstance().getName()));
         data.setLevel(Player.getInstance().getLevel());
         data.setTimeOfLevel(getLongOfLevel());
-        if(Progress.getInstance().getLevel() <= 21) {
+        if(Progress.getInstance().getLevel() <= -1) {
             RequestController.getInstance()
                     .getJsonApi()
                     .newLevel(data)

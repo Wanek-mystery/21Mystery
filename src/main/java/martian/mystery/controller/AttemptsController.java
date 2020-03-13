@@ -30,6 +30,9 @@ public class AttemptsController {
     public int getCountAttempts() {
         return StoredData.getDataInt(DATA_COUNT_ATTEMPTS, 3);
     }
+    public void resetCountAttempts() {
+        StoredData.saveData(DATA_COUNT_ATTEMPTS, 3);
+    }
 
     public void decrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет
         int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS, 3);

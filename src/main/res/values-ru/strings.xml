@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">21 Mystery</string>
-    <string name="ad_block">ca-app-pub-3637770884242866/6954195474</string>
+    <string name="ad_block">ca-app-pub-3940256099942544/5224354917</string>
 
     <!--ЭКРАН РЕГИСТРАЦИИ-->
     <string name="logup_info">Придумай свой никнейм. Он будет отображаться в таблице лидеров</string>

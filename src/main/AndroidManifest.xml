@@ -3,7 +3,7 @@
     package="martian.mystery">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:name=".controller.GetContextClass"
@@ -15,10 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.DoneFirstActivity"></activity>
+        <activity android:name=".view.InfoActivity"></activity>
+        <activity android:name=".view.DoneFirstActivity" />
         <activity android:name=".view.DoneActivity" />
-        <activity android:name=".view.LogupActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.LogupActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -17,6 +17,7 @@ import android.os.Message;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -34,6 +35,7 @@ import java.util.List;
 import java.util.Locale;
 
 import martian.mystery.BuildConfig;
+import martian.mystery.controller.AttemptsController;
 import martian.mystery.controller.GetContextClass;
 import martian.mystery.controller.Progress;
 import martian.mystery.R;
@@ -197,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        progressViewController.increaseProgressAnimation(0);
+        progressViewController.increaseProgressAnimation(data.getIntExtra("differ_level",0));
     }
 
     @Override
@@ -213,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent;
                     if(Progress.getInstance().getLevel() < 22) {
                         intent = new Intent(MainActivity.this,QuestionActivity.class);
+                        intent.putExtra("past_level",Player.getInstance().getLevel());
                     } else if(Progress.getInstance().getLevel() == 22) {
                         if(!UpdateDataController.getInstance().winnerIsChecked()) {
                             intent = new Intent(MainActivity.this,QuestionActivity.class);
@@ -226,7 +229,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.btnHelp: {
-                    assistentDialogRules.show(getSupportFragmentManager(),"HELP");
+                    //assistentDialogRules.show(getSupportFragmentManager(),"HELP");
+                    startActivity(new Intent(MainActivity.this,InfoActivity.class));
                     animController.clickRules();
                     break;
                 }
@@ -337,14 +341,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void clickRules() { // анимация нажатия кнопки с правилами
-            ObjectAnimator animBtnHelpClickX = ObjectAnimator.ofFloat(btnHelp, "scaleX", 1.0f,0.8f,1.0f);
-            ObjectAnimator animBtnHelpClickY = ObjectAnimator.ofFloat(btnHelp, "scaleY", 1.0f,0.8f,1.0f);
-            animBtnHelpClickX.setRepeatCount(0);
-            animBtnHelpClickY.setRepeatCount(0);
-            animBtnHelpClickX.setDuration(200);
-            animBtnHelpClickY.setDuration(200);
-            animBtnHelpClickX.start();
-            animBtnHelpClickY.start();
+            ObjectAnimator btnHide = ObjectAnimator.ofFloat(btnHelp, "alpha", 1.0f,0.8f);
+            ObjectAnimator btnShow = ObjectAnimator.ofFloat(btnHelp, "alpha", 0.8f,1.0f);
+            btnHide.setDuration(300);
+            btnHide.start();
+            btnShow.setStartDelay(300);
+            btnShow.setDuration(300);
+            btnShow.start();
             if(animBtnHelp != null) {
                 animBtnHelp.cancel();
                 animBtnHelp = ObjectAnimator.ofFloat(btnHelp, "rotationY", 0.0f);
