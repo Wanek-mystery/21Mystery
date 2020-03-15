@@ -14,6 +14,9 @@ public interface ServerApi {
     @GET("/updateapp/") // проверка обновлений
     Call<ResponseFromServer> checkUpdate(@Query("update") int versionCode);
 
+    @GET("/updateapp/") // проверка актуальности версии приложения
+    Call<ResponseFromServer> checkSoftUpdate(@Query("soft") int versionCode);
+
     @Headers("User-Agent: dont touch")
     @GET("/prize/") // получение приза
     Call<ResponseFromServer> getPrize(@Query("prize") String queryTrue);

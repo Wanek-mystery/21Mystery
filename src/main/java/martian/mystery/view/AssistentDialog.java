@@ -25,6 +25,7 @@ public class AssistentDialog extends DialogFragment {
     public static final int DIALOG_UPDATE_APP = 6;
     public static final int DIALOG_UPDATE_APP_TECH = 7;
     public static final int DIALOG_CHECK_ON_SERRVER_ALERT = 8;
+    public static final int DIALOG_NO_TELEGRAM = 9;
     int typeDialog;
 
     public AssistentDialog(int typeDialog) {
@@ -40,7 +41,7 @@ public class AssistentDialog extends DialogFragment {
         switch (typeDialog) {
             case DIALOG_RULES: {
                 builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialog);
-                builder.setView(inflater.inflate(R.layout.dialog_rules,null))
+                builder.setView(inflater.inflate(R.layout.dialog_rules, null))
                         .setPositiveButton(R.string.dialog_review_yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -52,17 +53,17 @@ public class AssistentDialog extends DialogFragment {
                                 }
                             }
                         })
-                        .setNeutralButton(R.string.read_rules_ok_btn,null);
+                        .setNeutralButton(R.string.read_rules_ok_btn, null);
                 break;
             }
             case DIALOG_ALERT_INTERNET: {
                 builder.setTitle(R.string.no_internet)
-                        .setPositiveButton(R.string.read_rules_ok_btn,null);
+                        .setPositiveButton(R.string.read_rules_ok_btn, null);
                 break;
             }
             case DIALOG_SERVER_ERROR: {
                 builder.setTitle(R.string.no_server)
-                        .setPositiveButton(R.string.read_rules_ok_btn,null);
+                        .setPositiveButton(R.string.read_rules_ok_btn, null);
                 break;
             }
             case DIALOG_CHECK_ON_SERRVER_ALERT: {
@@ -85,6 +86,22 @@ public class AssistentDialog extends DialogFragment {
 
                             }
                         });
+                break;
+            }
+            case DIALOG_NO_TELEGRAM: {
+                builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialog);
+                builder.setMessage(R.string.there_is_no_telegram)
+                        .setPositiveButton(R.string.install_telegram_btn, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=org.telegram.messenger")));
+                                } catch (android.content.ActivityNotFoundException anfe) {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=org.telegram.messenger")));
+                                }
+                            }
+                        })
+                        .setNeutralButton(R.string.dialog_review_no, null);
                 break;
             }
             case DIALOG_REVIEW: {

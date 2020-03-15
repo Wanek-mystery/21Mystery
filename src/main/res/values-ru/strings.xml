@@ -211,6 +211,12 @@
     <string name="date_start_season">Сезон начался 2 февраля 2020</string>
     <string name="info_player">Этот игрок первый перешел на данный уровень, если не считать тех, кто выше него</string>
     <string name="info_first_player">Этот игрок первый перешел на данный уровень</string>
+    <string name="older_version">Эта версия приложения не актуальна, ты можешь обновиться</string>
+    <string name="current_version">Используется актуальная версия приложения</string>
+    <string name="there_is_no_telegram">Кажется у тебя не установлен телеграм, установить его из Google Play? (ссылка на канал скопирована)</string>
+    <string name="install_telegram_btn">Установить</string>
+    <string name="telegram_chanel">Канал в телеграме, где ты можешь голосовать за новые идеи/правила/фишки в игре:</string>
+    <string name="offer_review">Ваши отзывы очень важны, дайте знать, что можно улучшить, исправить или добавить</string>
 
     <!--<string name="awr1">2</string>
     <string name="awr2">3</string>

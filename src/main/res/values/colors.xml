@@ -25,10 +25,13 @@
     <color name="btnContinueGamePressed">#7B34F8</color>
     <color name="btnLogupStart">#7C4DFF</color>
     <color name="btnLogupEnd">#536DFE</color>
+    <color name="warning">#FF6E40</color>
     <color name="logup_gradient_end">#062342</color>
+    <color name="info_gradient_end">#062342</color>
     <color name="mainEditText">#010305</color>
     <color name="edittext_login">#000D1B</color>
     <color name="wrongAnswer">#D81B47</color>
+    <color name="current_version">#56D65C</color>
     <color name="rightAnswer">#4CAF50</color>
 
 </resources>

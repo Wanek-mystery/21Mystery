@@ -22,6 +22,14 @@ public class ResponseFromServer { // ответ от сервера завора
         this.linkwinner = linktowinner;
     }
 
+    public int getUpdating() {
+        return updating;
+    }
+
+    public void setUpdating(int updating) {
+        this.updating = updating;
+    }
+
     public int getUpdateforce() {
         return updateforce;
     }

@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnNext;
     private AsyncTextPathView tvPrize;
+    private ImageView imgLevelBar;
     private TextView tvProgressPick1;
     private TextView tvProgressPick2;
     private TextView tvProgressPick3;
@@ -117,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
         imgFirst = findViewById(R.id.imgFirstCircleLvl);
 
         // все что между первым и последним уровнем
-        imgLvl2 = findViewById(R.id.imgLvl2);
+        //imgLevelBar = findViewById(R.id.imgLevelBar);
+        /*imgLvl2 = findViewById(R.id.imgLvl2);
         imgLvl3 = findViewById(R.id.imgLvl3);
         imgLvl4 = findViewById(R.id.imgLvl4);
         imgLvlTop1 = findViewById(R.id.imgLvlTop1);
@@ -135,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         imgTop1Params = (ConstraintLayout.LayoutParams) imgLvlTop1.getLayoutParams();
         imgTop2Params = (ConstraintLayout.LayoutParams) imgLvlTop2.getLayoutParams();
         imgTop3Params = (ConstraintLayout.LayoutParams) imgLvlTop3.getLayoutParams();
-        imgTop4Params = (ConstraintLayout.LayoutParams) imgLvlTop4.getLayoutParams();
+        imgTop4Params = (ConstraintLayout.LayoutParams) imgLvlTop4.getLayoutParams();*/
 
         tvPrize = findViewById(R.id.tvPrize);
         tvPrize.setText(
@@ -173,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        progressViewController.increaseProgressAnimation(0);
+        //progressViewController.increaseProgressAnimation(0);
         animController.setTextForMainButton();
 
         // запускаем потоки для обновления данных и проверки принудительных обновлений
@@ -478,11 +480,16 @@ public class MainActivity extends AppCompatActivity {
         private float ONE_LVL_WIDTH_CENTER; // шаг перемещения указателя уровня для средних полосок
 
         public ProgressViewController() {
-            int widthScreen = getWidthSreeen();
+            int currentLevel = Player.getInstance().getLevel();
+            /*ObjectAnimator levelBar = ObjectAnimator.ofFloat(imgLevelBar,"scaleX",0f,1f);
+            levelBar.setDuration(1500);
+            levelBar.start();*/
+
+            /*int widthScreen = getWidthSreeen();
             widthBetweenLvl = widthScreen - widthScreen*0.2f - widthScreen*0.2f;
             widthOneBlockLvl = (widthBetweenLvl - (imgLvl2.getLayoutParams().width*3))/4 + 1;
             ONE_LVL_WIDTH_LEFTRIGHT = widthOneBlockLvl/5;
-            ONE_LVL_WIDTH_CENTER = widthOneBlockLvl/4;
+            ONE_LVL_WIDTH_CENTER = widthOneBlockLvl/4;*/
         }
         public int getWidthSreeen() {
             Display display = getWindowManager().getDefaultDisplay();
