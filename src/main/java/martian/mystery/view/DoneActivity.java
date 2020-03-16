@@ -2,6 +2,7 @@ package martian.mystery.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import martian.mystery.R;
+import martian.mystery.controller.Progress;
 import martian.mystery.controller.StoredData;
 
 public class DoneActivity extends AppCompatActivity {
@@ -55,6 +57,19 @@ public class DoneActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        int pastLevel = getIntent().getIntExtra("past_level",22);
+        Intent intentMain = new Intent();
+        intentMain.putExtra("differ_level", Progress.getInstance().getLevel() - pastLevel);
+        try {
+            setResult(Activity.RESULT_OK, intentMain);
+            finish();
+        } catch (NullPointerException ex) {
+        }
+        finish();
     }
 
     private String getPhrase(int place) {

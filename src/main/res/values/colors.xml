@@ -28,10 +28,15 @@
     <color name="warning">#FF6E40</color>
     <color name="logup_gradient_end">#062342</color>
     <color name="info_gradient_end">#062342</color>
+    <color name="one_level_block">#40C4FF</color>
+    <color name="one_level_block2">#7C8EFF</color>
+    <color name="one_level_block3">#37FF88</color>
+    <color name="one_level_block_current">#1D4A5E</color>
     <color name="mainEditText">#010305</color>
     <color name="edittext_login">#000D1B</color>
     <color name="wrongAnswer">#D81B47</color>
     <color name="current_version">#56D65C</color>
     <color name="rightAnswer">#4CAF50</color>
+
 
 </resources>

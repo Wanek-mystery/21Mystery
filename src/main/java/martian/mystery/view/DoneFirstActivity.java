@@ -2,6 +2,7 @@ package martian.mystery.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import martian.mystery.R;
+import martian.mystery.controller.Progress;
 import martian.mystery.controller.RequestController;
 import martian.mystery.data.DataOfUser;
 import martian.mystery.data.Player;
@@ -77,6 +79,19 @@ public class DoneFirstActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        int pastLevel = getIntent().getIntExtra("past_level",22);
+        Intent intentMain = new Intent();
+        intentMain.putExtra("differ_level", Progress.getInstance().getLevel() - pastLevel);
+        try {
+            setResult(Activity.RESULT_OK, intentMain);
+            finish();
+        } catch (NullPointerException ex) {
+        }
+        finish();
     }
 
     private class GetEmailTask extends AsyncTask<Void,Void,String> {

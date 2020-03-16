@@ -218,6 +218,8 @@
     <string name="install_telegram_btn">Установить</string>
     <string name="telegram_chanel">Канал в телеграме, где ты можешь голосовать за новые идеи/правила/фишки в игре:</string>
     <string name="offer_review">Ваши отзывы очень важны, дайте знать, что можно улучшить, исправить или добавить</string>
+    <string name="level">уровень</string>
+    <string name="complete_level">Пройдено</string>
 
     <!-- ответы на загадки -->
     <!--<string name="awr1">тмзг!тмзжлм</string>

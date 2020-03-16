@@ -36,6 +36,15 @@ public class Progress { // класс синглтон для управлени
     public int getLevel() {
         return level;
     }
+
+    //debug
+    public void resetLevel() {
+        /*level = 19;
+        StoredData.saveData(DATA_LEVEL,52191);
+        UpdateDataController.getInstance().setWinnerChecked(false);*/
+    }
+    // debug
+
     private void incrementSaveLevel() { // увеличивает уровень на 1 и сохраняет на устройстве
         int currentLevel = ciphering(StoredData.getDataInt(DATA_LEVEL,DEFAULT_LEVEL));
         int incLevel = currentLevel+1;

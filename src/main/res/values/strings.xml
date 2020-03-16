@@ -270,6 +270,8 @@
     <string name="install_telegram_btn">Install</string>
     <string name="telegram_chanel"></string>
     <string name="offer_review">Your feedback is very important, let me know what i can improve, fix or add</string>
+    <string name="level">level</string>
+    <string name="complete_level">Complete</string>
 
 
     <!--Если ты сюда зашел, уходи-->

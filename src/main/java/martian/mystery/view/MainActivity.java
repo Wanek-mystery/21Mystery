@@ -10,6 +10,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Point;
+import android.graphics.drawable.TransitionDrawable;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -59,30 +61,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnNext;
     private AsyncTextPathView tvPrize;
-    private ImageView imgLevelBar;
-    private TextView tvProgressPick1;
-    private TextView tvProgressPick2;
-    private TextView tvProgressPick3;
-    private TextView tvProgressPick4;
-    private ImageView imgLvlTop1;
-    private ImageView imgLvlTop2;
-    private ImageView imgLvlTop3;
-    private ImageView imgLvlTop4;
-    private ImageView imgLvl2;
-    private ImageView imgLvl3;
-    private ImageView imgLvl4;
-    private ImageView imgFirst;
-    private ImageView imgLast;
     private ImageView btnHelp;
     private ImageView imgSeason;
-    private ConstraintLayout clProgressPick1;
-    private ConstraintLayout clProgressPick2;
-    private ConstraintLayout clProgressPick3;
-    private ConstraintLayout clProgressPick4;
-    ConstraintLayout.LayoutParams imgTop1Params;
-    ConstraintLayout.LayoutParams imgTop2Params;
-    ConstraintLayout.LayoutParams imgTop3Params;
-    ConstraintLayout.LayoutParams imgTop4Params;
+    private TextView tvName;
+    private ImageView imgBackLevel;
+    private TextView tvLevel;
 
     private UpdateDataThread updateDataThread;
     private CheckForceUpdateTask checkForceUpdateTask;
@@ -112,32 +95,11 @@ public class MainActivity extends AppCompatActivity {
         locale = Locale.getDefault().getLanguage();
 
 
+        tvName = findViewById(R.id.tvName);
+        imgBackLevel = findViewById(R.id.imgBackLevel);
+        tvLevel = findViewById(R.id.tvLevel);
         btnNext = findViewById(R.id.btnNext);
         btnHelp = findViewById(R.id.btnHelp);
-        imgLast = findViewById(R.id.imgLastCircleLvl);
-        imgFirst = findViewById(R.id.imgFirstCircleLvl);
-
-        // все что между первым и последним уровнем
-        //imgLevelBar = findViewById(R.id.imgLevelBar);
-        /*imgLvl2 = findViewById(R.id.imgLvl2);
-        imgLvl3 = findViewById(R.id.imgLvl3);
-        imgLvl4 = findViewById(R.id.imgLvl4);
-        imgLvlTop1 = findViewById(R.id.imgLvlTop1);
-        imgLvlTop2 = findViewById(R.id.imgLvlTop2);
-        imgLvlTop3 = findViewById(R.id.imgLvlTop3);
-        imgLvlTop4 = findViewById(R.id.imgLvlTop4);
-        tvProgressPick1 = findViewById(R.id.tvProgressPick1);
-        tvProgressPick2 = findViewById(R.id.tvProgressPick2);
-        tvProgressPick3 = findViewById(R.id.tvProgressPick3);
-        tvProgressPick4 = findViewById(R.id.tvProgressPick4);
-        clProgressPick1 = findViewById(R.id.clProgressPick1);
-        clProgressPick2 = findViewById(R.id.clProgressPick2);
-        clProgressPick3 = findViewById(R.id.clProgressPick3);
-        clProgressPick4 = findViewById(R.id.clProgressPick4);
-        imgTop1Params = (ConstraintLayout.LayoutParams) imgLvlTop1.getLayoutParams();
-        imgTop2Params = (ConstraintLayout.LayoutParams) imgLvlTop2.getLayoutParams();
-        imgTop3Params = (ConstraintLayout.LayoutParams) imgLvlTop3.getLayoutParams();
-        imgTop4Params = (ConstraintLayout.LayoutParams) imgLvlTop4.getLayoutParams();*/
 
         tvPrize = findViewById(R.id.tvPrize);
         tvPrize.setText(
@@ -175,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        //progressViewController.increaseProgressAnimation(0);
         animController.setTextForMainButton();
 
         // запускаем потоки для обновления данных и проверки принудительных обновлений
@@ -201,7 +162,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        progressViewController.increaseProgressAnimation(data.getIntExtra("differ_level",0));
+        if(data != null) {
+            animController.increaseLevel(data.getIntExtra("differ_level",0));
+        } else animController.initLevel(true);
     }
 
     @Override
@@ -231,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.btnHelp: {
-                    //assistentDialogRules.show(getSupportFragmentManager(),"HELP");
                     startActivity(new Intent(MainActivity.this,InfoActivity.class));
                     animController.clickRules();
                     break;
@@ -258,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener playerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Progress.getInstance().resetLevel();
             if(v.getId() != R.id.tvNameLeader1) {
                 ViewTooltip
                         .on(MainActivity.this, v)
@@ -298,10 +261,20 @@ public class MainActivity extends AppCompatActivity {
     // внутренние контроллеры и потоки -----------------------------------------------------------------------------
     private class AnimationController {
 
+        // view`шки лидеров
         private ArrayList<TextView> namesLeaders = new ArrayList<>();
         private ArrayList<TextView> levelsLeaders = new ArrayList<>();
         private ArrayList<ImageView> lines = new ArrayList<>();
 
+        // блоки одного уровня
+        private ArrayList<ImageView> levelBlocks = new ArrayList<>();
+
+        // анимация для уровня
+        ObjectAnimator blockShow;
+        ObjectAnimator blockScaleX;
+        ObjectAnimator blockScaleY;
+
+        // анимация для лидеров
         ObjectAnimator nameHide;
         ObjectAnimator nameShow;
         ObjectAnimator levelHide;
@@ -309,8 +282,34 @@ public class MainActivity extends AppCompatActivity {
         ObjectAnimator lineShow;
         ObjectAnimator lineScale;
 
+        private float alphaCurrentLevel = 0.5f;
+
         public AnimationController() {
             assistentDialogRules = new AssistentDialog(AssistentDialog.DIALOG_RULES);
+
+            tvName.setText(Player.getInstance().getName());
+
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl1));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl2));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl3));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl4));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl5));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl6));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl7));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl8));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl9));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl10));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl11));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl12));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl13));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl14));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl15));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl16));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl17));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl18));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl19));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl20));
+            levelBlocks.add((ImageView) findViewById(R.id.imgLvl21));
 
             namesLeaders.add((TextView)findViewById(R.id.tvNameLeader1));
             namesLeaders.add((TextView)findViewById(R.id.tvNameLeader2));
@@ -327,6 +326,8 @@ public class MainActivity extends AppCompatActivity {
             lines.add((ImageView)findViewById(R.id.underLine3));
             lines.add((ImageView)findViewById(R.id.underLine4));
             lines.add((ImageView)findViewById(R.id.underLine5));
+
+            initLevel(false);
             initLeaders();
         }
 
@@ -358,6 +359,68 @@ public class MainActivity extends AppCompatActivity {
                 animBtnHelp.start();
             }
 
+        }
+        public void initLevel(boolean isFirstTime) {
+            boolean isComplete = false;
+            int currentLevel = Player.getInstance().getLevel();
+            if(currentLevel == 22) {
+                currentLevel = 21;
+                isComplete = true;
+            }
+            if(isFirstTime) { // если игрок только что прошел все уровни, то готовим особую анимацию
+                tvLevel.setAlpha(0);
+                for(int i = 0; i < 21; i++) {
+                    blockShow = ObjectAnimator.ofFloat(levelBlocks.get(i),"alpha",1f,0f);
+                    blockScaleX = ObjectAnimator.ofFloat(levelBlocks.get(i),"scaleX",1f,0f);
+                    blockScaleY = ObjectAnimator.ofFloat(levelBlocks.get(i),"scaleY",1f,0f);
+
+                    blockShow.setDuration(0);
+                    blockShow.start();
+
+                    blockScaleX.setDuration(0);
+                    blockScaleX.start();
+                    blockScaleY.setDuration(0);
+                    blockScaleY.start();
+                }
+            }
+            for(int i = 0, delay = 0; i < currentLevel; i++, delay += 100) {
+                if(i != (currentLevel - 1)) {
+                    blockShow = ObjectAnimator.ofFloat(levelBlocks.get(i),"alpha",0f,1f);
+                } else if(!isComplete) blockShow = ObjectAnimator.ofFloat(levelBlocks.get(i),"alpha",0f,alphaCurrentLevel);
+                else blockShow = ObjectAnimator.ofFloat(levelBlocks.get(i),"alpha",0f,1f);
+                blockScaleX = ObjectAnimator.ofFloat(levelBlocks.get(i),"scaleX",0f,1f);
+                blockScaleY = ObjectAnimator.ofFloat(levelBlocks.get(i),"scaleY",0f,1f);
+
+                blockShow.setStartDelay(delay);
+                blockShow.setDuration(250);
+                blockShow.start();
+
+                blockScaleX.setStartDelay(delay);
+                blockScaleX.setDuration(250);
+                blockScaleX.start();
+                blockScaleY.setStartDelay(delay);
+                blockScaleY.setDuration(250);
+                blockScaleY.start();
+            }
+            if(Progress.getInstance().getLevel() < 22) {
+                String level = Player.getInstance().getLevel() + " " + getResources().getString(R.string.level);
+                tvLevel.setText(level);
+            } else {
+                tvLevel.setText(R.string.complete_level);
+                tvLevel.setTextColor(getResources().getColor(R.color.rightAnswer));
+                TransitionDrawable transitionDrawable = (TransitionDrawable) imgBackLevel.getDrawable();
+                transitionDrawable.startTransition(0);
+            }
+            if(isFirstTime) {
+                ObjectAnimator levelShow = ObjectAnimator.ofFloat(tvLevel,"alpha",0f,1f);
+                levelShow.setStartDelay(2100);
+                levelShow.setDuration(1000);
+                levelShow.start();
+                TransitionDrawable transitionDrawable = (TransitionDrawable) imgBackLevel.getDrawable();
+                transitionDrawable.startTransition(1000);
+
+                // делаем аниамцию оконтовки
+            }
         }
         public void initLeaders() {
             String leaders = StoredData.getDataString(DATA_LEADERS,"0-0-...;0-0-...;0-0-...;0-0-...;0-0-...;"); //0-0-...;0-0-...;0-0-...;0-0-...;0-0-...;
@@ -418,6 +481,39 @@ public class MainActivity extends AppCompatActivity {
                 nameShow.start();
                 levelShow.start();
             }
+        }
+        private void increaseLevel(int differLevel) {
+            tvLevel.setText(Player.getInstance().getLevel() + " " + getString(R.string.level));
+            if(differLevel > 0) {
+                int currentLevel = Player.getInstance().getLevel();
+                int pastLevel = currentLevel - differLevel;
+                boolean isComplete = (currentLevel == 22);
+                for(int i = pastLevel-1, delay = 0; i < currentLevel; i++, delay += 200) {
+                    if(i != (currentLevel-1)) blockShow = ObjectAnimator.ofFloat(levelBlocks.get(i),"alpha",0f,1f);
+                    else if(!isComplete) blockShow = ObjectAnimator.ofFloat(levelBlocks.get(i),"alpha",0f,alphaCurrentLevel);
+                    else blockShow = ObjectAnimator.ofFloat(levelBlocks.get(i),"alpha",0f,1f);
+                    blockScaleX = ObjectAnimator.ofFloat(levelBlocks.get(i),"scaleX",0f,1f);
+                    blockScaleY = ObjectAnimator.ofFloat(levelBlocks.get(i),"scaleY",0f,1f);
+
+                    blockShow.setStartDelay(delay);
+                    blockShow.setDuration(400);
+                    blockShow.start();
+
+                    blockScaleX.setStartDelay(delay);
+                    blockScaleX.setDuration(400);
+                    blockScaleX.start();
+                    blockScaleY.setStartDelay(delay);
+                    blockScaleY.setDuration(400);
+                    blockScaleY.start();
+                }
+            }
+            if(Progress.getInstance().getLevel() < 22) {
+                tvLevel.setText(Progress.getInstance().getLevel() + " " + getResources().getString(R.string.level));
+            } else {
+                tvLevel.setText(R.string.complete_level);
+                tvLevel.setTextColor(getResources().getColor(R.color.rightAnswer));
+            }
+
         }
         private void changeInfoLeader(int position, String nameLeader, int countOtherPLayers, int level) {
             // установка имени первого игрока и кол-ва других игроков на этом уровне
@@ -496,154 +592,6 @@ public class MainActivity extends AppCompatActivity {
             Point size = new Point();
             display.getSize(size);
             return size.x;
-        }
-
-        public void increaseProgressAnimation(int differenceLvl) {
-            int currentLevel = Progress.getInstance().getLevel() - 1;
-            if(currentLevel == 0) {
-                imgFirst.setAlpha(0.5f);
-                imgLvlTop1.setVisibility(View.INVISIBLE);
-                clProgressPick1.setVisibility(View.INVISIBLE);
-            }
-            if(currentLevel == 1) {
-                imgFirst.setAlpha(1.0f);
-                imgLvlTop1.setVisibility(View.INVISIBLE);
-                clProgressPick1.setVisibility(View.INVISIBLE);
-            } else if(currentLevel > 1 && currentLevel < 7) {
-                imgFirst.setAlpha(1.0f);
-                imgLvlTop1.setVisibility(View.VISIBLE);
-                clProgressPick1.setVisibility(View.VISIBLE);
-                tvProgressPick1.setText(String.valueOf(currentLevel));
-
-                if((currentLevel - 2) == 4) imgTop1Params.width = (int)ONE_LVL_WIDTH_LEFTRIGHT*(currentLevel-2)+(int)ONE_LVL_WIDTH_LEFTRIGHT/2;
-                else imgTop1Params.width = (int)ONE_LVL_WIDTH_LEFTRIGHT*(currentLevel-1);
-
-                imgLvlTop1.setLayoutParams(imgTop1Params);
-            } else if(currentLevel == 7) {
-                imgFirst.setAlpha(1.0f);
-                imgLvl2.setAlpha(1.0f);
-                imgLvlTop1.setVisibility(View.VISIBLE);
-                imgTop1Params.width = (int)ONE_LVL_WIDTH_LEFTRIGHT*5;
-                clProgressPick1.setVisibility(View.INVISIBLE);
-
-                imgLvlTop1.setLayoutParams(imgTop1Params);
-            } else if(currentLevel > 7 && currentLevel < 11) {
-                imgFirst.setAlpha(1.0f);
-                imgLvlTop1.setVisibility(View.VISIBLE);
-                imgLvlTop2.setVisibility(View.VISIBLE);
-                clProgressPick1.setVisibility(View.INVISIBLE);
-                imgLvl2.setAlpha(1.0f);
-                imgTop1Params.width = (int)ONE_LVL_WIDTH_LEFTRIGHT*5;
-
-                clProgressPick2.setVisibility(View.VISIBLE);
-                tvProgressPick2.setText(String.valueOf(currentLevel));
-
-                if((currentLevel - 8) == 3) imgTop2Params.width = (int)ONE_LVL_WIDTH_CENTER*(currentLevel-8)+(int)ONE_LVL_WIDTH_CENTER/2;
-                else imgTop2Params.width = (int)ONE_LVL_WIDTH_CENTER*(currentLevel-7);
-
-                imgLvlTop1.setLayoutParams(imgTop1Params);
-                imgLvlTop2.setLayoutParams(imgTop2Params);
-            } else if(currentLevel == 11) {
-                imgFirst.setAlpha(1.0f);
-                imgLvlTop1.setVisibility(View.VISIBLE);
-                imgLvlTop2.setVisibility(View.VISIBLE);
-                imgLvl2.setAlpha(1.0f);
-                imgLvl3.setAlpha(1.0f);
-                imgTop1Params.width = (int)ONE_LVL_WIDTH_LEFTRIGHT*5;
-                imgTop2Params.width = (int)ONE_LVL_WIDTH_CENTER*4;
-                clProgressPick1.setVisibility(View.INVISIBLE);
-                clProgressPick2.setVisibility(View.INVISIBLE);
-
-                imgLvlTop1.setLayoutParams(imgTop1Params);
-                imgLvlTop2.setLayoutParams(imgTop2Params);
-            } else if(currentLevel > 11 && currentLevel < 15) {
-                imgFirst.setAlpha(1.0f);
-                imgLvlTop1.setVisibility(View.VISIBLE);
-                imgLvlTop2.setVisibility(View.VISIBLE);
-                imgLvlTop3.setVisibility(View.VISIBLE);
-                imgLvl2.setAlpha(1.0f);
-                imgLvl3.setAlpha(1.0f);
-                imgTop1Params.width = (int)ONE_LVL_WIDTH_LEFTRIGHT*5;
-                imgTop2Params.width = (int)ONE_LVL_WIDTH_CENTER*4;
-                clProgressPick1.setVisibility(View.INVISIBLE);
-                clProgressPick2.setVisibility(View.INVISIBLE);
-
-                clProgressPick3.setVisibility(View.VISIBLE);
-                tvProgressPick3.setText(String.valueOf(currentLevel));
-
-                if((currentLevel - 12) == 3) imgTop3Params.width = (int)ONE_LVL_WIDTH_CENTER*(currentLevel-12)+(int)ONE_LVL_WIDTH_CENTER/2;
-                else imgTop3Params.width = (int)ONE_LVL_WIDTH_CENTER*(currentLevel-11);
-
-                imgLvlTop1.setLayoutParams(imgTop1Params);
-                imgLvlTop2.setLayoutParams(imgTop2Params);
-                imgLvlTop3.setLayoutParams(imgTop3Params);
-            } else if(currentLevel == 15) {
-                imgFirst.setAlpha(1.0f);
-                imgLvlTop1.setVisibility(View.VISIBLE);
-                imgLvlTop2.setVisibility(View.VISIBLE);
-                imgLvlTop3.setVisibility(View.VISIBLE);
-                imgLvl2.setAlpha(1.0f);
-                imgLvl3.setAlpha(1.0f);
-                imgLvl4.setAlpha(1.0f);
-                imgTop1Params.width = (int)ONE_LVL_WIDTH_LEFTRIGHT*5;
-                imgTop2Params.width = (int)ONE_LVL_WIDTH_CENTER*4;
-                imgTop3Params.width = (int)ONE_LVL_WIDTH_CENTER*4;
-                clProgressPick1.setVisibility(View.INVISIBLE);
-                clProgressPick2.setVisibility(View.INVISIBLE);
-                clProgressPick3.setVisibility(View.INVISIBLE);
-
-                imgLvlTop1.setLayoutParams(imgTop1Params);
-                imgLvlTop2.setLayoutParams(imgTop2Params);
-                imgLvlTop3.setLayoutParams(imgTop3Params);
-            } else if(currentLevel > 15 && currentLevel < 21) {
-                imgFirst.setAlpha(1.0f);
-                imgLvlTop1.setVisibility(View.VISIBLE);
-                imgLvlTop2.setVisibility(View.VISIBLE);
-                imgLvlTop3.setVisibility(View.VISIBLE);
-                imgLvlTop4.setVisibility(View.VISIBLE);
-                imgLvl2.setAlpha(1.0f);
-                imgLvl3.setAlpha(1.0f);
-                imgLvl4.setAlpha(1.0f);
-                imgTop1Params.width = (int)ONE_LVL_WIDTH_LEFTRIGHT*5;
-                imgTop2Params.width = (int)ONE_LVL_WIDTH_CENTER*4;
-                imgTop3Params.width = (int)ONE_LVL_WIDTH_CENTER*4;
-                clProgressPick1.setVisibility(View.INVISIBLE);
-                clProgressPick2.setVisibility(View.INVISIBLE);
-                clProgressPick3.setVisibility(View.INVISIBLE);
-
-                clProgressPick4.setVisibility(View.VISIBLE);
-                tvProgressPick4.setText(String.valueOf(currentLevel));
-                if((currentLevel - 16) == 4) imgTop4Params.width = (int)ONE_LVL_WIDTH_LEFTRIGHT*(currentLevel-16)+(int)ONE_LVL_WIDTH_LEFTRIGHT/2;
-                else imgTop4Params.width = (int)ONE_LVL_WIDTH_LEFTRIGHT*(currentLevel-15);
-
-                imgLvlTop1.setLayoutParams(imgTop1Params);
-                imgLvlTop2.setLayoutParams(imgTop2Params);
-                imgLvlTop3.setLayoutParams(imgTop3Params);
-                imgLvlTop4.setLayoutParams(imgTop4Params);
-            } else if(currentLevel >= 21) {
-                imgFirst.setAlpha(1.0f);
-                imgLvlTop1.setVisibility(View.VISIBLE);
-                imgLvlTop2.setVisibility(View.VISIBLE);
-                imgLvlTop3.setVisibility(View.VISIBLE);
-                imgLvlTop4.setVisibility(View.VISIBLE);
-                imgLvl2.setAlpha(1.0f);
-                imgLvl3.setAlpha(1.0f);
-                imgLvl4.setAlpha(1.0f);
-                imgTop1Params.width = (int)ONE_LVL_WIDTH_LEFTRIGHT*5;
-                imgTop2Params.width = (int)ONE_LVL_WIDTH_CENTER*4;
-                imgTop3Params.width = (int)ONE_LVL_WIDTH_CENTER*4;
-                imgTop4Params.width = (int)ONE_LVL_WIDTH_CENTER*4;
-                clProgressPick1.setVisibility(View.INVISIBLE);
-                clProgressPick2.setVisibility(View.INVISIBLE);
-                clProgressPick3.setVisibility(View.INVISIBLE);
-                clProgressPick4.setVisibility(View.INVISIBLE);
-                imgLast.setAlpha(1.0f);
-
-                imgLvlTop1.setLayoutParams(imgTop1Params);
-                imgLvlTop2.setLayoutParams(imgTop2Params);
-                imgLvlTop3.setLayoutParams(imgTop3Params);
-                imgLvlTop4.setLayoutParams(imgTop4Params);
-            }
         }
     }
     private class LoadNewLevelTask extends AsyncTask<Void,Void,Void> { // отправляем данные о новым уровне, если в прошлый раз не было инета

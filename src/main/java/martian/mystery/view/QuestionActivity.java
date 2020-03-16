@@ -357,6 +357,19 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         super.onDestroy();
     }
 
+    @Override
+    public void onBackPressed() {
+        int pastLevel = getIntent().getIntExtra("past_level",1);
+        Intent intentMain = new Intent();
+        intentMain.putExtra("differ_level",Progress.getInstance().getLevel() - pastLevel);
+        try {
+            setResult(Activity.RESULT_OK, intentMain);
+            finish();
+        } catch (NullPointerException ex) {
+        }
+        finish();
+    }
+
     public void getAttemptByAd() { // показать рекламу, чтобы добавить попытку
         if (mRewardedVideoAd.isLoaded()) {
             mRewardedVideoAd.show();
@@ -1006,10 +1019,14 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             if (Progress.getInstance().isDone()) {
                 if (winnerIsChecked) {
                     if (isWinner) {
+                        Intent intent = new Intent(QuestionActivity.this,DoneFirstActivity.class);
+                        intent.putExtra("past_level",getIntent().getIntExtra("past_level",1));
                         finish();
-                        startActivity(new Intent(QuestionActivity.this, DoneFirstActivity.class)); // замена текущего фрагмента на фрагмент с концом игры для побеителя
+                        startActivity(intent); // замена текущего фрагмента на фрагмент с концом игры для побеителя
                     } else {
                         finish();
+                        Intent intent = new Intent(QuestionActivity.this,DoneActivity.class);
+                        intent.putExtra("past_level",getIntent().getIntExtra("past_level",1));
                         startActivity(new Intent(QuestionActivity.this, DoneActivity.class)); // замена текущего фрагмента на фрагмент с концом игры
                     }
                 }
