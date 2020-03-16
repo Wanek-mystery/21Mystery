@@ -8,7 +8,7 @@
         android:layout_marginStart="16dp"
         android:fontFamily="@font/inder"
         android:text="21st Martian"
-        android:textAlignment="center"
+        android:gravity="bottom"
         android:textColor="#fff"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/glineNameLevel"

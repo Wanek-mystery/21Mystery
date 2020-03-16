@@ -8,7 +8,7 @@ public class StoredData { // класс, реализующий доступ к 
 
     public static final String APP_PREFERENCES = "app_data2";
     public static final String DATA_LEVEL = "game_level4";
-    public static final String DATA_WINS = "wins4";
+    public static final String DATA_WINS = "wins4;";
     public static final String DATA_PRIZE = "prize4";
     public static final String DATA_COUNT_ATTEMPTS = "count_attempts4";
     public static final String DATA_COUNT_LAUNCH_APP = "count_launch_app2"; // счетчик запусков лучше не менять
