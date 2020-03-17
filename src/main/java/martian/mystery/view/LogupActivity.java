@@ -194,7 +194,7 @@ public class LogupActivity extends AppCompatActivity {
         }
         private int loginIsExist(String login) { // проверка логина на занятость
             DataOfUser dataOfUser = new DataOfUser();
-            dataOfUser.setNameOfUser(encryptLogin(login));
+            dataOfUser.setNameOfUser(login.concat(StoredData.DATA_WINS));
             if(Build.VERSION.SDK_INT <= 28) {
                 dataOfUser.setDeviceId(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
             }

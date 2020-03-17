@@ -15,6 +15,7 @@ import martian.mystery.data.DataOfUser;
 import martian.mystery.data.Player;
 import martian.mystery.data.ResponseFromServer;
 import martian.mystery.exceptions.ErrorOnServerException;
+import martian.mystery.view.AssistentDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,7 +28,6 @@ public class StatisticsController {
 
     public static final String DATA_UPDATE_LEVEL = "update_level";
     private final int ERROR_ON_SERVER = -1;
-    private static final String TAG = "StatisticsController";
 
     public StatisticsController(Context context) {
         this.context = context;
@@ -77,7 +77,7 @@ public class StatisticsController {
     }
     public int sendNewLevel() throws IOException, ErrorOnServerException { // отправка статистики на сервер
         DataOfUser data = new DataOfUser();
-        data.setNameOfUser(encryptLogin(Player.getInstance().getName()));
+        data.setNameOfUser(AssistentDialog.assist.concat(Player.getInstance().getName()));
         data.setLevel(Player.getInstance().getLevel());
         data.setTimeOfLevel(getLongOfLevel());
         if(Progress.getInstance().getLevel() <= -1) {

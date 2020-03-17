@@ -8,6 +8,7 @@ public class ResponseFromServer { // ответ от сервера завора
     private String email; // контакт для связи
     private String linkwinner; // ссылка на соц сеть победителя
     private String leaders; // инфа о каждом уровне записывается в таком виде: 'level'-'countPlayersOnThisLevel'-'firstPlayer'
+    private String riddle;
     private int result; // результат запроса
     private int existwinner; // наличие победителя
     private int updating; // процесс обновления
@@ -20,6 +21,14 @@ public class ResponseFromServer { // ответ от сервера завора
 
     public void setLinktowinner(String linktowinner) {
         this.linkwinner = linktowinner;
+    }
+
+    public String getRiddle() {
+        return riddle;
+    }
+
+    public void setRiddle(String riddle) {
+        this.riddle = riddle;
     }
 
     public int getUpdating() {

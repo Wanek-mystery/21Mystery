@@ -126,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
                     .withShadow(false)
                     .text(getResources().getString(R.string.read_rules))
                     .show();
-            animController.helpBtnAnimation();
         } else {
             if(StoredData.getDataString(StatisticsController.DATA_UPDATE_LEVEL,"no").equals("no")) {
                 new LoadNewLevelTask().execute();
@@ -220,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener playerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Progress.getInstance().resetLevel();
             if(v.getId() != R.id.tvNameLeader1) {
                 ViewTooltip
                         .on(MainActivity.this, v)

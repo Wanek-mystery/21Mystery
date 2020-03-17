@@ -8,16 +8,16 @@ public class StoredData { // класс, реализующий доступ к 
 
     public static final String APP_PREFERENCES = "app_data2";
     public static final String DATA_LEVEL = "game_level4";
-    public static final String DATA_WINS = "wins4;";
+    public static final String DATA_WINS = ";wins4";
     public static final String DATA_PRIZE = "prize4";
     public static final String DATA_COUNT_ATTEMPTS = "count_attempts4";
     public static final String DATA_COUNT_LAUNCH_APP = "count_launch_app2"; // счетчик запусков лучше не менять
-    public static final String DATA_WINNER_IS_SENDED = "winner_is_sended4";
+    public static final String DATA_WINNER_IS_SENDED = ";winner_is_sended4";
     public static final String DATA_LAST_ANSWER = "last_answer4";
-    public static final String DATA_WINNER_IS_CHECKED = "winner_is_checked4";
+    public static final String DATA_WINNER_IS_CHECKED = ";winner_is_checked4";
     public static final String DATA_IS_WINNER = "is_winner4";
-    public static final String DATA_PLACE = "place_gamer4";
-    public static final String DATA_LASTDATE = "last_date4";
+    public static final String DATA_PLACE = ";place_gamer4";
+    public static final String DATA_LASTDATE = ";last_date4";
 
     public StoredData() { }
 

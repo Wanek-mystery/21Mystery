@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".view.InfoActivity"
-            android:label="@string/title_activity_info"
+            android:label="Info Activity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".view.DoneFirstActivity" />
         <activity android:name=".view.DoneActivity" />

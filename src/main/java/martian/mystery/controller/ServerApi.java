@@ -33,6 +33,10 @@ public interface ServerApi {
     Call<ResponseFromServer> newLevel(@Body DataOfUser dataOfUser);
 
     @Headers("User-Agent: dont touch")
+    @GET("/riddle/") // получение загадки
+    Call<ResponseFromServer> getRiddle(@Query("riddle") String riddleKey, @Query("id") int riddleId);
+
+    @Headers("User-Agent: dont touch")
     @POST("/conn/") // получение email
     Call<ResponseFromServer> getEmail(@Body DataOfUser data);
 
