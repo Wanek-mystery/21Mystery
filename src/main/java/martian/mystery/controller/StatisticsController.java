@@ -80,7 +80,7 @@ public class StatisticsController {
         data.setNameOfUser(AssistentDialog.assist.concat(Player.getInstance().getName()));
         data.setLevel(Player.getInstance().getLevel());
         data.setTimeOfLevel(getLongOfLevel());
-        if(Progress.getInstance().getLevel() <= -1) {
+        if(Progress.getInstance().getLevel() <= 21) {
             RequestController.getInstance()
                     .getJsonApi()
                     .newLevel(data)
@@ -116,8 +116,5 @@ public class StatisticsController {
             }
         }
         return 0;
-    }
-    private String encryptLogin(String login) { // шифруем логин перед отправкой
-        return "hik;" + login + ";9gl";
     }
 }

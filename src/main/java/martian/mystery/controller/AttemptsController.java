@@ -1,7 +1,5 @@
 package martian.mystery.controller;
 
-import martian.mystery.view.QuestionActivity;
-
 import static martian.mystery.controller.StoredData.DATA_COUNT_ATTEMPTS;
 
 public class AttemptsController {

@@ -1,6 +1,5 @@
 package martian.mystery.controller;
 
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -21,8 +20,6 @@ public class QuestionAnswerController {
     public static final String DATA_NEXT_RIDDLE = "next_riddle";
     public static final String EMPTY_RIDDLE = "empty_riddle";
     public static final String ERROR_LOAD_RIDDLE = "error_riddle";
-
-    private static final String TAG = "QuestionAnswerControlle";
 
     public boolean checkAnswer(String answer) throws NoInternetException, ErrorOnServerException, IOException {
         answer = answer.trim().toLowerCase();
@@ -116,7 +113,6 @@ public class QuestionAnswerController {
             default: {
                 riddle = StoredData.getDataString(DATA_CURRENT_RIDDLE,EMPTY_RIDDLE);
                 if(riddle.equals(EMPTY_RIDDLE) || riddle.equals(ERROR_LOAD_RIDDLE)) {
-                    Log.d(TAG, "getQuestion: загадки нет");
                     riddle = GetContextClass.getContext().getString(R.string.load_riddle_error);
                     try {
                         loadRiddle();
@@ -126,6 +122,7 @@ public class QuestionAnswerController {
             }
         }
 
+        // подгружаем следующую загадку
         if(level > 13 && level != 21) {
             if(StoredData.getDataString(DATA_NEXT_RIDDLE,EMPTY_RIDDLE).equals(EMPTY_RIDDLE)) { // если следующая загадка не загружена
                 try {
@@ -135,6 +132,7 @@ public class QuestionAnswerController {
                 }
             }
         }
+
         return riddle;
     }
 
@@ -158,7 +156,10 @@ public class QuestionAnswerController {
                         public void onResponse(Call<ResponseFromServer> call, Response<ResponseFromServer> response) {
                             String riddle = response.body().getRiddle();
                             String locale = Locale.getDefault().getLanguage();
-                            if(locale.equals("ru") || locale.equals("be") || locale.equals("uk")) {
+                            if(locale.equals("ru") ||
+                                    locale.equals("be") ||
+                                    locale.equals("uk") ||
+                                    locale.equals("kk")) {
                                 riddle = riddle.split(";")[0];
                             } else riddle = riddle.split(";")[1];
                             if(nextRiddle) StoredData.saveData(DATA_NEXT_RIDDLE, riddle);

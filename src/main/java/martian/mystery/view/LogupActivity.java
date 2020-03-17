@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,7 +47,6 @@ public class LogupActivity extends AppCompatActivity {
     private final int MANY_SPACE = 6;
     private final int LOGIN_IS_ACCESS = 7;
 
-    private static final String TAG = "LogupActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -188,9 +186,6 @@ public class LogupActivity extends AppCompatActivity {
             if(login.indexOf(' ') != login.lastIndexOf(' ')) return MANY_SPACE; // если больше одного пробела
             if(login.matches("[A-Za-z_0-9а-яА-Я?\\s]+")) return LOGIN_IS_ACCESS;
             else return WRONG_SYMBOLS;
-        }
-        private String encryptLogin(String login) { // шифруем логин перед отправкой
-            return "hik;" + login + ";9gl";
         }
         private int loginIsExist(String login) { // проверка логина на занятость
             DataOfUser dataOfUser = new DataOfUser();

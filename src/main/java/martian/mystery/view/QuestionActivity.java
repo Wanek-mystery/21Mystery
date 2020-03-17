@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -129,10 +128,8 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
     private String adBlock;
     private boolean adLoaded = false;
-    private boolean adFailed = false;
+    private boolean noCrash = false;
     private boolean adShowed = false; // если реклама показалась, то можно показывать предложение о покупке
-
-    private static final String TAG = "QuestionActivity";
 
 
     @Override
@@ -343,7 +340,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         if (!mRewardedVideoAd.isLoaded()) loadRewardedVideoAd();
         animationController.setAttemptsOnScreen();
         SecurityController security = new SecurityController();
-        adFailed = security.getQuestion(21); // проверка на взлом
+        noCrash = security.noCrash(21); // проверка на взлом
         if (Player.getInstance().getLevel() > 13) {
             new LoadRiddle().execute();
         }
@@ -497,7 +494,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
         private String mSkuId = "endless_attempts";
         public final static String DATA_SHOW_PURCHASE = "show_purchase";
-        private static final String TAG = "PurchaseController";
 
         public PurchaseController(Context context) {
             this.context = context;
@@ -874,7 +870,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                 }
                 case R.id.btnCheckAnswer: {
                     handler.sendEmptyMessage(SHOW_PARTING_WORD);
-                    if (adFailed) { // если взлома ответов нет(adFailed == true), то предоставляем функции
+                    if (noCrash) { // если взлома ответов нет, то предоставляем функции
                         if (attemptsController.isEndlessAttempts()) {
                             CheckAnswerTask checkAnswerTask = new CheckAnswerTask();
                             checkAnswerTask.execute(etAnswer.getText().toString());
@@ -944,11 +940,9 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             try {
                 if (!UpdateDataController.getInstance().nextRiddleIsLoaded() && Player.getInstance().getLevel() < 21) {
                     questionAnswerController.loadNextRiddle();
-                    Log.d(TAG, "doInBackground: загружаем следующую");
                 }
                 if (!UpdateDataController.getInstance().riddleIsLoaded() && Player.getInstance().getLevel() > 14) {
                     questionAnswerController.loadRiddle();
-                    Log.d(TAG, "doInBackground: загружаем текущую");
                     return true;
                 }
             } catch (NoInternetException ex) {
@@ -964,7 +958,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                 if (!loadError) {
                     if (isCurrentRiddle) {
                         tvQuestion.setText(questionAnswerController.getQuestion());
-                        Log.d(TAG, "onPostExecute: получаем загадку getQuestion");
                     }
                 } else
                     Toast.makeText(QuestionActivity.this, R.string.load_riddle_error, Toast.LENGTH_LONG).show();

@@ -16,10 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -39,7 +35,6 @@ public class InfoActivity extends AppCompatActivity {
     private Button btnUpdate;
     private Button btnReview;
 
-    private static final String TAG = "InfoActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,15 +85,6 @@ public class InfoActivity extends AppCompatActivity {
                 }
             });
         }
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabMessage);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
     }
 
     @Override

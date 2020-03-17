@@ -8,6 +8,7 @@ import martian.mystery.R;
 
 public class SecurityController {
 
+    // "ключи-смещения" для дешифровки ответов
     int offSets[][] = {{-2, 1, -4, -6, 2, -6, -4, -2, 8, 4, -5, 4, -1, -2, 7, -4, 6, -5, -6},
             {4, -3, -1, 8, 6, -6, 4, 8, 6, -4, 7, -3, -1, 4, -5, 4, -2, 7, 5},
             {0, -1, 8, -7, 1, -1, -9, 2, 4, 3, -7, 4, -6, -4, -4, 5, -6, 3, 1},
@@ -22,7 +23,8 @@ public class SecurityController {
             {2, 9, 7, -1, -8, -5, 3, 1, 9, -1, 0, 1, -9, -1, 8, 9, 8, -1, -8},
             {1, 3, 0, -8, 6, -4, -6, -5, 3, -7, 3, 5, -3, 5, -6, 3, 4, 8, -1},
             {8, 4, -7, -4, 8, 0, -2, 7, 8, -3, 7, 7, -1, -9, 0, -3, 5, -5, 0}};
-    public boolean getQuestion(int number) { // метод против взлома (проверка ответов на одинаковость)
+
+    public boolean noCrash(int number) { // метод против взлома (проверка ответов на одинаковость)
         ArrayList<String> arrQuestions = new ArrayList<>();
         if(number == 21) {
             arrQuestions.addAll(Arrays.asList(GetContextClass.getContext().getResources().getString(R.string.awr1).split("!")));

@@ -26,15 +26,13 @@
     <string name="continue_game">Продолжить игру</string>
     <string name="read_rules">Правила здесь</string>
     <string name="rules">Правила</string>
-    <string name="rules_text">Погнали.
-        Первый отгадываешь 21 загадку - получаешь приз.
+    <string name="rules_text">Первый(ая) отгадываешь 21 загадку - получаешь приз.
         На каждую загадку дается 3 попытки. Если они закончатся, всегда можно получить еще одну, посмотрев рекламу.
-        Если вдруг не стал первым, после 21-ой загадки можешь узнать свое место.
-        Также чем дольше нет победителя, тем больше приз.\n\n
+        Чем дольше нет победителя, тем больше приз. \n\n
          Сезон начался 2 февраля 2020</string>
     <string name="read_rules_ok_btn">Ок</string>
     <string name="prize_text">Приз:</string>
-    <string name="prize">2000 рублей</string>
+    <string name="prize">5000 рублей</string>
     <string name="force_update_season">Хорошие новости, вышел новый сезон, скорей обновляйся:) (Предыдущий сезон теперь неактивный)</string>
     <string name="force_update_tech">Жутко извиняюсь, но нужно обновиться&#128528;</string>
     <string name="update_btn">Обновить</string>

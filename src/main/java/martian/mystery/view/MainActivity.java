@@ -1,9 +1,7 @@
 package martian.mystery.view;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -11,15 +9,11 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.drawable.TransitionDrawable;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -37,7 +31,6 @@ import java.util.List;
 import java.util.Locale;
 
 import martian.mystery.BuildConfig;
-import martian.mystery.controller.AttemptsController;
 import martian.mystery.controller.GetContextClass;
 import martian.mystery.controller.Progress;
 import martian.mystery.R;
@@ -69,17 +62,14 @@ public class MainActivity extends AppCompatActivity {
 
     private UpdateDataThread updateDataThread;
     private CheckForceUpdateTask checkForceUpdateTask;
-    private ProgressViewController progressViewController;
     private AnimationController animController;
     private ObjectAnimator animBtnHelp;
-    private AssistentDialog assistentDialogRules;
 
     private String locale;
     private ArrayList<String> playersNames = new ArrayList<>();
     private ArrayList<Integer> playersLevels = new ArrayList<>();
     private ArrayList<Integer> playersCount = new ArrayList<>();
 
-    private static final String TAG = "MainActivity";
     private final String DATA_LEADERS = "leaders_list";
 
     @Override
@@ -114,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         btnNext.setOnClickListener(onClickListener);
         btnHelp.setOnClickListener(onClickListener);
 
-        progressViewController = new ProgressViewController(); // контроллер для анимации прогресса
         animController = new AnimationController(); // контроллер для остальных анимаций в данной активити
 
         if(StoredData.getDataInt(DATA_COUNT_LAUNCH_APP,0) == 2) { // доп. анимации и подсказки, если запуск первый
@@ -283,8 +272,6 @@ public class MainActivity extends AppCompatActivity {
         private float alphaCurrentLevel = 0.5f;
 
         public AnimationController() {
-            assistentDialogRules = new AssistentDialog(AssistentDialog.DIALOG_RULES);
-
             tvName.setText(Player.getInstance().getName());
 
             levelBlocks.add((ImageView) findViewById(R.id.imgLvl1));
@@ -329,13 +316,6 @@ public class MainActivity extends AppCompatActivity {
             initLeaders();
         }
 
-        public void helpBtnAnimation() {
-            animBtnHelp = ObjectAnimator.ofFloat(btnHelp, "rotationY", 0.0f, 360f);
-            animBtnHelp.setDuration(2400);
-            animBtnHelp.setRepeatCount(ObjectAnimator.INFINITE);
-            animBtnHelp.setInterpolator(new AccelerateDecelerateInterpolator());
-            animBtnHelp.start();
-        }
         public void setTextForMainButton() {
             if(Progress.getInstance().getLevel() == 1) btnNext.setText(MainActivity.this.getResources().getString(R.string.start_game));
             else if(Progress.getInstance().getLevel() < 22) btnNext.setText(MainActivity.this.getResources().getString(R.string.continue_game));
@@ -566,32 +546,6 @@ public class MainActivity extends AppCompatActivity {
             return spans;
         }
     }
-    private class ProgressViewController { // класс для управления состоянием (вида) прогресса
-
-        private float widthBetweenLvl; // ширина между первым и последним уровнем
-        private float widthOneBlockLvl; // ширина одной оранжевой полоски
-        private float ONE_LVL_WIDTH_LEFTRIGHT; // шаг перемещения указателя уровня для крайних полосок
-        private float ONE_LVL_WIDTH_CENTER; // шаг перемещения указателя уровня для средних полосок
-
-        public ProgressViewController() {
-            int currentLevel = Player.getInstance().getLevel();
-            /*ObjectAnimator levelBar = ObjectAnimator.ofFloat(imgLevelBar,"scaleX",0f,1f);
-            levelBar.setDuration(1500);
-            levelBar.start();*/
-
-            /*int widthScreen = getWidthSreeen();
-            widthBetweenLvl = widthScreen - widthScreen*0.2f - widthScreen*0.2f;
-            widthOneBlockLvl = (widthBetweenLvl - (imgLvl2.getLayoutParams().width*3))/4 + 1;
-            ONE_LVL_WIDTH_LEFTRIGHT = widthOneBlockLvl/5;
-            ONE_LVL_WIDTH_CENTER = widthOneBlockLvl/4;*/
-        }
-        public int getWidthSreeen() {
-            Display display = getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            return size.x;
-        }
-    }
     private class LoadNewLevelTask extends AsyncTask<Void,Void,Void> { // отправляем данные о новым уровне, если в прошлый раз не было инета
         @Override
         protected void onPreExecute() {
@@ -711,12 +665,6 @@ public class MainActivity extends AppCompatActivity {
                                         Toast.makeText(MainActivity.this,"Prize error",Toast.LENGTH_SHORT).show();
                                     }
 
-                                    /*// проверяем есть ли ссылка на ооцсеть победителя
-                                    if(existWinner) {
-                                        if(!responseFromServer.getLinktowinner().equals("none")) {
-                                            linkToWinner = responseFromServer.getLinktowinner();
-                                        } else linkToWinner = "none";
-                                    }*/
                                 }
 
                                 @Override

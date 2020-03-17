@@ -31,7 +31,6 @@ public class DoneFirstActivity extends AppCompatActivity {
     private TextView tvEmail;
     private Button btnSendReview;
 
-    private static final String TAG = "DoneFirstActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
