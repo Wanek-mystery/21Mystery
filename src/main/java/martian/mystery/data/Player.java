@@ -1,7 +1,7 @@
 package martian.mystery.data;
 
-import martian.mystery.controller.Progress;
-import martian.mystery.controller.StoredData;
+import martian.mystery.controllers.Progress;
+import martian.mystery.controllers.StoredData;
 
 public class Player {
 

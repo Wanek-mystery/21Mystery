@@ -1,6 +1,6 @@
-package martian.mystery.controller;
+package martian.mystery.controllers;
 
-import static martian.mystery.controller.StoredData.DATA_COUNT_ATTEMPTS;
+import static martian.mystery.controllers.StoredData.DATA_COUNT_ATTEMPTS;
 
 public class AttemptsController {
 

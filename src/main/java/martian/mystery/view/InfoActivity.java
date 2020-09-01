@@ -6,14 +6,9 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
@@ -24,8 +19,7 @@ import java.io.IOException;
 
 import martian.mystery.BuildConfig;
 import martian.mystery.R;
-import martian.mystery.controller.GetContextClass;
-import martian.mystery.controller.RequestController;
+import martian.mystery.controllers.RequestController;
 import martian.mystery.data.ResponseFromServer;
 
 public class InfoActivity extends AppCompatActivity {

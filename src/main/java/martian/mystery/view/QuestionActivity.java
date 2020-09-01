@@ -43,7 +43,6 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,22 +52,21 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import martian.mystery.controller.AttemptsController;
-import martian.mystery.controller.GetContextClass;
-import martian.mystery.controller.Progress;
+import martian.mystery.controllers.AttemptsController;
+import martian.mystery.controllers.GetContextClass;
+import martian.mystery.controllers.Progress;
 import martian.mystery.R;
-import martian.mystery.controller.QuestionAnswerController;
-import martian.mystery.controller.SecurityController;
-import martian.mystery.controller.StatisticsController;
-import martian.mystery.controller.StoredData;
-import martian.mystery.controller.UpdateDataController;
+import martian.mystery.controllers.QuestionAnswerController;
+import martian.mystery.controllers.SecurityController;
+import martian.mystery.controllers.StatisticsController;
+import martian.mystery.controllers.StoredData;
+import martian.mystery.controllers.UpdateDataController;
 import martian.mystery.data.Player;
 import martian.mystery.exceptions.ErrorOnServerException;
 import martian.mystery.exceptions.NoInternetException;
 
-import static martian.mystery.controller.StoredData.DATA_COUNT_ATTEMPTS;
-import static martian.mystery.controller.StoredData.DATA_IS_WINNER;
-import static martian.mystery.controller.StoredData.DATA_PLACE;
+import static martian.mystery.controllers.StoredData.DATA_IS_WINNER;
+import static martian.mystery.controllers.StoredData.DATA_PLACE;
 
 
 public class QuestionActivity extends AppCompatActivity implements RewardedVideoAdListener { // активити, где отображаются загадки
@@ -759,24 +757,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     btnNextAnimator.setDuration(0);
                 }
                 btnNextAnimator.start();
-                /*btnNextAnimator.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                    }
-                });*/
-                /*new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        handler.sendEmptyMessage(ALPHA_DOWN_BTNNEXT);
-                        try {
-                            TimeUnit.MILLISECONDS.sleep(400);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        handler.sendEmptyMessage(SET_INVISIBLE_BTNNEXT);
-                    }
-                }).start();*/
             }
         }
 

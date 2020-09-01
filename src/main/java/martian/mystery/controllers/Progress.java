@@ -1,8 +1,8 @@
-package martian.mystery.controller;
+package martian.mystery.controllers;
 
 
-import static martian.mystery.controller.StoredData.DATA_COUNT_LAUNCH_APP;
-import static martian.mystery.controller.StoredData.DATA_LEVEL;
+import static martian.mystery.controllers.StoredData.DATA_COUNT_LAUNCH_APP;
+import static martian.mystery.controllers.StoredData.DATA_LEVEL;
 
 public class Progress { // класс синглтон для управления уровнем(прогрессом)
     private int level;

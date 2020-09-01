@@ -19,9 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.IOException;
 
 import martian.mystery.R;
-import martian.mystery.controller.Progress;
-import martian.mystery.controller.RequestController;
-import martian.mystery.controller.StoredData;
+import martian.mystery.controllers.RequestController;
+import martian.mystery.controllers.StoredData;
 import martian.mystery.data.DataOfUser;
 import martian.mystery.data.Player;
 import martian.mystery.data.ResponseFromServer;
@@ -44,8 +43,9 @@ public class LogupActivity extends AppCompatActivity {
     private final int WRONG_SYMBOLS = 3;
     private final int SHORT_LOGIN = 4;
     private final int LONG_LOGIN = 5;
-    private final int MANY_SPACE = 6;
+    private final int MANY_SPACES = 6;
     private final int LOGIN_IS_ACCESS = 7;
+    private final int SERVER_DOES_NOT_WORKING = 8;
 
 
     @Override
@@ -157,10 +157,12 @@ public class LogupActivity extends AppCompatActivity {
                 animateError(R.string.invalid_long_name,5000);
             } else if(res == LONG_LOGIN) {
                 animateError(R.string.invalid_long_name,5000);
-            } else if(res == MANY_SPACE) {
+            } else if(res == MANY_SPACES) {
                 animateError(R.string.many_scapes,5000);
             } else if(res == MANY_LOGUP_IP) {
                 animateError(R.string.many_ip_logup,4000);
+            } else if(res == SERVER_DOES_NOT_WORKING) {
+                animateError(R.string.server_error_logup,4000);
             }
             btnLogup.setClickable(true);
         }
@@ -183,10 +185,11 @@ public class LogupActivity extends AppCompatActivity {
                     login.toLowerCase().contains("pidr")) {
                 return BAD_WORDS;
             }
-            if(login.indexOf(' ') != login.lastIndexOf(' ')) return MANY_SPACE; // если больше одного пробела
+            if(login.indexOf(' ') != login.lastIndexOf(' ')) return MANY_SPACES; // если больше одного пробела
             if(login.matches("[A-Za-z_0-9а-яА-Я?\\s]+")) return LOGIN_IS_ACCESS;
             else return WRONG_SYMBOLS;
         }
+
         private int loginIsExist(String login) { // проверка логина на занятость
             DataOfUser dataOfUser = new DataOfUser();
             dataOfUser.setNameOfUser(login.concat(StoredData.DATA_WINS));
@@ -202,7 +205,7 @@ public class LogupActivity extends AppCompatActivity {
                 else if(response.getResult() == LOGIN_EXIST) return LOGIN_EXIST;
                 else if(response.getResult() == MANY_LOGUP_IP) return MANY_LOGUP_IP;
             } catch (IOException e) {
-                e.printStackTrace();
+                return SERVER_DOES_NOT_WORKING;
             }
             return 0;
         }

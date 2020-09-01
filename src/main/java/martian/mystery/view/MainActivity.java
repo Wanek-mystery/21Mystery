@@ -7,16 +7,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.graphics.Point;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.view.Display;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,15 +28,15 @@ import java.util.List;
 import java.util.Locale;
 
 import martian.mystery.BuildConfig;
-import martian.mystery.controller.GetContextClass;
-import martian.mystery.controller.Progress;
+import martian.mystery.controllers.GetContextClass;
+import martian.mystery.controllers.Progress;
 import martian.mystery.R;
-import martian.mystery.controller.RequestController;
-import martian.mystery.controller.StatisticsController;
-import martian.mystery.controller.UpdateDataController;
+import martian.mystery.controllers.RequestController;
+import martian.mystery.controllers.StatisticsController;
+import martian.mystery.controllers.UpdateDataController;
 import martian.mystery.data.Player;
 import martian.mystery.data.ResponseFromServer;
-import martian.mystery.controller.StoredData;
+import martian.mystery.controllers.StoredData;
 import martian.mystery.exceptions.ErrorOnServerException;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +44,7 @@ import retrofit2.Response;
 import yanzhikai.textpath.AsyncTextPathView;
 import yanzhikai.textpath.calculator.AroundCalculator;
 
-import static martian.mystery.controller.StoredData.DATA_COUNT_LAUNCH_APP;
+import static martian.mystery.controllers.StoredData.DATA_COUNT_LAUNCH_APP;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -615,7 +612,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    private class UpdateDataThread extends Thread { // поток, обновляющий основыне данные на главной активити
+    private class UpdateDataThread extends Thread { // поток, обновляющий основные данные на главной активити
 
         private boolean isStop = false;
         private boolean isFirstLaunch = true;

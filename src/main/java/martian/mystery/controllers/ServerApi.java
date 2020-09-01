@@ -1,4 +1,4 @@
-package martian.mystery.controller;
+package martian.mystery.controllers;
 
 import martian.mystery.data.DataOfUser;
 import martian.mystery.data.ResponseFromServer;

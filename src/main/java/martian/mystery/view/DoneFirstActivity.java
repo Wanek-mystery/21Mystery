@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import martian.mystery.R;
-import martian.mystery.controller.Progress;
-import martian.mystery.controller.RequestController;
+import martian.mystery.controllers.Progress;
+import martian.mystery.controllers.RequestController;
 import martian.mystery.data.DataOfUser;
 import martian.mystery.data.Player;
 import martian.mystery.data.ResponseFromServer;

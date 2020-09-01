@@ -1,4 +1,4 @@
-package martian.mystery.controller;
+package martian.mystery.controllers;
 
 import android.app.Application;
 import android.content.Context;

@@ -3,7 +3,7 @@ package martian.mystery;
 import org.junit.Before;
 import org.junit.Test;
 
-import martian.mystery.controller.SecurityController;
+import martian.mystery.controllers.SecurityController;
 
 import static org.junit.Assert.*;
 

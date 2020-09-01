@@ -165,6 +165,7 @@
     <string name="complete_level">Complete</string>
     <string name="load_riddle_error">Something with the Internet , it is impossible to download the riddle</string>
     <string name="btn_telegram">go to</string>
+    <string name="server_error_logup">Server is not working or error occured</string>
 
 
     <!--Если ты сюда зашел, уходи-->

@@ -1,11 +1,9 @@
-package martian.mystery.controller;
+package martian.mystery.controllers;
 
-import martian.mystery.view.QuestionActivity;
-
-import static martian.mystery.controller.QuestionAnswerController.DATA_CURRENT_RIDDLE;
-import static martian.mystery.controller.QuestionAnswerController.DATA_NEXT_RIDDLE;
-import static martian.mystery.controller.QuestionAnswerController.EMPTY_RIDDLE;
-import static martian.mystery.controller.QuestionAnswerController.ERROR_LOAD_RIDDLE;
+import static martian.mystery.controllers.QuestionAnswerController.DATA_CURRENT_RIDDLE;
+import static martian.mystery.controllers.QuestionAnswerController.DATA_NEXT_RIDDLE;
+import static martian.mystery.controllers.QuestionAnswerController.EMPTY_RIDDLE;
+import static martian.mystery.controllers.QuestionAnswerController.ERROR_LOAD_RIDDLE;
 
 public class UpdateDataController {
     private static final UpdateDataController ourInstance = new UpdateDataController();

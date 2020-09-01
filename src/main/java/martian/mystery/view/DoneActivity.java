@@ -12,8 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import martian.mystery.R;
-import martian.mystery.controller.Progress;
-import martian.mystery.controller.StoredData;
+import martian.mystery.controllers.Progress;
+import martian.mystery.controllers.StoredData;
 
 public class DoneActivity extends AppCompatActivity {
 
