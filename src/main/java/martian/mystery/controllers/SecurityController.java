@@ -9,7 +9,7 @@ import martian.mystery.R;
 public class SecurityController {
 
     // "ключи-смещения" для дешифровки ответов
-    private int offSets[][] = {{-2, 1, -4, -6, 2, -6, -4, -2, 8, 4, -5, 4, -1, -2, 7, -4, 6, -5, -6},
+    private final int offSets[][] = {{-2, 1, -4, -6, 2, -6, -4, -2, 8, 4, -5, 4, -1, -2, 7, -4, 6, -5, -6},
             {4, -3, -1, 8, 6, -6, 4, 8, 6, -4, 7, -3, -1, 4, -5, 4, -2, 7, 5},
             {0, -1, 8, -7, 1, -1, -9, 2, 4, 3, -7, 4, -6, -4, -4, 5, -6, 3, 1},
             {-1, -8, 3, -6, -8, -8, 0, -9, 0, -2, 5, -5, 4, -7, -9, -6, 3, -7, -9},
@@ -74,11 +74,63 @@ public class SecurityController {
                     charOneWord[x] -= offSets[countAnswer-1][x];
                 }
                 words[j] = String.valueOf(charOneWord).concat(" ");
-                charAnswer[i] += words[j]; // здесь можно обрезать
+                charAnswer[i] += words[j];
 
             }
             answers[i] = charAnswer[i].trim().replaceAll("null","");
         }
         return answers;
+    }
+
+    /*шифрофвание уровня
+    при сохранении уровня в памяти он заменяется на произвольное число
+    при чтении происходит обратное
+    то есть в памяти хранится не сам уровень, а его "ключ"
+     */
+    public static int encodeLevel(int lvl) {
+        if(lvl < 8) return lvl;
+        else if(lvl > 8 && lvl <= 22) {
+                switch (lvl) {
+                    case 8: return 29035;
+                    case 9: return 55861;
+                    case 10: return 42700;
+                    case 11: return 49763;
+                    case 12: return 68929;
+                    case 13: return 44069;
+                    case 14: return 35325;
+                    case 15: return 89922;
+                    case 16: return 83228;
+                    case 17: return 19406;
+                    case 18: return 93124;
+                    case 19: return 52191;
+                    case 20: return 95281;
+                    case 21: return 83956;
+                    case 22: return 74629;
+                }
+            }
+        return -1;
+    }
+    public static int decodeLevel(int cipher) {
+        if(cipher > 9999) {
+            switch (cipher) {
+                case 29035: return 8;
+                case 55861: return 9;
+                case 42700: return 10;
+                case 49763: return 11;
+                case 68929: return 12;
+                case 44069: return 13;
+                case 35325: return 14;
+                case 89922: return 15;
+                case 83228: return 16;
+                case 19406: return 17;
+                case 93124: return 18;
+                case 52191: return 19;
+                case 95281: return 20;
+                case 83956: return 21;
+                case 74629: return 22;
+            }
+        }
+
+        return -1;
     }
 }

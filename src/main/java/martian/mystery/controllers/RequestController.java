@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RequestController { // класс-синглтон для управления запросами к серверу
 
     private final static RequestController instanceController = new RequestController();
-    private final static String URL = "https://tomystery.herokuapp.com"; //
+    private final static String URL = "https://tomystery.herokuapp.com";
     private Retrofit retrofit;
 
     public static RequestController getInstance() {
@@ -27,8 +27,7 @@ public class RequestController { // класс-синглтон для упра�
     public ServerApi getJsonApi() {
         return retrofit.create(ServerApi.class);
     }
-    public static boolean hasConnection(final Context context)
-    {
+    public static boolean hasConnection(final Context context) {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (wifiInfo != null && wifiInfo.isConnected())

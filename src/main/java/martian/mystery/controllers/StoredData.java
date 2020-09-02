@@ -15,7 +15,7 @@ public class StoredData { // класс, реализующий доступ к 
     public static final String DATA_WINNER_IS_CHECKED = ";winner_is_checked4";
     public static final String DATA_IS_WINNER = "is_winner4";
     public static final String DATA_PLACE = ";place_gamer4";
-    public static final String DATA_LASTDATE = ";last_date4";
+    public static final String DATA_START_TIME = ";last_date4";
 
     public StoredData() { }
 
@@ -53,19 +53,4 @@ public class StoredData { // класс, реализующий доступ к 
         return sharedPreferences.getBoolean(typeData,false);
     }
 
-
-    /*private static void clearSharedPreferences(Context ctx){
-        File dir = new File(ctx.getFilesDir().getParent() + "/shared_prefs/");
-        String[] children = dir.list();
-        for (int i = 0; i < children.length; i++) {
-            // clear each of the prefrances
-            ctx.getSharedPreferences(children[i].replace(".xml", ""), Context.MODE_PRIVATE).edit().clear().commit();
-        }
-        // Make sure it has enough time to save all the commited changes
-        try { Thread.sleep(1000); } catch (InterruptedException e) {}
-        for (int i = 0; i < children.length; i++) {
-            // delete the files
-            new File(dir, children[i]).delete();
-        }
-    }*/
 }

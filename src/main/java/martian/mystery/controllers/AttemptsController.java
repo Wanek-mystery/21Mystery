@@ -32,12 +32,12 @@ public class AttemptsController {
         StoredData.saveData(DATA_COUNT_ATTEMPTS, 3);
     }
 
-    public void decrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет
+    public void decrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет в памяти
         int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS, 3);
         if (countAttempts > 0) StoredData.saveData(DATA_COUNT_ATTEMPTS, countAttempts - 1);
     }
 
-    public void incrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет
+    public void incrementCountAtempts() { // уменьшает кол-во попыток на 1 и сохраняет в памяти
         int countAttempts = StoredData.getDataInt(DATA_COUNT_ATTEMPTS, 3);
         if (countAttempts < 9) StoredData.saveData(DATA_COUNT_ATTEMPTS, countAttempts + 1);
     }

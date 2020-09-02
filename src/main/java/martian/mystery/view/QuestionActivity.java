@@ -99,7 +99,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private ShowAdThread showAdThread;
     private AnimationController animationController;
     private AttemptsController attemptsController;
-    private ProgressBarAdController progressBarAdController;
     private PurchaseController purchaseController;
     private PartingWords partingWords;
 
@@ -225,11 +224,11 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                         break;
                     }
                     case SHOW_PROGRESS: {
-                        progressBarAdController.showProgress();
+                        animationController.showProgressBarAd();
                         break;
                     }
                     case HIDE_PROGRESS: {
-                        progressBarAdController.hideProgress();
+                        animationController.hideProgressBarAd();
                         break;
                     }
                     case SHOW_PURCHASE: {
@@ -297,7 +296,6 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             }
         });
 
-        progressBarAdController = new ProgressBarAdController();
         statisticsController = new StatisticsController(this);
         purchaseController = new PurchaseController(this);
         animationController = new AnimationController();
@@ -408,7 +406,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
     private void loadRewardedVideoAd() {
         mRewardedVideoAd.loadAd(adBlock,
                 new AdRequest.Builder().build());
-        progressBarAdController.setCurrentState(1);
+        animationController.setCurrentStateProgressBarAd(1);
     }
 
     @Override
@@ -435,14 +433,14 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         } else if (errorCode == 0) {
             Toast.makeText(GetContextClass.getContext(), R.string.error_download_ad, Toast.LENGTH_SHORT).show();
         }
-        progressBarAdController.setCurrentState(2);
+        animationController.setCurrentStateProgressBarAd(2);
         statisticsController.sendErrorAd(errorCode);
     }
 
     @Override
     public void onRewardedVideoAdLoaded() {
         adLoaded = true;
-        progressBarAdController.setCurrentState(0);
+        animationController.setCurrentStateProgressBarAd(0);
         //Toast.makeText(GetContextClass.getContext(), "Реклама загружена", Toast.LENGTH_SHORT).show();
     }
 
@@ -461,28 +459,9 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
 
 
     // внутренние контроллеры и потоки -----------------------------------------------------------------------------
-    private class ProgressBarAdController {
 
-        public int currentState;
 
-        public int getCurrentState() {
-            return currentState;
-        }
-
-        public void setCurrentState(int currentState) {
-            this.currentState = currentState;
-        }
-
-        public void showProgress() {
-            progressAdLoad.setVisibility(View.VISIBLE);
-        }
-
-        public void hideProgress() {
-            progressAdLoad.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    public class PurchaseController {
+    private class PurchaseController {
 
         BillingClient billingClient;
         private Map<String, SkuDetails> mSkuDetailsMap = new HashMap<>();
@@ -596,6 +575,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         */
         public int INPUT_STATE = 0;
         private boolean isFirstLaunch = true;
+        private int stateProgressBarAd;
 
         private TransitionDrawable imgBottomDrawable;
 
@@ -734,7 +714,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             }
         }
 
-        private void animationBtnNext() { // анимация появлеия кнопки "дальше"
+        private void animationBtnNext() { // анимация появления кнопки "дальше"
             ObjectAnimator animatorBtnNextX;
             ObjectAnimator animatorBtnNextY;
             if (Progress.getInstance().getLevel() <= 21) {
@@ -789,6 +769,20 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                 }
             }).start();
         }
+
+        public int getCurrentStateProgressBarAd() {
+            return stateProgressBarAd;
+        }
+        public void setCurrentStateProgressBarAd(int currentState) {
+            this.stateProgressBarAd = currentState;
+        }
+        public void showProgressBarAd() {
+            progressAdLoad.setVisibility(View.VISIBLE);
+        }
+        public void hideProgressBarAd() {
+            progressAdLoad.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     private class PartingWords {
@@ -884,10 +878,10 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
         @Override
         public void run() {
             handler.sendEmptyMessage(SHOW_PROGRESS);
-            if (progressBarAdController.getCurrentState() != 1) {
+            if (animationController.getCurrentStateProgressBarAd() != 1) {
                 handler.sendEmptyMessage(LOAD_AD);
             }
-            while (progressBarAdController.getCurrentState() != 2) {
+            while (animationController.getCurrentStateProgressBarAd() != 2) {
                 handler.sendEmptyMessage(CHECK_LOAD_AD);
                 try {
                     TimeUnit.MILLISECONDS.sleep(78);
@@ -906,7 +900,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
                     }
                 }
             }
-            progressBarAdController.setCurrentState(0);
+            animationController.setCurrentStateProgressBarAd(0);
             handler.sendEmptyMessage(HIDE_PROGRESS);
         }
     }

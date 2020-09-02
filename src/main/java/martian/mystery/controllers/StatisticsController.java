@@ -38,9 +38,9 @@ public class StatisticsController {
         SimpleDateFormat format = new SimpleDateFormat("hh dd MM yyyy");
         Date nowDate = new Date();
         String nowDateString = format.format(nowDate);
-        String lastDate = StoredData.getDataString(StoredData.DATA_LASTDATE,"1");
+        String startTime = StoredData.getDataString(StoredData.DATA_START_TIME,"1");
         try {
-            Date oldDate = format.parse(lastDate);
+            Date oldDate = format.parse(startTime);
             Date newDate = format.parse(nowDateString);
             int diffInDays = (int)( (newDate.getTime() - oldDate.getTime())
                     / (1000 * 60 * 60));
@@ -54,8 +54,10 @@ public class StatisticsController {
         SimpleDateFormat format = new SimpleDateFormat("hh dd MM yyyy");
         Date nowDate = new Date();
         String nowDateString = format.format(nowDate);
-        StoredData.saveData(StoredData.DATA_LASTDATE,nowDateString);
+        StoredData.saveData(StoredData.DATA_START_TIME,nowDateString);
     }
+
+    // отправка статистики на сервер
     public void sendAttempt() {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Level: " + Player.getInstance().getLevel());
@@ -75,7 +77,7 @@ public class StatisticsController {
         bundle.putInt(FirebaseAnalytics.Param.VALUE,errorCode);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.CAMPAIGN_DETAILS,bundle);
     }
-    public int sendNewLevel() throws IOException, ErrorOnServerException { // отправка статистики на сервер
+    public int sendNewLevel() throws IOException, ErrorOnServerException {
         DataOfUser data = new DataOfUser();
         data.setNameOfUser(AssistentDialog.assist.concat(Player.getInstance().getName()));
         data.setLevel(Player.getInstance().getLevel());

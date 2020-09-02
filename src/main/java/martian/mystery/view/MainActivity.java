@@ -543,7 +543,7 @@ public class MainActivity extends AppCompatActivity {
             return spans;
         }
     }
-    private class LoadNewLevelTask extends AsyncTask<Void,Void,Void> { // отправляем данные о новым уровне, если в прошлый раз не было инета
+    private class LoadNewLevelTask extends AsyncTask<Void,Void,Void> { // отправляем данные о новым уровне, если в предыдущую сессию не получилось
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -649,7 +649,7 @@ public class MainActivity extends AppCompatActivity {
                                 public void onResponse(Call<ResponseFromServer> call, Response<ResponseFromServer> response) {
                                     try {
                                         ResponseFromServer responseFromServer = response.body();
-                                        String prize; // переменная хранит приз в зависимости от языка устройства
+                                        String prize; // переменная хранит приз в рублях или долларах в зависимости от языка на устройстве
                                         if(locale.equals("ru") || locale.equals("be") || locale.equals("uk")) {
                                             prize = responseFromServer.getPrize().split(",")[0];
                                         } else prize = responseFromServer.getPrize().split(",")[1];

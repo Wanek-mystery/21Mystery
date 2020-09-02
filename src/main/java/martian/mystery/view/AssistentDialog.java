@@ -26,8 +26,10 @@ public class AssistentDialog extends DialogFragment {
     public static final int DIALOG_UPDATE_APP_TECH = 7;
     public static final int DIALOG_CHECK_ON_SERRVER_ALERT = 8;
     public static final int DIALOG_NO_TELEGRAM = 9;
-    public static final String assist = "e.g.;"; // эта переменная используется для шифрования логина при отправке на сервер
+
     int typeDialog;
+
+    public static final String assist = "e.g.;"; // эта переменная используется для шифрования логина при отправке на сервер
 
     public AssistentDialog(int typeDialog) {
         this.typeDialog = typeDialog;
