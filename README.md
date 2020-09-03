@@ -1,3 +1,3 @@
 # 21Mystery
 Android app.
-Link: https://play.google.com/store/apps/details?id=martian.mystery
+Link to Google Play: https://play.google.com/store/apps/details?id=martian.mystery
