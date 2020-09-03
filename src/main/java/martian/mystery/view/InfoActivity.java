@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -137,7 +138,7 @@ public class InfoActivity extends AppCompatActivity {
                         break;
                     }
                 }
-            }
+            } else Toast.makeText(InfoActivity.this,"Something went wrong",Toast.LENGTH_LONG).show();
         }
     }
 }

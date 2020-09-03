@@ -19,7 +19,7 @@
             android:name=".view.InfoActivity"
             android:label="Info Activity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".view.DoneFirstActivity" />
+        <activity android:name=".view.WinnerActivity" />
         <activity android:name=".view.DoneActivity" />
         <activity
             android:name=".view.LogupActivity"

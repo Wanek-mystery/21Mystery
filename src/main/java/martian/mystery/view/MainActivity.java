@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                         } else if(!StoredData.getDataBool(StoredData.DATA_IS_WINNER)) {
                             intent = new Intent(MainActivity.this,DoneActivity.class);
                         } else {
-                            intent = new Intent(MainActivity.this,DoneFirstActivity.class);
+                            intent = new Intent(MainActivity.this, WinnerActivity.class);
                         }
                     } else intent = null;
                     startActivityForResult(intent, 1);

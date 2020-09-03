@@ -1025,7 +1025,7 @@ public class QuestionActivity extends AppCompatActivity implements RewardedVideo
             if (Progress.getInstance().isDone()) {
                 if (winnerIsChecked) {
                     if (isWinner) {
-                        Intent intent = new Intent(QuestionActivity.this, DoneFirstActivity.class);
+                        Intent intent = new Intent(QuestionActivity.this, WinnerActivity.class);
                         intent.putExtra("past_level", getIntent().getIntExtra("past_level", 1));
                         finish();
                         startActivity(intent); // замена текущего фрагмента на фрагмент с концом игры для побеителя

@@ -26,7 +26,7 @@ import martian.mystery.data.DataOfUser;
 import martian.mystery.data.Player;
 import martian.mystery.data.ResponseFromServer;
 
-public class DoneFirstActivity extends AppCompatActivity {
+public class WinnerActivity extends AppCompatActivity {
 
     private TextView tvEmail;
     private Button btnSendReview;
@@ -73,7 +73,7 @@ public class DoneFirstActivity extends AppCompatActivity {
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText("", tvEmail.getText().toString());
                     clipboard.setPrimaryClip(clip);
-                    Toast.makeText(DoneFirstActivity.this, R.string.email_copy, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WinnerActivity.this, R.string.email_copy, Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
