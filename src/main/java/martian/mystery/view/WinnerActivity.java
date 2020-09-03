@@ -26,7 +26,7 @@ import martian.mystery.data.DataOfUser;
 import martian.mystery.data.Player;
 import martian.mystery.data.ResponseFromServer;
 
-public class WinnerActivity extends AppCompatActivity {
+public class WinnerActivity extends AppCompatActivity { // активити появляется после прохождения всех уровней; для победителя
 
     private TextView tvEmail;
     private Button btnSendReview;

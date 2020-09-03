@@ -15,7 +15,7 @@ import martian.mystery.R;
 import martian.mystery.controllers.Progress;
 import martian.mystery.controllers.StoredData;
 
-public class DoneActivity extends AppCompatActivity {
+public class DoneActivity extends AppCompatActivity { // активити появляется после прохождения всех уровней; не для победителя
 
     private TextView tvPlace;
     private TextView tvFinalPhrase;

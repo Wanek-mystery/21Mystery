@@ -35,7 +35,7 @@ public class Progress { // класс синглтон для управлени
         return level;
     }
 
-    private void incrementSaveLevel() { // увеличивает уровень на 1 и сохраняет на устройстве
+    private void incrementSaveLevel() { // увеличивает записанный в памяти уровень на 1
         int currentLevel = SecurityController.decodeLevel(StoredData.getDataInt(DATA_LEVEL,DEFAULT_LEVEL));
         int incLevel = currentLevel+1;
         StoredData.saveData(DATA_LEVEL,SecurityController.encodeLevel(incLevel));

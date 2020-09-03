@@ -3,7 +3,7 @@ package martian.mystery.controllers;
 import android.app.Application;
 import android.content.Context;
 
-public class GetContextClass extends Application { // класс исключительно для получения context, не более того
+public class GetContextClass extends Application { // класс исключительно для получения context
 
     private static Context context;
 

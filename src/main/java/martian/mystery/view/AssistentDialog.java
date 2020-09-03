@@ -29,7 +29,7 @@ public class AssistentDialog extends DialogFragment {
 
     int typeDialog;
 
-    public static final String assist = "e.g.;"; // эта переменная используется для шифрования логина при отправке на сервер
+    public static final String assist = "e.g.;"; // эта переменная используется для шифрования логина при отправке на сервер; не используется в данном классе(для запутывания злоумышленников)
 
     public AssistentDialog(int typeDialog) {
         this.typeDialog = typeDialog;
