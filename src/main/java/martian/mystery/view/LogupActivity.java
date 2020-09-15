@@ -170,21 +170,7 @@ public class LogupActivity extends AppCompatActivity {
         private int isValidLogin(String login) { // проверка логина на валидность
             if(login.length() < 4) return SHORT_LOGIN;
             if(login.length() > 15) return LONG_LOGIN;
-            if(login.toLowerCase().contains("хуй") ||
-                    login.toLowerCase().contains("пизда") ||
-                    login.toLowerCase().contains("fuck") ||
-                    login.toLowerCase().contains("член") ||
-                    login.toLowerCase().contains("пидор") ||
-                    login.toLowerCase().contains("пидр") ||
-                    login.toLowerCase().contains("pidor") ||
-                    login.toLowerCase().equals("соси") ||
-                    login.toLowerCase().equals("sosi") ||
-                    login.toLowerCase().contains("pizda") ||
-                    login.toLowerCase().contains("hui") ||
-                    login.toLowerCase().contains("pizdec") ||
-                    login.toLowerCase().contains("pidr")) {
-                return BAD_WORDS;
-            }
+            if(login.toLowerCase().contains("fuck")) return BAD_WORDS;
             if(login.indexOf(' ') != login.lastIndexOf(' ')) return MANY_SPACES; // если больше одного пробела
             if(login.matches("[A-Za-z_0-9а-яА-Я?\\s]+")) return LOGIN_IS_ACCESS;
             else return WRONG_SYMBOLS;
