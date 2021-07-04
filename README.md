@@ -1,3 +1,4 @@
 # 21Mystery
 Android app.
-You can download app-debug.apk and run this app
+Приложение-игра по разгадыванию загадок 
+(Старая версия, сейчас не используется)
